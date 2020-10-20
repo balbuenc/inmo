@@ -55,7 +55,7 @@ namespace CoreERP.Data.Repositories
         {
             var db = dbConnection();
 
-            var sql = @" INSERT INTO public.areas (area) VALUES(@area);";
+            var sql = @"INSERT INTO public.areas (area) VALUES(@area);";
 
             var result = await db.ExecuteAsync(sql, new
             {
@@ -70,7 +70,7 @@ namespace CoreERP.Data.Repositories
         {
             var db = dbConnection();
 
-            var sql = @" UPDATE public.areas
+            var sql = @"UPDATE public.areas
                         set area =@area
                         where id_area=@id_area;";
 
