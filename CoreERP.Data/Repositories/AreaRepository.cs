@@ -37,7 +37,7 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Area>> GetAllAreas()
         {
             var db = dbConnection();
-            var sql = "select * from Areas";
+            var sql = "select * from Areas order by id_area asc";
 
 
             return await db.QueryAsync<Area>(sql, new { });
@@ -77,6 +77,7 @@ namespace CoreERP.Data.Repositories
 
             var result = await db.ExecuteAsync(sql, new
             {
+                area.id_area,
                 area.area
             }
             );

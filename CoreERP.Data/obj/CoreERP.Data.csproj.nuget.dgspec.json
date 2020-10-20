@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\source\\repos\\CoreERP.Data\\CoreERP.Data.csproj": {}
+    "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\CoreERP.Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\source\\repos\\CoreERP.Data\\CoreERP.Data.csproj": {
+    "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\CoreERP.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\source\\repos\\CoreERP.Data\\CoreERP.Data.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\CoreERP.Data.csproj",
         "projectName": "CoreERP.Data",
-        "projectPath": "C:\\Users\\HP\\source\\repos\\CoreERP.Data\\CoreERP.Data.csproj",
+        "projectPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\CoreERP.Data.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\source\\repos\\CoreERP.Data\\obj\\",
+        "outputPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -27,8 +27,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\HP\\source\\repos\\CoreERP.Model\\CoreERP.Model.csproj": {
-                "projectPath": "C:\\Users\\HP\\source\\repos\\CoreERP.Model\\CoreERP.Model.csproj"
+              "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\CoreERP.Model.csproj": {
+                "projectPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\CoreERP.Model.csproj"
               }
             }
           }
@@ -74,14 +74,14 @@
         }
       }
     },
-    "C:\\Users\\HP\\source\\repos\\CoreERP.Model\\CoreERP.Model.csproj": {
+    "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\CoreERP.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\source\\repos\\CoreERP.Model\\CoreERP.Model.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\CoreERP.Model.csproj",
         "projectName": "CoreERP.Model",
-        "projectPath": "C:\\Users\\HP\\source\\repos\\CoreERP.Model\\CoreERP.Model.csproj",
+        "projectPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\CoreERP.Model.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\source\\repos\\CoreERP.Model\\obj\\",
+        "outputPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Zf2GrI1Rg/bBacRlxYWP7dSiDGUnhiJriw+kISgchAGBEQ6/qJ6h/PUFg/95cAKP4vURD09oemjyVdIqxyXl5w==",
+  "dgSpecHash": "kDKSIcyWf3nxvEb+7wTTly38rak4mPIwoQogJx00NEo1SgVTIzcE0HvOu3YAeiOeq6Bc7f0pCALsPCu65U8CNw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\HP\\source\\repos\\CoreERP.API\\CoreERP.API.csproj",
+  "projectFilePath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.API\\CoreERP.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\dapper\\2.0.35\\dapper.2.0.35.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
