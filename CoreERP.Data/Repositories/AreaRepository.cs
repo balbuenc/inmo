@@ -39,7 +39,6 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
             var sql = "select * from Areas order by id_area asc";
 
-
             return await db.QueryAsync<Area>(sql, new { });
         }
 
