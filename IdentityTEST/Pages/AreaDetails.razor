@@ -1,0 +1,83 @@
+﻿@page "/DetalleArea"
+@page "/DetalleArea/{id:int}"
+@using Model
+@using Interfaces
+@inject IAreaService AreaService
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+
+<div class="col-12">
+    <div class="alert alert-warning" role="alert" style="width:100%"><h4>@Title</h4></div>
+</div>
+<div class="col-12">
+
+    <EditForm Model="@area" OnValidSubmit="SaveArea">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-borderless">
+                <tr>
+                    <td>ID</td>
+                    <td><input type="text" @bind="area.id_area" disabled="disabled" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td>Area</td>
+                    <td><input type="text" @bind="area.area" class="form-control" /></td>
+                </tr>
+                <tr><td colspan="2"> <ValidationMessage For="@(() => area.area)"></ValidationMessage></td></tr>
+                
+
+                <tr>
+                    <td colspan="2" style="text-align:right">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-danger" />
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </EditForm>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    private String Title = "Detalles del Area";
+
+    Area area = new Area();
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (id > 0)
+        {
+            area = await AreaService.GetAreaDetails(id);
+            Title = "Detalles del Area";
+        }
+        else
+        {
+            Title = "Agregar nueva Area";
+        }
+    }
+
+    protected async Task SaveArea()
+    {
+        await AreaService.SaveArea(area);
+
+        NavigateToAreas();
+    }
+
+    public void Cancel()
+    {
+        NavigateToAreas();
+    }
+
+    public void NavigateToAreas()
+    {
+        NavigationManager.NavigateTo("/Area");
+    }
+}

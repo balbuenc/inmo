@@ -1,0 +1,69 @@
+﻿@page "/Area"
+@using Model
+@using Interfaces
+@inject IAreaService AreaService
+@attribute [Authorize]
+
+
+
+<div class="row">
+    <div class="col-10">
+        <div class="alert alert-dark" style="width:100%" role="banner"><h3>Areas</h3></div>
+    </div>
+    <div class="col-2">
+        <div class="btn btn-outline-danger">
+            <a href="/DetalleArea"><i>Agregar</i></a>
+        </div>
+    </div>
+</div>
+
+<p>@Messsage</p>
+
+
+@if (areas == null)
+{
+    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
+}
+else
+{
+    <Table class="table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Area</th>
+
+                <th>...</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var area in areas)
+            {
+                <tr>
+                    <td>@area.id_area</td>
+                    <td>@area.area</td>
+
+                    <td><a href="/DetalleArea/@area.id_area"><i>Edit</i></a></td>
+                </tr>
+            }
+        </tbody>
+    </Table>
+}
+
+
+@code {
+    public IEnumerable<Area> areas { get; set; }
+    public string Messsage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            areas = await AreaService.GetAllAreas();
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener areas: " + ex.Message;
+        }
+    }
+}

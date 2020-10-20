@@ -1,0 +1,66 @@
+﻿@page "/Cliente"
+@using Model
+@using Interfaces
+@inject IClientService ClientService
+@attribute [Authorize]
+
+
+<div class="alert alert-dark" style="width:100%" role="banner"><h3>Clientes</h3></div>
+<p>@Messsage</p>
+
+
+@if (clients == null)
+{
+    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
+}
+else
+{
+    <Table class="table-responsive" >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Nro. doc.</th>                
+                <th>RUC</th>
+                <th>Dirección</th>
+                <th>Email</th>
+                <th>Registro</th>
+                <th>...</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var client in clients)
+            {
+                <tr>
+                    <td>@client.id_cliente</td>
+                    <td>@client.nombres</td>
+                    <td>@client.ci</td>
+                    <td>@client.ruc</td>
+                    <td>@client.direccion</td>
+                    <td>@client.email</td>
+                    <td>@client.fecha_alta.ToShortDateString()</td>
+                    <td><a href="/DetalleCliente/@client.id_cliente"><i>Edit</i></a></td>
+                </tr>
+            }
+        </tbody>
+    </Table>
+}
+
+
+@code {
+    public IEnumerable<Client> clients { get; set; }
+    public string Messsage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            clients = await ClientService.GetAllClients();
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener clientes: " + ex.Message;
+        }
+    }
+}

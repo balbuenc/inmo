@@ -1,0 +1,86 @@
+﻿<Bar Mode="BarMode.VerticalInline"
+     CollapseMode="BarCollapseMode.Small"
+     Breakpoint="Breakpoint.Desktop"
+     NavigationBreakpoint="Breakpoint.Tablet"
+     ThemeContrast="ThemeContrast.Light"
+     @bind-Visible="siderVisible">
+    <BarBrand>
+        <BarItem>
+            <BarLink To="/">
+                <BarIcon IconName="IconName.Home" />
+                Home
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.Cloud" />
+                        Configuraciones
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem To="/Area" >Areas</BarDropdownItem>
+                        
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.ShoppingBag" />
+                        Compras
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem>Orden de compra</BarDropdownItem>
+                        <BarDropdownItem>Stock</BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.MoneyBillAlt" />
+                        Ventas
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem>Presupestos</BarDropdownItem>
+                        <BarDropdownItem>Generar venta</BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.UserTie"> </BarIcon>
+                        Clientes
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+
+                        <BarDropdownItem To="/Cliente/">Cientes</BarDropdownItem>
+                        <BarDropdownItem To="/DetalleCliente">Nuevo cliente</BarDropdownItem>
+
+                    </BarDropdownMenu>
+                </BarDropdown>
+            </BarItem>
+        </BarStart>
+    </BarMenu>
+</Bar>
+
+
+@code {
+    private bool siderVisible = true;
+    
+    void ToggleSidebar()
+    {
+        siderVisible = !siderVisible;
+        StateHasChanged();
+    }
+
+}
+
