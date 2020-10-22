@@ -1,0 +1,80 @@
+﻿@page "/Neighborhood"
+@using Model
+@using Interfaces
+@inject INeighborhoodService NeighborhoodService
+@attribute [Authorize]
+
+<div class="row">
+
+    <div class="col-10">
+
+        <div class="alert alert-dark" style="width:100%" role="banner"><h3>Barrios</h3></div>
+
+    </div>
+
+    <div class="col-2">
+
+        <div class="btn btn-outline-danger">
+
+            <a href="/DetalleNeighborhood"><i>Agregar</i></a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<p>@Messsage</p>
+
+
+@if (neighborhoods == null)
+{
+    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
+}
+else
+{
+    <Table class="table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ciudad</th>
+                <th>Barrio</th>
+                <th>...</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var neighborhood in neighborhoods)
+            {
+                <tr>
+                    <td>@neighborhood.id_barrio</td>
+                    <td>@neighborhood.id_ciudad </td>
+                    <td>@neighborhood.barrio</td>
+
+                    <td><a href="/DetalleNeighborhood/@neighborhood.id_barrio"><i>Edit</i></a></td>
+                    <td><a href="/DeleteNeighborhood/@neighborhood.id_barrio"><i>Delete</i></a></td>
+
+                </tr>
+            }
+        </tbody>
+    </Table>
+}
+
+
+@code
+{
+    public IEnumerable<Neighborhood> neighborhoods { get; set; }
+    public string Messsage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            neighborhoods = await NeighborhoodService.GetAllNeighborhoods();
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener areas: " + ex.Message;
+        }
+    }
+}

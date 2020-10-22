@@ -20,9 +20,9 @@ namespace CoreERP.UI.Services
             _httpClient = httpClient;
         }
 
-        public Task DeleteArea(int id)
+        public async Task DeleteArea(int id)
         {
-            throw new NotImplementedException();
+            await _httpClient.DeleteAsync($"api/area/{id}");
         }
 
         public async Task<IEnumerable<Area>> GetAllAreas()
