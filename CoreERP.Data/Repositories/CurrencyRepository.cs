@@ -36,20 +36,46 @@ namespace CoreERP.Data.Repositories
         public async Task<Currency> GetCurrencytDetails(int id)
         {
             var db = dbConnection();
-            var sql = "select * from monedas where idmoneda = @Id";
+            var sql = "select * from monedas where id_moneda = @Id";
 
 
             return await db.QueryFirstOrDefaultAsync<Currency>(sql, new { Id = id });
         }
 
-        public Task<bool> InsertCurrency(Currency currency)
+        public async Task<bool> InsertCurrency(Currency currency)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+
+            var sql = @"INSERT INTO public.monedas (moneda, simbolo) VALUES(@moneda,@simbolo);";
+
+            var result = await db.ExecuteAsync(sql, new
+            {
+                currency.moneda,
+                currency.simbolo
+            }
+            );
+
+            return result > 0;
         }
 
-        public Task<bool> UpdateCurrency(Currency currency)
+        public async Task<bool> UpdateCurrency(Currency currency)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+
+            var sql = @"UPDATE public.monedas
+                        set moneda =@moneda,
+                            simbolo=@simbolo
+                        where id_moneda=@id_moneda;";
+
+            var result = await db.ExecuteAsync(sql, new
+            {
+                currency.id_moneda,
+                currency.moneda,
+                currency.simbolo
+            }
+            );
+
+            return result > 0;
         }
 
         public Task<bool> DeleteCurrency(int id)

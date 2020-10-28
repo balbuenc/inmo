@@ -10,7 +10,7 @@ namespace CoreERP.Model
         public int id_deposito { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Depósito debe tener un valor.")]
-        public String desposito { get; set; }
+        public String deposito { get; set; }
         public String descripcion { get; set; }
     }
 }

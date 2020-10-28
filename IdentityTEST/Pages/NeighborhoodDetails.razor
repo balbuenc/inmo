@@ -3,6 +3,7 @@
 @using Model
 @using Interfaces
 @inject INeighborhoodService NeighborhoodService
+@inject ICityService CityService
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 
@@ -23,13 +24,21 @@
                 </tr>
                 <tr>
                     <td>Ciudad</td>
-                    <td><input type="text" @bind="barrio.id_ciudad" class="form-control" /></td>
+                    
+                    <td>
+                        <InputSelect id="city" @bind-Value="barrio.id_ciudad" class="form-control">
+                            @foreach (var city in cities)
+                            {
+                                <option value="@city.id_ciudad">@city.ciudad</option>
+                            }
+                        </InputSelect>
+                    </td>
                 </tr>
                 <tr>
                     <td>Barrio</td>
                     <td><input type="text" @bind="barrio.barrio" class="form-control" /></td>
                 </tr>
-                
+
                 <tr><td colspan="2"> <ValidationMessage For="@(() => barrio.barrio)"></ValidationMessage></td></tr>
 
 
@@ -52,6 +61,10 @@
     [Parameter]
     public int id { get; set; }
 
+    
+    public List<City> cities { get; set; } = new List<City>();
+
+   
     private String Title = "Detalles del Barrio";
 
     Neighborhood barrio = new Neighborhood();
@@ -67,6 +80,14 @@
         {
             Title = "Agregar nuevo Barrio";
         }
+
+
+        await Load();
+    }
+
+    protected async Task Load()
+    {
+        cities = (await CityService.GetAllCities()).ToList();
     }
 
     protected async Task SaveNeighborhood()

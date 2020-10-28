@@ -1,0 +1,80 @@
+﻿@page "/City"
+@using Model
+@using Interfaces
+@inject ICityService CityService
+@attribute [Authorize]
+
+<div class="row">
+
+    <div class="col-10">
+
+        <div class="alert alert-dark" style="width:100%" role="banner"><h3>Barrios</h3></div>
+
+    </div>
+
+    <div class="col-2">
+
+        <div class="btn btn-outline-danger">
+
+            <a href="/DetalleCity"><i>Agregar</i></a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<p>@Messsage</p>
+
+
+@if (cities == null)
+{
+    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
+}
+else
+{
+    <Table class="table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Pais</th>
+                <th>Ciudad</th>
+                <th>...</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var city in cities)
+            {
+                <tr>
+                    <td>@city.id_ciudad</td>
+                    <td>@city.id_pais </td>
+                    <td>@city.ciudad</td>
+
+                    <td><a href="/DetalleCity/@city.id_ciudad"><i>Edit</i></a></td>
+                    <td><a href="/DeleteCity/@city.id_ciudad"><i>Delete</i></a></td>
+
+                </tr>
+            }
+        </tbody>
+    </Table>
+}
+
+
+@code
+{
+    public IEnumerable<City> cities { get; set; }
+    public string Messsage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            cities = await CityService.GetAllCities();
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener ciudades: " + ex.Message;
+        }
+    }
+}

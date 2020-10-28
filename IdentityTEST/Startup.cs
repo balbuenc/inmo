@@ -66,6 +66,9 @@ namespace CoreERP.UI
             services.AddHttpClient<INeighborhoodService, NeighborhoodService>(
                  neighborhood => { neighborhood.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<ICityService, CityService>(
+                 cities => { cities.BaseAddress = new Uri("https://localhost:44342"); });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
