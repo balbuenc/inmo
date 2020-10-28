@@ -36,6 +36,7 @@ namespace CoreERP.API
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<IChildrenRepository, ChildrenRepository>();
             services.AddControllers();
 
             var sqlConnectionConfiguration = new SqlConfiguration(Configuration.GetConnectionString("ERPConnectionString"));

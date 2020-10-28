@@ -78,9 +78,16 @@ namespace CoreERP.Data.Repositories
             return result > 0;
         }
 
-        public Task<bool> DeleteCurrency(int id)
+        public async Task<bool> DeleteCurrency(int id)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+
+            var sql = @"DELETE from monedas
+                        WHERE id_moneda = @Id ";
+
+            var result = await db.ExecuteAsync(sql, new { Id = id });
+
+            return result > 0;
         }
     }
 }
