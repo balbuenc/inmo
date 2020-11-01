@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreERP.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class BrandController : Controller
     {
         private readonly IBrandRepository _BrandRepository;
