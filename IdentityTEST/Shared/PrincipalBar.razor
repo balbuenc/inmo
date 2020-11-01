@@ -4,13 +4,12 @@
 
 <Bar Breakpoint="Breakpoint.Desktop"
      Background="Background.Light"
-     ThemeContrast="ThemeContrast.Light"
-    >
+     ThemeContrast="ThemeContrast.Light">
     <BarBrand>
         <div class="text-lg-left"> Lugaro - Home & Office </div>
     </BarBrand>
-    <BarToggler Clicked="@ToggleSidebar" />
-    <BarMenu @bind-Visible="siderVisible">
+    <BarToggler> </BarToggler>
+    <BarMenu>
         <BarStart>
 
             <BarItem>
@@ -21,28 +20,17 @@
             </BarItem>
         </BarStart>
 
-        <BarEnd  >
+        <BarEnd>
             <BarItem>
                 <AuthorizeView>
                     <Authorized>
-                        <div class="container">
-                            <div class="row">
-                                <a href="Identity/Account/Manage">@context.User.Identity.Name</a>
-                                <form method="post" action="Identity/Account/LogOut">
-                                    <button type="submit" class="nav-link btn btn-link">Log out</button>
-                                </form>
-                            </div>
-                        </div>
+
+                        <li class="nav-item px-3">
+                            <a href="Identity/Account/Manage"><b>@context.User.Identity.Name</b></a>
+                        </li>
+
                     </Authorized>
-                    <NotAuthorized>
-                        <div class="container">
-                            <div class="row">
-                                <Button Color="Color.Secondary">
-                                    <NavLink href="/Identity/Account/Login">Log In</NavLink>
-                                </Button>
-                            </div>
-                        </div>
-                    </NotAuthorized>
+
                 </AuthorizeView>
             </BarItem>
 
@@ -51,14 +39,7 @@
 
 </Bar>
 
-@code {
-    private bool siderVisible = true;
 
-    void ToggleSidebar()
-    {
-        siderVisible = !siderVisible;
-        StateHasChanged();
-    }
 
-}
+
 
