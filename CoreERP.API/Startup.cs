@@ -39,6 +39,7 @@ namespace CoreERP.API
             services.AddScoped<IChildrenRepository, ChildrenRepository>();
             services.AddScoped<IBudgetRepository, BudgetRepository>();
             services.AddScoped<IBudgetDetailRepository, BudgetDetailRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             services.AddControllers();
 
