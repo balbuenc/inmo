@@ -1,0 +1,73 @@
+﻿@page "/Position"
+@using Model
+@using Interfaces
+@inject IPositionService PositionService
+@attribute [Authorize]
+
+
+
+<div class="row">
+    <div class="col-10">
+        <div class="alert alert-dark" style="width:100%" role="banner"><h3>Cargos</h3></div>
+    </div>
+    <div class="col-2">
+        <div class="btn btn-outline-danger">
+            <a href="/DetallePosition"><i>Agregar</i></a>
+        </div>
+    </div>
+</div>
+
+<p>@Messsage</p>
+
+
+@if (cargos == null)
+{
+    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
+}
+else
+{
+    <Table class="table-responsive">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Area</th>
+                <th>Cargo</th>
+
+                <th>...</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var cargo in cargos)
+            {
+            <tr>
+                <td>@cargo.id_cargo</td>
+                <td>@cargo.id_area</td>
+                <td>@cargo.cargo</td>
+                
+
+                <td><a href="/DetallePosition/@cargo.id_cargo"><i>Edit</i></a></td>
+                <td><a href="/DeletePosition/@cargo.id_cargo"><i>Delete</i></a></td>
+            </tr>
+            }
+        </tbody>
+    </Table>
+}
+
+
+@code {
+    public IEnumerable<Position> cargos { get; set; }
+    public string Messsage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            cargos = await PositionService.GetAllPositions();
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener cargos: " + ex.Message;
+        }
+    }
+}

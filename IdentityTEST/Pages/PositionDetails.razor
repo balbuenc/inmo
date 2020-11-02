@@ -1,0 +1,87 @@
+﻿@page "/DetallePosition"
+@page "/DetallePosition/{id:int}"
+@using Model
+@using Interfaces
+@inject IPositionService PositionService
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+
+
+<div class="col-12">
+    <div class="alert alert-warning" role="alert" style="width:100%"><h4>@Title</h4></div>
+</div>
+<div class="col-12">
+
+    <EditForm Model="@cargo" OnValidSubmit="SavePosition">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-borderless">
+                <tr>
+                    <td>ID</td>
+                    <td><input type="text" @bind="cargo.id_cargo" disabled="disabled" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td>Area</td>
+                    <td><input type="text" @bind="cargo.id_area" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td>Cargo</td>
+                    <td><input type="text" @bind="cargo.cargo" class="form-control" /></td>
+                </tr>
+                <tr><td colspan="2"> <ValidationMessage For="@(() => cargo.cargo)"></ValidationMessage></td></tr>
+
+
+                <tr>
+                    <td colspan="2" style="text-align:right">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                        <input type="button" value="Cancel" @onclick="Cancel" class="btn btn-danger" />
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </EditForm>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    private String Title = "Detalles del Position";
+
+    Position cargo = new Position();
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (id > 0)
+        {
+            cargo = await PositionService.GetPositionDetails(id);
+            Title = "Detalles del cargo";
+        }
+        else
+        {
+            Title = "Agregar nuevo Cargo";
+        }
+    }
+
+    protected async Task SavePosition()
+    {
+        await PositionService.SavePosition(cargo);
+
+        NavigateToPositions();
+    }
+
+    public void Cancel()
+    {
+        NavigateToPositions();
+    }
+
+    public void NavigateToPositions()
+    {
+        NavigationManager.NavigateTo("/Position");
+    }
+}
