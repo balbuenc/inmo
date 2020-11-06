@@ -21,6 +21,7 @@ using Blazorise.Icons.FontAwesome;
 using CoreERP.UI.Interfaces;
 using CoreERP.UI.Services;
 using Microsoft.Extensions.Options;
+using Syncfusion.Blazor;
 
 namespace CoreERP.UI
 {
@@ -55,6 +56,7 @@ namespace CoreERP.UI
             services.AddRazorPages();
             services.AddServerSideBlazor().AddCircuitOptions(options => options.DetailedErrors = true );
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddSyncfusionBlazor();
 
 
             services.AddHttpClient<IClientService, ClientService>(
@@ -77,6 +79,7 @@ namespace CoreERP.UI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzQ3MDkwQDMxMzgyZTMzMmUzMEdDejEyQ1Z6Z0FUYk1JSG9WSk1GNFp5MWQ2bVNveUh6SWVwb0lCR01aMkU9");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
