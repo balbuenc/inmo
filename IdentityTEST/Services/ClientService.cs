@@ -20,9 +20,9 @@ namespace CoreERP.UI.Services
         }
 
 
-        public Task DeleteClient(int id)
+        public async Task DeleteClient(int id)
         {
-            throw new NotImplementedException();
+            await _httpClient.DeleteAsync($"api/client/{id}");
         }
 
         public async Task<IEnumerable<Client>> GetAllClients()

@@ -26,12 +26,12 @@ namespace CoreERP.Model
         public String razon_social { get; set; }
         public String codigo { get; set; }
         public String es_cliente_fiel { get; set; }
-        public int id_estado_civil { get; set; }
+        public int? id_estado_civil { get; set; }
         public String tipo_vivienda { get; set; }
-        public int id_nacionalidad { get; set; }
+        public int? id_nacionalidad { get; set; }
         public String direccion_envio { get; set; }
-        public int id_barrio { get; set; }
-        public int id_tipo_cliente { get; set; }
+        public int? id_barrio { get; set; }
+        public int? id_tipo_cliente { get; set; }
 
     }
 }

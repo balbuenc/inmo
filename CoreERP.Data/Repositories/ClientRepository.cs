@@ -27,7 +27,7 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @"DELETE from clientes
-                        WHERE idcliente = @Id ";
+                        WHERE id_cliente = @Id ";
 
             var result = await db.ExecuteAsync(sql, new { Id = id });
 
@@ -57,8 +57,9 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @" INSERT INTO public.clientes
-                        (nombres, apellidos, sexo, fecha_nacimiento, ci, ruc, direccion, telefono, email, observaciones, fecha_alta, razon_social, codigo, es_cliente_fiel,  id_ciudad)
-                        VALUES(@nombres,@apellidos,@sexo,@fecha_nacimiento,@ci,@ruc,@direccion,@telefono,@email,@observaciones,@fecha_alta,@razon_social,@codigo,@es_cliente_fiel,@id_ciudad);";
+                        (nombres, apellidos, sexo, fecha_nacimiento, ci, ruc, direccion, telefono, email, observaciones, fecha_alta, razon_social, codigo, es_cliente_fiel, id_estado_civil, tipo_vivienda, id_nacionalidad, direccion_envio, id_barrio, id_tipo_cliente)
+
+                        VALUES(@nombres,@apellidos,@sexo,@fecha_nacimiento,@ci,@ruc,@direccion,@telefono,@email,@observaciones,@fecha_alta,@razon_social,@codigo,@es_cliente_fiel,@id_estado_civil,@tipo_vivienda,@id_nacionalidad,@direccion_envio,@id_barrio,@id_tipo_cliente);";
 
             var result = await db.ExecuteAsync(sql, new {   client.nombres,
                                                             client.apellidos,
@@ -74,8 +75,12 @@ namespace CoreERP.Data.Repositories
                                                             client.razon_social,
                                                             client.codigo,
                                                             client.es_cliente_fiel,
-                                                            
-                                                            client.id_barrio
+                                                            client.id_estado_civil,
+                                                            client.tipo_vivienda,
+                                                            client.id_nacionalidad,
+                                                            client.direccion_envio,
+                                                            client.id_barrio,
+                                                            client.id_tipo_cliente
 
                                                         });
 
@@ -87,9 +92,30 @@ namespace CoreERP.Data.Repositories
 
             var db = dbConnection();
 
-            var sql = @" UPDATE public.clientes
-                        set nombres =@nombres, apellidos = @apellidos, sexo =@sexo, fecha_nacimiento =@fecha_nacimiento, ci=@ci, ruc =@ruc, direccion= @direccion, telefono =@telefono, email =@email, observaciones =@observaciones, fecha_alta =@fecha_alta, razon_social =@razon_social, codigo =@codigo, es_cliente_fiel =@es_cliente_fiel,  id_ciudad =@id_ciudad
-                        where id_cliente=@id_cliente;";
+            var sql = @"UPDATE public.clientes
+                                SET nombres= @nombres, 
+                                    apellidos= @apellidos, 
+                                    sexo= @sexo, 
+                                    fecha_nacimiento= @fecha_nacimiento, 
+                                    ci= @ci, 
+                                    ruc= @ruc, 
+                                    direccion= @direccion, 
+                                    telefono= @telefono, 
+                                    email= @email, 
+                                    observaciones= @observaciones, 
+                                    fecha_alta= @fecha_alta, 
+                                    razon_social= @razon_social, 
+                                    codigo= @codigo, 
+                                    es_cliente_fiel= @es_cliente_fiel, 
+                                    id_estado_civil= @id_estado_civil, 
+                                    tipo_vivienda= @tipo_vivienda, 
+                                    id_nacionalidad= @id_nacionalidad, 
+                                    direccion_envio= @direccion_envio, 
+                                    id_barrio= @id_barrio, 
+                                    id_tipo_cliente= @id_tipo_cliente
+                        where id_cliente = @id_cliente;";
+
+           
 
             var result = await db.ExecuteAsync(sql, new
             {
@@ -107,11 +133,12 @@ namespace CoreERP.Data.Repositories
                 client.razon_social,
                 client.codigo,
                 client.es_cliente_fiel,
-                
+                client.id_estado_civil,
+                client.tipo_vivienda,
+                client.id_nacionalidad,
+                client.direccion_envio,
                 client.id_barrio,
-                
                 client.id_cliente
-
             });
 
             return result > 0;
