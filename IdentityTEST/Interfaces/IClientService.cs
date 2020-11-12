@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreERP.UI.Interfaces
 {
-    interface IClientService
+    public interface IClientService
     {
         Task<IEnumerable<Client>> GetAllClients();
 

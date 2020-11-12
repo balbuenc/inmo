@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreERP.UI.Interfaces
 {
-    interface IPositionService
+    public interface IPositionService
     {
         Task<IEnumerable<Position>> GetAllPositions();
 

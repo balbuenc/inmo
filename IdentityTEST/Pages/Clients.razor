@@ -3,6 +3,7 @@
 @using Interfaces
 @inject IClientService ClientService
 @inject INeighborhoodService NeighborhoodService
+@inject INationalityService NationalityService 
 @attribute [Authorize]
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
@@ -10,6 +11,7 @@
 @using System.Collections.ObjectModel
 @inject NavigationManager NavigationManager
 @using Syncfusion.Blazor.DropDowns
+
 
 
 
@@ -43,7 +45,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Client"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -65,7 +67,13 @@
                                     </SfDropDownList>
                                 </EditTemplate>
                             </GridColumn>
-
+                            <GridColumn Field="Nationality.nacionalidad" HeaderText="Nacionalidad" EditType="EditType.DropDownEdit" Width="30">
+                                <EditTemplate>
+                                    <SfDropDownList TValue="Int32" TItem="Nationality" @bind-Value="@((context as Client).Nationality.id_nacionalidad)" Placeholder="Selecccion un barrio" DataSource="@nationalitys">
+                                        <DropDownListFieldSettings Text="nacionalidad" Value="id_nacionalidad"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </EditTemplate>
+                            </GridColumn>
                         </GridColumns>
                     </SfGrid>
                 }
@@ -86,9 +94,11 @@
 
     public ObservableCollection<Client> GridData { get; set; }
     public IEnumerable<Neighborhood> neighborhoods { get; set; }
+    public IEnumerable<Nationality> nationalitys { get; set; }
 
-    public bool Enabled = false;
+ 
 
+    SfGrid<Client> Grid { get; set; }
 
     protected  override async Task OnInitializedAsync()
     {
@@ -96,6 +106,7 @@
         {
             GridData = new ObservableCollection<Client>(await ClientService.GetAllClients());
             neighborhoods = await NeighborhoodService.GetAllNeighborhoods();
+            nationalitys = await NationalityService.GetAllNationalitys();
         }
         catch (Exception ex)
         {
@@ -122,11 +133,13 @@
     protected async Task SaveClient(Client client)
     {
         await ClientService.SaveCient(client);
+        Grid.Refresh();
     }
 
     protected async Task DeleteClient(int id)
     {
         await ClientService.DeleteClient(id);
+        Grid.Refresh();
     }
 }
 

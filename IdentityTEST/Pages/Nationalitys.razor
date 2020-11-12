@@ -1,7 +1,8 @@
-﻿@page "/Position"
+﻿@page "/Nationality"
+@using Syncfusion.Blazor.Grids
 @using Model
 @using Interfaces
-@inject IPositionService PositionService
+@inject INationalityService NationalityService
 @attribute [Authorize]
 @using System.Collections.ObjectModel
 
@@ -12,9 +13,13 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-10">
-                    <div class="alert alert-dark" style="width:100%" role="banner"><h3>Cargos</h3></div>
+                    <div class="alert alert-dark" style="width:100%" role="banner"><h3>Nacionalidades</h3></div>
                 </div>
-
+                <div class="col-2">
+                    <div class="btn btn-outline-danger">
+                        <a href="/DetalleNationality"><i>Agregar</i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -32,17 +37,17 @@
                 {
                     <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
 
-                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Position"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Nationality"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
 
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
                         <GridColumns>
-                            <GridColumn Field=@nameof(Position.id_cargo) HeaderText="ID" TextAlign="TextAlign.Center" Width="20" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Position.id_area) HeaderText="Area" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Position.cargo) HeaderText="Cargo" Width="50"></GridColumn>
+                            <GridColumn Field=@nameof(Nationality.id_nacionalidad) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Nationality.nacionalidad) HeaderText="Nacionalidad" Width="150"></GridColumn>
 
                         </GridColumns>
                     </SfGrid>
+
                 }
             </div>
         </div>
@@ -58,45 +63,45 @@
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
 
-    public ObservableCollection<Position> GridData { get; set; }
+    public ObservableCollection<Nationality> GridData { get; set; }
 
-    SfGrid<Position> Grid { get; set; }
+    SfGrid<Nationality> Grid { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
         try
         {
-            GridData = new ObservableCollection<Position>(await PositionService.GetAllPositions());
+            GridData = new ObservableCollection<Nationality>(await NationalityService.GetAllNationalitys());
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener cargos: " + ex.Message;
+            Messsage = "Error al obtener nacionalidades: " + ex.Message;
         }
     }
 
-    private async Task OnBeginHandler(ActionEventArgs<Position> Args)
+    private async Task OnBeginHandler(ActionEventArgs<Nationality> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
-            await SavePosition((Position)Args.Data);
+            await SaveNationality((Nationality)Args.Data);
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await DeletePosition(((Position)Args.Data).id_area);
+            await DeleteNationality(((Nationality)Args.Data).id_nacionalidad);
         }
 
         return;
     }
 
-    protected async Task SavePosition(Position nationality)
+    protected async Task SaveNationality(Nationality nationality)
     {
-        await PositionService.SavePosition(nationality);
+        await NationalityService.SaveNationality(nationality);
         Grid.Refresh();
     }
 
-    protected async Task DeletePosition(int id)
+    protected async Task DeleteNationality(int id)
     {
-        await PositionService.DeletePosition(id);
+        await NationalityService.DeleteNationality(id);
         Grid.Refresh();
     }
 }

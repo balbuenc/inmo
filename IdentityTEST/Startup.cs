@@ -74,6 +74,9 @@ namespace CoreERP.UI
             services.AddHttpClient<IPositionService, PositionService>(
                  position => { position.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<INationalityService, NationalityService>(
+                nationality => { nationality.BaseAddress = new Uri("https://localhost:44342"); });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

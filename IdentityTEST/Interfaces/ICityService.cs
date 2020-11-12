@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreERP.UI.Interfaces
 {
-    interface ICityService
+    public interface ICityService
     {
         Task<IEnumerable<City>> GetAllCities();
 

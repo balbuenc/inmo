@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoreERP.UI.Interfaces
 {
-    interface IAreaService
+    public interface IAreaService
     {
         Task<IEnumerable<Area>> GetAllAreas();
 
