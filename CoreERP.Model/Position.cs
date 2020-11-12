@@ -12,5 +12,8 @@ namespace CoreERP.Model
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Cargo debe tener un valor.")]
         public String cargo { get; set; }
+
+        public virtual Area Area { get; set; }
+
     }
 }

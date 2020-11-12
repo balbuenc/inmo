@@ -11,5 +11,7 @@ namespace CoreERP.Model
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Area debe tener un valor.")]
         public String area { get; set; }
+
+        
     }
 }

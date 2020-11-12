@@ -33,5 +33,10 @@ namespace CoreERP.Model
         public int? id_barrio { get; set; }
         public int? id_tipo_cliente { get; set; }
 
+        public virtual Neighborhood Neighborhood { get; set; }
+        public virtual CivilStatus CivilStatus { get; set; }
+        public  virtual Nationality Nationality { get; set; }
+        public virtual ClientType ClientType { get; set; }
+
     }
 }

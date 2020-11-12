@@ -2,12 +2,14 @@
 @using Model
 @using Interfaces
 @inject IClientService ClientService
+@inject INeighborhoodService NeighborhoodService
 @attribute [Authorize]
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using System.Collections.ObjectModel
 @inject NavigationManager NavigationManager
+@using Syncfusion.Blazor.DropDowns
 
 
 
@@ -56,6 +58,13 @@
                             <GridColumn Field=@nameof(Client.razon_social) HeaderText="Razón social" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Client.ci) HeaderText="Nro. doc." Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Client.email) HeaderText="Email" Width="10"></GridColumn>
+                            <GridColumn Field="Neighborhood.barrio" HeaderText="Barrio" EditType="EditType.DropDownEdit" Width="30">
+                                <EditTemplate>
+                                    <SfDropDownList TValue="Int32" TItem="Neighborhood" @bind-Value="@((context as Client).Neighborhood.id_barrio)" Placeholder="Selecccion un barrio" DataSource="@neighborhoods">
+                                        <DropDownListFieldSettings Text="barrio" Value="id_barrio"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </EditTemplate>
+                            </GridColumn>
 
                         </GridColumns>
                     </SfGrid>
@@ -76,46 +85,49 @@
     public string ErrorDetails = "";
 
     public ObservableCollection<Client> GridData { get; set; }
+    public IEnumerable<Neighborhood> neighborhoods { get; set; }
+
+    public bool Enabled = false;
 
 
-
-    protected async override Task OnInitializedAsync()
+    protected  override async Task OnInitializedAsync()
     {
         try
         {
             GridData = new ObservableCollection<Client>(await ClientService.GetAllClients());
+            neighborhoods = await NeighborhoodService.GetAllNeighborhoods();
         }
         catch (Exception ex)
         {
             Messsage = "Error al obtener clientes: " + ex.Message;
         }
     }
-    private void OnBeginHandler(ActionEventArgs<Client> Args)
+
+
+
+    private async Task OnBeginHandler(ActionEventArgs<Client> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
-            if (Args.Action == "Add")
-            {
-                SaveClient((Client)Args.Data);
-            }
+            await SaveClient((Client)Args.Data);
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            DeleteClient(((Client)Args.Data).id_cliente);
+            await DeleteClient(((Client)Args.Data).id_cliente);
         }
+
+        return;
     }
 
     protected async Task SaveClient(Client client)
     {
         await ClientService.SaveCient(client);
-
     }
 
     protected async Task DeleteClient(int id)
     {
         await ClientService.DeleteClient(id);
-
     }
-
-
 }
+
+

@@ -37,9 +37,15 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Position>> GetAllPositions()
         {
             var db = dbConnection();
-            var sql = "select * from cargos  order by cargo asc";
+            var sql = @"select c.id_cargo , c.cargo , c.id_area, a.area 
+                        from cargos c
+                        inner
+                        join areas a on c.id_area = a.id_area;";
 
-            return await db.QueryAsync<Position>(sql, new { });
+            return await db.QueryAsync<Position, Area, Position>(sql, (position, area) => { position.Area = area;
+                return position; },
+                splitOn: "id_area"
+                );
         }
 
         public async Task<Position> GetPositionDetails(int id)

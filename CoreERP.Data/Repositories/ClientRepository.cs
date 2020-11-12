@@ -37,10 +37,19 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Client>> GetAllClients()
         {
             var db = dbConnection();
-            var sql = "select * from Clientes";
+            var sql = @"select *
+                        from clientes c  
+                        left outer join barrios b on b.id_barrio = c.id_barrio
+                        left outer join estados_civiles ec  on ec.id_estado_civil  = c.id_estado_civil 
+                        left outer join nacionalidades n on n.id_nacionalidad = c.id_nacionalidad 
+                        left outer join tipos_clientes tc  on tc.id_tipo_cliente  = c.id_tipo_cliente 
+                        order by c.id_cliente asc";
 
 
-            return await db.QueryAsync<Client>(sql, new { });
+            return await db.QueryAsync<Client, Neighborhood, CivilStatus, Nationality, ClientType, Client>(sql,
+                (client, neighborhood, civilstatus, nationality, clienttype) =>
+                { client.Neighborhood = neighborhood; client.CivilStatus = civilstatus; client.Nationality = nationality; client.ClientType = clienttype; return client; },
+                splitOn: "id_barrio,id_estado_civil,id_nacionalidad,id_tipo_cliente");
         }
 
         public async Task<Client> GetClientDetails(int id)
@@ -61,28 +70,30 @@ namespace CoreERP.Data.Repositories
 
                         VALUES(@nombres,@apellidos,@sexo,@fecha_nacimiento,@ci,@ruc,@direccion,@telefono,@email,@observaciones,@fecha_alta,@razon_social,@codigo,@es_cliente_fiel,@id_estado_civil,@tipo_vivienda,@id_nacionalidad,@direccion_envio,@id_barrio,@id_tipo_cliente);";
 
-            var result = await db.ExecuteAsync(sql, new {   client.nombres,
-                                                            client.apellidos,
-                                                            client.sexo,
-                                                            client.fecha_nacimiento,
-                                                            client.ci,
-                                                            client.ruc,
-                                                            client.direccion,
-                                                            client.telefono,
-                                                            client.email,
-                                                            client.observaciones,
-                                                            client.fecha_alta,
-                                                            client.razon_social,
-                                                            client.codigo,
-                                                            client.es_cliente_fiel,
-                                                            client.id_estado_civil,
-                                                            client.tipo_vivienda,
-                                                            client.id_nacionalidad,
-                                                            client.direccion_envio,
-                                                            client.id_barrio,
-                                                            client.id_tipo_cliente
+            var result = await db.ExecuteAsync(sql, new
+            {
+                client.nombres,
+                client.apellidos,
+                client.sexo,
+                client.fecha_nacimiento,
+                client.ci,
+                client.ruc,
+                client.direccion,
+                client.telefono,
+                client.email,
+                client.observaciones,
+                client.fecha_alta,
+                client.razon_social,
+                client.codigo,
+                client.es_cliente_fiel,
+                client.id_estado_civil,
+                client.tipo_vivienda,
+                client.id_nacionalidad,
+                client.direccion_envio,
+                client.id_barrio,
+                client.id_tipo_cliente
 
-                                                        });
+            });
 
             return result > 0;
         }
@@ -115,7 +126,23 @@ namespace CoreERP.Data.Repositories
                                     id_tipo_cliente= @id_tipo_cliente
                         where id_cliente = @id_cliente;";
 
-           
+            if (client.Neighborhood != null)
+            {
+                client.id_barrio = client.Neighborhood.id_barrio;
+            }
+
+            if (client.CivilStatus != null)
+            {
+                client.id_estado_civil = client.CivilStatus.id_estado_civil;
+            }
+
+            if (client.Nationality != null)
+            {
+                client.id_nacionalidad = client.Nationality.id_nacionalidad;
+            }
+
+
+
 
             var result = await db.ExecuteAsync(sql, new
             {
