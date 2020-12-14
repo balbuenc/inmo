@@ -54,7 +54,7 @@ namespace CoreERP.UI
                   .AddFontAwesomeIcons();
 
             services.AddRazorPages();
-            services.AddServerSideBlazor().AddCircuitOptions(options => options.DetailedErrors = true );
+            services.AddServerSideBlazor().AddCircuitOptions(options => options.DetailedErrors = true);
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSyncfusionBlazor();
 
@@ -76,6 +76,9 @@ namespace CoreERP.UI
 
             services.AddHttpClient<INationalityService, NationalityService>(
                 nationality => { nationality.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IClientTypeService, ClientTypeService>(
+                clientType => { clientType.BaseAddress = new Uri("https://localhost:44342"); });
 
         }
 

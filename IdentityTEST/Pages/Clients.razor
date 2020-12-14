@@ -4,6 +4,7 @@
 @inject IClientService ClientService
 @inject INeighborhoodService NeighborhoodService
 @inject INationalityService NationalityService 
+@inject IClientTypeService ClientTypeService 
 @attribute [Authorize]
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
@@ -60,20 +61,29 @@
                             <GridColumn Field=@nameof(Client.razon_social) HeaderText="Razón social" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Client.ci) HeaderText="Nro. doc." Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Client.email) HeaderText="Email" Width="10"></GridColumn>
-                            <GridColumn Field="Neighborhood.barrio" HeaderText="Barrio" EditType="EditType.DropDownEdit" Width="30">
+                            <GridColumn Field="@nameof(Client.nacionalidad)" HeaderText="Nacionalidad" EditType="EditType.DropDownEdit" Width="30">
                                 <EditTemplate>
-                                    <SfDropDownList TValue="Int32" TItem="Neighborhood" @bind-Value="@((context as Client).Neighborhood.id_barrio)" Placeholder="Selecccion un barrio" DataSource="@neighborhoods">
-                                        <DropDownListFieldSettings Text="barrio" Value="id_barrio"></DropDownListFieldSettings>
-                                    </SfDropDownList>
-                                </EditTemplate>
-                            </GridColumn>
-                            <GridColumn Field="Nationality.nacionalidad" HeaderText="Nacionalidad" EditType="EditType.DropDownEdit" Width="30">
-                                <EditTemplate>
-                                    <SfDropDownList TValue="Int32" TItem="Nationality" @bind-Value="@((context as Client).Nationality.id_nacionalidad)" Placeholder="Selecccion un barrio" DataSource="@nationalitys">
+                                    <SfDropDownList TValue="Int32" TItem="Nationality" @bind-Value="@((context as Client).id_nacionalidad)" Placeholder="Selecccion Nacionalidad" DataSource="@nationalitys">
                                         <DropDownListFieldSettings Text="nacionalidad" Value="id_nacionalidad"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </EditTemplate>
                             </GridColumn>
+                            <GridColumn Field=@nameof(Client.barrio) HeaderText="Barrio" EditType="EditType.DropDownEdit" Width="30">
+                                <EditTemplate>
+                                    <SfDropDownList TValue="Int32" TItem="Neighborhood" @bind-Value="@((context as Client).id_barrio)" Placeholder="Selecccione Barrio" DataSource="@neighborhoods">
+                                        <DropDownListFieldSettings Text="barrio" Value="id_barrio"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </EditTemplate>
+                            </GridColumn>
+
+                            <GridColumn Field="@nameof(Client.tipo)" HeaderText="Tipo" EditType="EditType.DropDownEdit" Width="30">
+                                <EditTemplate>
+                                    <SfDropDownList TValue="Int32" TItem="ClientType" @bind-Value="@((context as Client).id_tipo_cliente)" Placeholder="Selecccione Tipo" DataSource="@clientTypes">
+                                        <DropDownListFieldSettings Text="tipo" Value="id_tipo_cliente"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </EditTemplate>
+                            </GridColumn>
+
                         </GridColumns>
                     </SfGrid>
                 }
@@ -92,11 +102,12 @@
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
     public string ErrorDetails = "";
 
-    public ObservableCollection<Client> GridData { get; set; }
+    public IEnumerable<Client> GridData { get; set; }
     public IEnumerable<Neighborhood> neighborhoods { get; set; }
     public IEnumerable<Nationality> nationalitys { get; set; }
+    public IEnumerable<ClientType> clientTypes { get; set; }
 
- 
+
 
     SfGrid<Client> Grid { get; set; }
 
@@ -104,9 +115,10 @@
     {
         try
         {
-            GridData = new ObservableCollection<Client>(await ClientService.GetAllClients());
+            GridData = await ClientService.GetAllClients();
             neighborhoods = await NeighborhoodService.GetAllNeighborhoods();
             nationalitys = await NationalityService.GetAllNationalitys();
+            clientTypes = await ClientTypeService.GetAllClientTypes();
         }
         catch (Exception ex)
         {

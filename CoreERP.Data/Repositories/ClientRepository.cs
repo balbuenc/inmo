@@ -37,19 +37,37 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Client>> GetAllClients()
         {
             var db = dbConnection();
-            var sql = @"select *
+            //var sql = @"select *
+            //            from clientes c  
+            //            left outer join barrios b on b.id_barrio = c.id_barrio
+            //            left outer join estados_civiles ec  on ec.id_estado_civil  = c.id_estado_civil 
+            //            left outer join nacionalidades n on n.id_nacionalidad = c.id_nacionalidad 
+            //            left outer join tipos_clientes tc  on tc.id_tipo_cliente  = c.id_tipo_cliente 
+            //            order by c.id_cliente asc";
+
+            var sql = @"SELECT c.id_cliente, c.nombres, c.apellidos, c.sexo, c.fecha_nacimiento, c.ci, c.ruc, c.direccion, c.telefono, c.email, c.observaciones, c.fecha_alta, c.razon_social, c.codigo, c.es_cliente_fiel,  c.tipo_vivienda, c.direccion_envio, b.barrio as V_Barrio,  ec.estado_civil as V_Estado_Civil, n.nacionalidad V_Nacionalidad, tc.tipo as V_Tipo_Cliente
+                        ,b.id_barrio
+                        ,b.barrio
+                        ,ec.id_estado_civil
+                        ,ec.estado_civil
+                        ,n.id_nacionalidad
+                        ,n.nacionalidad
+                        ,tc.id_tipo_cliente
+                        ,tc.tipo
                         from clientes c  
                         left outer join barrios b on b.id_barrio = c.id_barrio
                         left outer join estados_civiles ec  on ec.id_estado_civil  = c.id_estado_civil 
                         left outer join nacionalidades n on n.id_nacionalidad = c.id_nacionalidad 
-                        left outer join tipos_clientes tc  on tc.id_tipo_cliente  = c.id_tipo_cliente 
-                        order by c.id_cliente asc";
+                        left outer join tipos_clientes tc  on tc.id_tipo_cliente  = c.id_tipo_cliente
+                        order by c.nombres asc";
 
 
-            return await db.QueryAsync<Client, Neighborhood, CivilStatus, Nationality, ClientType, Client>(sql,
-                (client, neighborhood, civilstatus, nationality, clienttype) =>
-                { client.Neighborhood = neighborhood; client.CivilStatus = civilstatus; client.Nationality = nationality; client.ClientType = clienttype; return client; },
-                splitOn: "id_barrio,id_estado_civil,id_nacionalidad,id_tipo_cliente");
+            //return await db.QueryAsync<Client, Neighborhood, CivilStatus, Nationality, ClientType, Client>(sql,
+            //    (client, neighborhood, civilstatus, nationality, clienttype) =>
+            //    { client.Neighborhood = neighborhood; client.CivilStatus = civilstatus; client.Nationality = nationality; client.ClientType = clienttype; return client; },
+            //    splitOn: "id_barrio,id_estado_civil,id_nacionalidad,id_tipo_cliente");
+
+            return await db.QueryAsync<Client>(sql, new { });
         }
 
         public async Task<Client> GetClientDetails(int id)
@@ -126,21 +144,25 @@ namespace CoreERP.Data.Repositories
                                     id_tipo_cliente= @id_tipo_cliente
                         where id_cliente = @id_cliente;";
 
-            if (client.Neighborhood != null)
-            {
-                client.id_barrio = client.Neighborhood.id_barrio;
-            }
+            //if (client.id_barrio == 0)
+            //{
+            //    client.id_barrio = new int();
+            //}
 
-            if (client.CivilStatus != null)
-            {
-                client.id_estado_civil = client.CivilStatus.id_estado_civil;
-            }
+            //if (client.id_estado_civil == 0)
+            //{
+            //    client.id_estado_civil = new int();
+            //}
 
-            if (client.Nationality != null)
-            {
-                client.id_nacionalidad = client.Nationality.id_nacionalidad;
-            }
+            //if (client.id_nacionalidad == 0)
+            //{
+            //    client.id_nacionalidad = new int();
+            //}
 
+            //if (client.id_tipo_cliente == 0)
+            //{
+            //    client.id_tipo_cliente = new int();
+            //}
 
 
 
@@ -160,11 +182,12 @@ namespace CoreERP.Data.Repositories
                 client.razon_social,
                 client.codigo,
                 client.es_cliente_fiel,
-                client.id_estado_civil,
+                id_estado_civil = client.id_estado_civil == 0? (int?)null: client.id_estado_civil,
                 client.tipo_vivienda,
-                client.id_nacionalidad,
+                id_nacionalidad = client.id_nacionalidad == 0? (int?)null: client.id_nacionalidad,
                 client.direccion_envio,
-                client.id_barrio,
+                id_barrio = client.id_barrio == 0? (int?)null: client.id_barrio,
+                id_tipo_cliente = client.id_tipo_cliente == 0? (int?)null: client.id_tipo_cliente,
                 client.id_cliente
             });
 
