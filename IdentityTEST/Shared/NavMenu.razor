@@ -16,7 +16,6 @@
     </BarBrand>
     <BarMenu>
         <BarStart>
-
             <BarItem>
                 <BarDropdown>
                     <BarDropdownToggle>
@@ -26,10 +25,20 @@
                     <BarDropdownMenu>
                         <BarDropdownItem To="/Area">Areas</BarDropdownItem>
                         <BarDropdownItem To="/Position">Cargos</BarDropdownItem>
-                        <BarDropdownItem To="/City">Ciudades</BarDropdownItem>
-                        <BarDropdownItem To="/Neighborhood">Barrios</BarDropdownItem>
-                        <BarDropdownItem To="/Nationality">Nacionalidades</BarDropdownItem>
+                        <BarItem>
+                            <BarDropdownToggle>
+                                <BarIcon IconName="IconName.Building"></BarIcon>
+                                Ubicación
+                            </BarDropdownToggle>
+                            <BarDropdownMenu>
+                                <BarDropdownItem To="/Country">Paises</BarDropdownItem>
+                                <BarDropdownItem To="/City">Ciudades</BarDropdownItem>
+                                <BarDropdownItem To="/Neighborhood">Barrios</BarDropdownItem>
+                                <BarDropdownItem To="/Nationality">Nacionalidades</BarDropdownItem>
+                            </BarDropdownMenu>
+                        </BarItem>
                     </BarDropdownMenu>
+
                 </BarDropdown>
             </BarItem>
 
@@ -68,7 +77,7 @@
                     <BarDropdownMenu>
 
                         <BarDropdownItem To="/Cliente/">Cientes</BarDropdownItem>
-                        <BarDropdownItem To="/DetalleCliente">Nuevo cliente</BarDropdownItem>
+
 
                     </BarDropdownMenu>
                 </BarDropdown>
@@ -76,13 +85,13 @@
             <BarItem>
                 <BarDropdown>
                     <BarDropdownToggle>
-                        <BarIcon IconName="@("fa-power-off")" ></BarIcon>
+                        <BarIcon IconName="@("fa-power-off")"></BarIcon>
                     </BarDropdownToggle>
                     <BarDropdownMenu>
                         <BarDropdownItem To="Identity/Account/Login">LogIn</BarDropdownItem>
                         <BarDropdownItem To="Identity/Account/LogOut">LogOut</BarDropdownItem>
                     </BarDropdownMenu>
-                    
+
                 </BarDropdown>
             </BarItem>
         </BarStart>
@@ -99,7 +108,7 @@
         StateHasChanged();
     }
 
-    
+
 
 }
 

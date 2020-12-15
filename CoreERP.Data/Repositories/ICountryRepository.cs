@@ -8,14 +8,14 @@ namespace CoreERP.Data.Repositories
 {
     public interface ICountryRepository
     {
-        Task<IEnumerable<Currency>> GetAllCurrencies();
+        Task<IEnumerable<Country>> GetAllCountries();
 
-        Task<Currency> GetCurrencyDetails(int id);
+        Task<Country> GetCountryDetails(int id);
 
-        Task<bool> InsertCurrency(Currency currency);
+        Task<bool> InsertCountry(Country country);
 
-        Task<bool> UpdateCurrency(Currency currency);
+        Task<bool> UpdateCountry(Country country);
 
-        Task<bool> DeleteCurrency(int id);
+        Task<bool> DeleteCountry(int id);
     }
 }

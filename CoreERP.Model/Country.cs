@@ -11,7 +11,9 @@ namespace CoreERP.Model
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Pais debe tener un valor.")]
        
-        public String pais { get; set; }
+        public string pais { get; set; }
         public int id_moneda { get; set; }
+
+        public string moneda { get; set; }
     }
 }

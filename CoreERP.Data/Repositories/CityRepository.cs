@@ -37,7 +37,11 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<City>> GetAllCities()
         {
             var db = dbConnection();
-            var sql = "select * from ciudades order by ciudad asc";
+            var sql = @"select c.id_ciudad, c.ciudad, c.id_pais, p.pais 
+                        from ciudades c
+                        inner
+                        join paises p on c.id_pais = p.id_pais
+                        order by p.pais, c.ciudad asc;";
 
             return await db.QueryAsync<City>(sql, new { });
         }

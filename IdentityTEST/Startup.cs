@@ -80,6 +80,12 @@ namespace CoreERP.UI
             services.AddHttpClient<IClientTypeService, ClientTypeService>(
                 clientType => { clientType.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<ICountryService, CountryService>(
+                country => { country.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<ICurrencyService, CurrencyService>(
+                currency => { currency.BaseAddress = new Uri("https://localhost:44342"); });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

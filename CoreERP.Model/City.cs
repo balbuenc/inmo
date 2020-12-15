@@ -11,8 +11,10 @@ namespace CoreERP.Model
         public int id_pais { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Ciudad debe tener un valor.")]
-        public String ciudad { get; set; }
+        public string ciudad { get; set; }
 
-        
+        public string pais { get; set; }
+
+
     }
 }
