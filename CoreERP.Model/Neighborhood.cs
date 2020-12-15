@@ -10,7 +10,9 @@ namespace CoreERP.Model
         public int id_barrio { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Barrio debe tener un valor.")]
-        public String barrio { get; set; }
+        public string barrio { get; set; }
         public int id_ciudad { get; set; }
+
+        public string ciudad { get; set; }
     }
 }

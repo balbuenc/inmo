@@ -38,7 +38,9 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Neighborhood>> GetAllNeighborhoods()
         {
             var db = dbConnection();
-            var sql = "select * from barrios order by id_barrio asc";
+            var sql = @"SELECT b.id_barrio, b.barrio, b.id_ciudad, c.ciudad 
+                        FROM public.barrios b
+                        inner join public.ciudades c on c.id_ciudad = b.id_ciudad;";
 
             return await db.QueryAsync<Neighborhood>(sql, new { });
         }
