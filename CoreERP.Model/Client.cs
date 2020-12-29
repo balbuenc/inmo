@@ -38,6 +38,8 @@ namespace CoreERP.Model
         public string nacionalidad { get; set; }
         public string tipo { get; set; }
 
+        public int id_funcionario { get; set; }
+
         //public virtual Neighborhood Neighborhood { get; set; }
         //public virtual CivilStatus CivilStatus { get; set; }
         //public  virtual Nationality Nationality { get; set; }

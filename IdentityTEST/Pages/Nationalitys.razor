@@ -15,11 +15,7 @@
                 <div class="col-10">
                     <div class="alert alert-dark" style="width:100%" role="banner"><h3>Nacionalidades</h3></div>
                 </div>
-                <div class="col-2">
-                    <div class="btn btn-outline-danger">
-                        <a href="/DetalleNationality"><i>Agregar</i></a>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -43,7 +39,7 @@
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
                         <GridColumns>
                             <GridColumn Field=@nameof(Nationality.id_nacionalidad) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Nationality.nacionalidad) HeaderText="Nacionalidad" Width="150"></GridColumn>
+                            <GridColumn Field=@nameof(Nationality.nacionalidad) HeaderText="Nacionalidad" Width="50"></GridColumn>
 
                         </GridColumns>
                     </SfGrid>
@@ -63,7 +59,7 @@
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
 
-    public ObservableCollection<Nationality> GridData { get; set; }
+    public IEnumerable<Nationality> GridData { get; set; }
 
     SfGrid<Nationality> Grid { get; set; }
 
@@ -71,7 +67,7 @@
     {
         try
         {
-            GridData = new ObservableCollection<Nationality>(await NationalityService.GetAllNationalitys());
+            GridData = await NationalityService.GetAllNationalitys();
         }
         catch (Exception ex)
         {

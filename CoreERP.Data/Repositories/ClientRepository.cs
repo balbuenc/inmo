@@ -37,15 +37,8 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Client>> GetAllClients()
         {
             var db = dbConnection();
-            //var sql = @"select *
-            //            from clientes c  
-            //            left outer join barrios b on b.id_barrio = c.id_barrio
-            //            left outer join estados_civiles ec  on ec.id_estado_civil  = c.id_estado_civil 
-            //            left outer join nacionalidades n on n.id_nacionalidad = c.id_nacionalidad 
-            //            left outer join tipos_clientes tc  on tc.id_tipo_cliente  = c.id_tipo_cliente 
-            //            order by c.id_cliente asc";
 
-            var sql = @"SELECT c.id_cliente, c.nombres, c.apellidos, c.sexo, c.fecha_nacimiento, c.ci, c.ruc, c.direccion, c.telefono, c.email, c.observaciones, c.fecha_alta, c.razon_social, c.codigo, c.es_cliente_fiel,  c.tipo_vivienda, c.direccion_envio, b.barrio as V_Barrio,  ec.estado_civil as V_Estado_Civil, n.nacionalidad V_Nacionalidad, tc.tipo as V_Tipo_Cliente
+            var sql = @"SELECT c.id_cliente, c.nombres, c.apellidos, c.sexo, c.fecha_nacimiento, c.ci, c.ruc, c.direccion, c.telefono, c.email, c.observaciones, c.fecha_alta, c.razon_social, c.codigo, c.es_cliente_fiel,  c.tipo_vivienda, c.direccion_envio, c.id_funcionario
                         ,b.id_barrio
                         ,b.barrio
                         ,ec.id_estado_civil
@@ -60,12 +53,6 @@ namespace CoreERP.Data.Repositories
                         left outer join nacionalidades n on n.id_nacionalidad = c.id_nacionalidad 
                         left outer join tipos_clientes tc  on tc.id_tipo_cliente  = c.id_tipo_cliente
                         order by c.nombres asc";
-
-
-            //return await db.QueryAsync<Client, Neighborhood, CivilStatus, Nationality, ClientType, Client>(sql,
-            //    (client, neighborhood, civilstatus, nationality, clienttype) =>
-            //    { client.Neighborhood = neighborhood; client.CivilStatus = civilstatus; client.Nationality = nationality; client.ClientType = clienttype; return client; },
-            //    splitOn: "id_barrio,id_estado_civil,id_nacionalidad,id_tipo_cliente");
 
             return await db.QueryAsync<Client>(sql, new { });
         }
