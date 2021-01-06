@@ -23,9 +23,16 @@ namespace CoreERP.Data.Repositories
             return new NpgsqlConnection(_connectionString.ConnectionString);
         }
 
-        public Task<bool> DeleteClientType(int id)
+        public async Task<bool> DeleteClientType(int id)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+
+            var sql = @"DELETE from tipos_clientes
+                        WHERE id_tipo_cliente = @Id ";
+
+            var result = await db.ExecuteAsync(sql, new { Id = id });
+
+            return result > 0;
         }
 
         public async Task<IEnumerable<ClientType>> GetAllClientTypes()
@@ -36,19 +43,49 @@ namespace CoreERP.Data.Repositories
             return await db.QueryAsync<ClientType>(sql, new { });
         }
 
-        public Task<ClientType> GetClientTypeDetails(int id)
+        public async Task<ClientType> GetClientTypeDetails(int id)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+            var sql = "select * from tipos_clientes where id_tipo_cliente = @Id";
+
+
+            return await db.QueryFirstOrDefaultAsync<ClientType>(sql, new { Id = id });
         }
 
-        public Task<bool> InsertClientType(ClientType clientType)
+        public async Task<bool> InsertClientType(ClientType clientType)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+
+            var sql = @"    INSERT INTO public.tipos_clientes
+                            (tipo)
+                            VALUES(@tipo);";
+
+            var result = await db.ExecuteAsync(sql, new
+            {
+                clientType.tipo
+            });
+
+            return result > 0;
+
+
+
         }
 
-        public Task<bool> UpdateClientType(ClientType clientType)
+        public async Task<bool> UpdateClientType(ClientType clientType)
         {
-            throw new NotImplementedException();
+            var db = dbConnection();
+
+            var sql = @"UPDATE public.tipos_clientes
+                        SET tipo=@tipo
+                        WHERE id_tipo_cliente=@id_tipo_cliente;";
+
+            var result = await db.ExecuteAsync(sql, new
+            {
+                clientType.id_tipo_cliente,
+                clientType.tipo
+            });
+
+            return result > 0;
         }
     }
 }

@@ -3,8 +3,9 @@
 @using Interfaces
 @inject IClientService ClientService
 @inject INeighborhoodService NeighborhoodService
-@inject INationalityService NationalityService 
-@inject IClientTypeService ClientTypeService 
+@inject INationalityService NationalityService
+@inject IClientTypeService ClientTypeService
+@inject ICivilStatusService CivilStatusService  
 @attribute [Authorize]
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
@@ -23,7 +24,7 @@
                 <div class="col-10">
                     <div class="alert alert-heading" style="width:100%" role="banner"><h3>Clientes</h3></div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -79,6 +80,13 @@
                                     </SfDropDownList>
                                 </EditTemplate>
                             </GridColumn>
+                            <GridColumn Field=@nameof(Client.id_estado_civil) HeaderText="Est. civil" EditType="EditType.DropDownEdit" Width="20" EditorSettings="@CivilStatusEditParams">
+                                <EditTemplate>
+                                    <SfDropDownList TValue="Int32" TItem="CivilStatus" @bind-Value="@((context as Client).id_estado_civil)" Placeholder="Selecccione Estado civil" DataSource="@civilStatus">
+                                        <DropDownListFieldSettings Text="estado" Value="id_estado_civil"></DropDownListFieldSettings>
+                                    </SfDropDownList>
+                                </EditTemplate>
+                            </GridColumn>
 
                         </GridColumns>
                     </SfGrid>
@@ -102,12 +110,19 @@
     public IEnumerable<Neighborhood> neighborhoods { get; set; }
     public IEnumerable<Nationality> nationalitys { get; set; }
     public IEnumerable<ClientType> clientTypes { get; set; }
+    public IEnumerable<CivilStatus> civilStatus { get; set; }
 
 
 
     SfGrid<Client> Grid { get; set; }
 
-    protected  override async Task OnInitializedAsync()
+    public IEditorSettings CivilStatusEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { AllowFiltering = true, ShowClearButton = true }
+    };
+
+
+    protected override async Task OnInitializedAsync()
     {
         try
         {
@@ -115,6 +130,7 @@
             neighborhoods = await NeighborhoodService.GetAllNeighborhoods();
             nationalitys = await NationalityService.GetAllNationalitys();
             clientTypes = await ClientTypeService.GetAllClientTypes();
+            civilStatus = await CivilStatusService.GetAllCivilStatus();
         }
         catch (Exception ex)
         {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -16,9 +17,9 @@ namespace CoreERP.UI.Services
         {
             _httpClient = httpClient;
         }
-        public Task DeleteClientType(int id)
+        public async Task DeleteClientType(int id)
         {
-            throw new NotImplementedException();
+            await _httpClient.DeleteAsync($"api/ClientType/{id}");
         }
 
         public async Task<IEnumerable<ClientType>> GetAllClientTypes()
@@ -29,14 +30,23 @@ namespace CoreERP.UI.Services
                 );
         }
 
-        public Task<ClientType> GetClientTypeDetails(int id)
+        public async Task<ClientType> GetClientTypeDetails(int id)
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<ClientType>(
+              await _httpClient.GetStreamAsync($"api/ClientType/{id}"),
+              new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
+              );
         }
 
-        public Task SaveClientType(ClientType ClientType)
+        public async Task SaveClientType(ClientType ClientType)
         {
-            throw new NotImplementedException();
+            var clientJson = new StringContent(JsonSerializer.Serialize(ClientType),
+             Encoding.UTF8, "application/json");
+
+            if (ClientType.id_tipo_cliente == 0)
+                await _httpClient.PostAsync("api/ClientType", clientJson);
+            else
+                await _httpClient.PutAsync("api/ClientType", clientJson);
         }
     }
 }

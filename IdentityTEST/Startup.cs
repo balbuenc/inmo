@@ -86,6 +86,9 @@ namespace CoreERP.UI
             services.AddHttpClient<ICurrencyService, CurrencyService>(
                 currency => { currency.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<ICivilStatusService, CivilStatusService>(
+               civilStatus => { civilStatus.BaseAddress = new Uri("https://localhost:44342"); });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

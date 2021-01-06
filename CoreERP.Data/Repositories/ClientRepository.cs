@@ -68,39 +68,52 @@ namespace CoreERP.Data.Repositories
 
         public async Task<bool> InsertClient(Client client)
         {
+
             var db = dbConnection();
+            bool output = false;
 
             var sql = @" INSERT INTO public.clientes
                         (nombres, apellidos, sexo, fecha_nacimiento, ci, ruc, direccion, telefono, email, observaciones, fecha_alta, razon_social, codigo, es_cliente_fiel, id_estado_civil, tipo_vivienda, id_nacionalidad, direccion_envio, id_barrio, id_tipo_cliente)
 
                         VALUES(@nombres,@apellidos,@sexo,@fecha_nacimiento,@ci,@ruc,@direccion,@telefono,@email,@observaciones,@fecha_alta,@razon_social,@codigo,@es_cliente_fiel,@id_estado_civil,@tipo_vivienda,@id_nacionalidad,@direccion_envio,@id_barrio,@id_tipo_cliente);";
-
-            var result = await db.ExecuteAsync(sql, new
+            try
             {
-                client.nombres,
-                client.apellidos,
-                client.sexo,
-                client.fecha_nacimiento,
-                client.ci,
-                client.ruc,
-                client.direccion,
-                client.telefono,
-                client.email,
-                client.observaciones,
-                client.fecha_alta,
-                client.razon_social,
-                client.codigo,
-                client.es_cliente_fiel,
-                client.id_estado_civil,
-                client.tipo_vivienda,
-                client.id_nacionalidad,
-                client.direccion_envio,
-                client.id_barrio,
-                client.id_tipo_cliente
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    client.nombres,
+                    client.apellidos,
+                    client.sexo,
+                    client.fecha_nacimiento,
+                    client.ci,
+                    client.ruc,
+                    client.direccion,
+                    client.telefono,
+                    client.email,
+                    client.observaciones,
+                    client.fecha_alta,
+                    client.razon_social,
+                    client.codigo,
+                    client.es_cliente_fiel,
+                    client.id_estado_civil,
+                    client.tipo_vivienda,
+                    client.id_nacionalidad,
+                    client.direccion_envio,
+                    client.id_barrio,
+                    client.id_tipo_cliente
 
-            });
+                });
 
-            return result > 0;
+                if (result > 0)
+                    output = true;
+                else
+                    output = false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return output;
         }
 
         public async Task<bool> UpdateClient(Client client)
@@ -169,12 +182,12 @@ namespace CoreERP.Data.Repositories
                 client.razon_social,
                 client.codigo,
                 client.es_cliente_fiel,
-                id_estado_civil = client.id_estado_civil == 0? (int?)null: client.id_estado_civil,
+                id_estado_civil = client.id_estado_civil == 0 ? (int?)null : client.id_estado_civil,
                 client.tipo_vivienda,
-                id_nacionalidad = client.id_nacionalidad == 0? (int?)null: client.id_nacionalidad,
+                id_nacionalidad = client.id_nacionalidad == 0 ? (int?)null : client.id_nacionalidad,
                 client.direccion_envio,
-                id_barrio = client.id_barrio == 0? (int?)null: client.id_barrio,
-                id_tipo_cliente = client.id_tipo_cliente == 0? (int?)null: client.id_tipo_cliente,
+                id_barrio = client.id_barrio == 0 ? (int?)null : client.id_barrio,
+                id_tipo_cliente = client.id_tipo_cliente == 0 ? (int?)null : client.id_tipo_cliente,
                 client.id_cliente
             });
 
