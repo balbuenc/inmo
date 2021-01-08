@@ -80,10 +80,10 @@
                                     </SfDropDownList>
                                 </EditTemplate>
                             </GridColumn>
-                            <GridColumn Field=@nameof(Client.id_estado_civil) HeaderText="Est. civil" EditType="EditType.DropDownEdit" Width="20" EditorSettings="@CivilStatusEditParams">
+                            <GridColumn Field=@nameof(Client.estado_civil) HeaderText="Est. civil" EditType="EditType.DropDownEdit" Width="20" >
                                 <EditTemplate>
                                     <SfDropDownList TValue="Int32" TItem="CivilStatus" @bind-Value="@((context as Client).id_estado_civil)" Placeholder="Selecccione Estado civil" DataSource="@civilStatus">
-                                        <DropDownListFieldSettings Text="estado" Value="id_estado_civil"></DropDownListFieldSettings>
+                                        <DropDownListFieldSettings Text="estado_civil" Value="id_estado_civil"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </EditTemplate>
                             </GridColumn>
@@ -157,13 +157,20 @@
     protected async Task SaveClient(Client client)
     {
         await ClientService.SaveCient(client);
-        Grid.Refresh();
+        //Grid.Refresh();
+        ReloadPage();
     }
 
     protected async Task DeleteClient(int id)
     {
         await ClientService.DeleteClient(id);
-        Grid.Refresh();
+        //Grid.Refresh();
+        ReloadPage();
+    }
+
+    protected void ReloadPage()
+    {
+        NavigationManager.NavigateTo("/Cliente", true);
     }
 }
 

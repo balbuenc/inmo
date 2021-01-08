@@ -13,7 +13,7 @@ namespace CoreERP.Model
         public String nombres { get; set; }
         public String apellidos { get; set; }
         public String sexo { get; set; }
-        public DateTime fecha_nacimiento { get; set; }
+        public  DateTime fecha_nacimiento { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo CI debe tener un valor.")]
         public String ci { get; set; }

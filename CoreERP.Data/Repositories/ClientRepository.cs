@@ -36,9 +36,11 @@ namespace CoreERP.Data.Repositories
 
         public async Task<IEnumerable<Client>> GetAllClients()
         {
-            var db = dbConnection();
+            try
+            {
+                var db = dbConnection();
 
-            var sql = @"SELECT c.id_cliente, c.nombres, c.apellidos, c.sexo, c.fecha_nacimiento, c.ci, c.ruc, c.direccion, c.telefono, c.email, c.observaciones, c.fecha_alta, c.razon_social, c.codigo, c.es_cliente_fiel,  c.tipo_vivienda, c.direccion_envio, c.id_funcionario
+                var sql = @"SELECT c.id_cliente, c.nombres, c.apellidos, c.sexo, c.fecha_nacimiento, c.ci, c.ruc, c.direccion, c.telefono, c.email, c.observaciones, c.fecha_alta, c.razon_social, c.codigo, c.es_cliente_fiel,  c.tipo_vivienda, c.direccion_envio, c.id_funcionario
                         ,b.id_barrio
                         ,b.barrio
                         ,ec.id_estado_civil
@@ -54,7 +56,12 @@ namespace CoreERP.Data.Repositories
                         left outer join tipos_clientes tc  on tc.id_tipo_cliente  = c.id_tipo_cliente
                         order by c.nombres asc";
 
-            return await db.QueryAsync<Client>(sql, new { });
+                return await db.QueryAsync<Client>(sql, new { });
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public async Task<Client> GetClientDetails(int id)
