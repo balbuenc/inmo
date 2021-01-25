@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CoreERP.UI.Services
@@ -17,24 +19,36 @@ namespace CoreERP.UI.Services
             _httpClient = httpClient;
         }
 
-        public Task DeleteVendor(int id)
+        public async Task DeleteVendor(int id)
         {
-            throw new NotImplementedException();
+            await _httpClient.DeleteAsync($"api/vendor/{id}");
         }
 
-        public Task<IEnumerable<Vendor>> GetAllVendors()
+        public async Task<IEnumerable<Vendor>> GetAllVendors()
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Vendor>>(
+                await _httpClient.GetStreamAsync($"api/vendor"),
+                new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
+                );
         }
 
-        public Task<Vendor> GetVendorDetails(int id)
+        public async Task<Vendor> GetVendorDetails(int id)
         {
-            throw new NotImplementedException();
+            return await JsonSerializer.DeserializeAsync<Vendor>(
+              await _httpClient.GetStreamAsync($"api/vendor/{id}"),
+              new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
+              );
         }
 
-        public Task SaveVendor(Vendor vendor)
+        public async Task SaveVendor(Vendor vendor)
         {
-            throw new NotImplementedException();
+            var clientJson = new StringContent(JsonSerializer.Serialize(vendor),
+              Encoding.UTF8, "application/json");
+
+            if (vendor.id_proveedor == 0)
+                await _httpClient.PostAsync("api/vendor", clientJson);
+            else
+                await _httpClient.PutAsync("api/vendor", clientJson);
         }
     }
 }
