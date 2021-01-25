@@ -1,0 +1,226 @@
+﻿@page "/Product"
+@using Model
+@using Interfaces
+@inject IProductService ProductService
+@inject IBrandService BrandService  
+@inject IOriginService OriginService 
+@inject IVendorService VendorService 
+
+@attribute [Authorize]
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using System.Collections.ObjectModel
+@inject NavigationManager NavigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Calendars;
+
+
+
+
+<div class="container-fluid">
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="col-10">
+                    <div class="alert alert-heading" style="width:100%" role="banner"><h3>Productos</h3></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <p>@Messsage</p>
+    <span class="error">@ErrorDetails</span>
+
+
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                @if (GridData == null)
+                {
+                    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
+                }
+                else
+                {
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true">
+
+                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Product"></GridEvents>
+                        <GridPageSettings PageSize="20"></GridPageSettings>
+
+                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
+                            <HeaderTemplate>
+                                @{
+                                    var prod = (context as Product);
+                                }
+                                <span>Detalle de Producte: @(prod.producto)</span>
+                            </HeaderTemplate>
+                            <Template>
+                                @{
+                                    var prod = (context as Product);
+                                }
+                                <div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+
+                                            <SfNumericTextBox @bind-Value="@(prod.id_producto)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                        </div>
+                                        <div class="form-group col-md-6">
+
+                                            <SfTextBox @bind-Value="@(prod.producto)" Enabled="true" Placeholder="Prodúcto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+
+                                            <SfTextBox @bind-Value="@(prod.codigo)" Enabled="true" Placeholder="Código" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                        </div>
+                                        <div class="form-group col-md-6">
+
+                                            <SfTextBox @bind-Value="@(prod.marca)" Enabled="true" Placeholder="Marca" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+                                            <SfNumericTextBox @bind-Value="@(prod.costo)" Enabled="true" Placeholder="Costo" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <SfNumericTextBox @bind-Value="@(prod.precio)" Enabled="true" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <SfTextBox @bind-Value="@(prod.descripcion)" Enabled="true" Placeholder="Descripcion" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+
+                                            <SfDropDownList DataSource="@brands"
+                                                            TItem="Brand"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(prod.id_marca)"
+                                                            Placeholder="Marca"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Value="id_marca" Text="marca"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
+                                        <div class="form-group col-md-3">
+
+                                            <SfDropDownList DataSource="@vendors"
+                                                            TItem="Vendor"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(prod.id_proveedor)"
+                                                            Placeholder="Proveedor"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Text="proveedor" Value="id_proveedor"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
+                                        <div class="form-group col-md-3">
+
+                                            <SfDropDownList DataSource="@origins"
+                                                            TItem="Origin"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(prod.id_origen)"
+                                                            Placeholder="Origen"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Text="origen" Value="id_origen"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
+                                       
+                                    </div>
+                                    
+                                </div>
+                            </Template>
+                        </GridEditSettings>
+                        <GridColumns>
+                            <GridColumn Field=@nameof(Product.id_producto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+
+                            <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="20"></GridColumn>
+
+                            <GridColumn Field=@nameof(Product.marca) HeaderText="Marca" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Product.precio) HeaderText="Precio" Width="10"></GridColumn>
+                            
+
+                        </GridColumns>
+                    </SfGrid>
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+@code {
+    //public IEnumerable<Product> clients { get; set; }
+    public string Messsage { get; set; }
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string ErrorDetails = "";
+
+    public IEnumerable<Product> GridData { get; set; }
+    public IEnumerable<Brand> brands { get; set; }
+    public IEnumerable<Origin> origins { get; set; }
+    public IEnumerable<Vendor> vendors { get; set; }
+
+
+
+
+    SfGrid<Product> Grid { get; set; }
+
+    private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            GridData = await ProductService.GetAllProducts();
+            brands = await BrandService.GetAllBrands();
+            origins = await OriginService.GetAllOrigins();
+            vendors = await VendorService.GetAllVendors();
+         
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener productos: " + ex.Message;
+        }
+    }
+
+
+
+    private async Task OnBeginHandler(ActionEventArgs<Product> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await SaveProduct((Product)Args.Data);
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await DeleteProduct(((Product)Args.Data).id_producto);
+        }
+
+        return;
+    }
+
+    protected async Task SaveProduct(Product product)
+    {
+        await ProductService.SaveProduct(product);
+        Grid.Refresh();
+      
+    }
+
+    protected async Task DeleteProduct(int id)
+    {
+        await ProductService.DeleteProduct(id);
+        Grid.Refresh();
+      
+    }
+
+    
+}
+
+

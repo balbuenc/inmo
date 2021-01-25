@@ -45,7 +45,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Client"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -64,21 +64,21 @@
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
-                                          
+
                                             <SfNumericTextBox @bind-Value="@(cli.id_funcionario)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-6">
-                                          
+
                                             <SfTextBox @bind-Value="@(cli.razon_social)" Enabled="true" Placeholder="Razón social" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                           
+
                                             <SfTextBox @bind-Value="@(cli.nombres)" Enabled="true" Placeholder="Nombres" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                         <div class="form-group col-md-6">
-                                           
+
                                             <SfTextBox @bind-Value="@(cli.apellidos)" Enabled="true" Placeholder="Apellidos" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                                             <SfDropDownList TValue="Int32" TItem="Neighborhood" @bind-Value="@(cli.id_barrio)" Placeholder="Barrio" DataSource="@neighborhoods" FloatLabelType="FloatLabelType.Always">
                                                 <DropDownListFieldSettings Text="barrio" Value="id_barrio"></DropDownListFieldSettings>
                                             </SfDropDownList>
-                                        </div>                                       
+                                        </div>
                                         <div class="form-group col-md-3">
                                             <SfDropDownList TValue="Int32" TItem="CivilStatus" @bind-Value="@(cli.id_estado_civil)" Placeholder="Estado civil" DataSource="@civilStatus" FloatLabelType="FloatLabelType.Always">
                                                 <DropDownListFieldSettings Text="estado_civil" Value="id_estado_civil"></DropDownListFieldSettings>
@@ -151,14 +151,9 @@
 
                             <GridColumn Field=@nameof(Client.razon_social) HeaderText="Razón social" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Client.ci) HeaderText="Nro. doc." Width="10"></GridColumn>
-                            <GridColumn Field=@nameof(Client.email) HeaderText="Email" Width="10"></GridColumn>
-                            <GridColumn Field="@nameof(Client.nacionalidad)" HeaderText="Nacionalidad" EditType="EditType.DropDownEdit" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Client.barrio) HeaderText="Barrio" EditType="EditType.DropDownEdit" Width="30"></GridColumn>
-
-                            <GridColumn Field="@nameof(Client.tipo)" HeaderText="Tipo" EditType="EditType.DropDownEdit" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Client.estado_civil) HeaderText="Est. civil" EditType="EditType.DropDownEdit" Width="20">
-
-                            </GridColumn>
+                            <GridColumn Field=@nameof(Client.ruc) HeaderText="R.U.C." Width="10"></GridColumn>
+                            <GridColumn Field="@nameof(Client.telefono)" HeaderText="Telefono"  Width="20"></GridColumn>
+                            <GridColumn Field="@nameof(Client.vendedor)" HeaderText="Vendedor" Width="20"></GridColumn>
 
                         </GridColumns>
                     </SfGrid>

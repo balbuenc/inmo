@@ -89,6 +89,19 @@ namespace CoreERP.UI
             services.AddHttpClient<ICivilStatusService, CivilStatusService>(
                civilStatus => { civilStatus.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<IBrandService, BrandService>(
+                brand => { brand.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IOriginService, OriginService>(
+             origin => { origin.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IVendorService, VendorService>(
+                vendor => { vendor.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IProductService, ProductService>(
+               product => { product.BaseAddress = new Uri("https://localhost:44342"); });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
