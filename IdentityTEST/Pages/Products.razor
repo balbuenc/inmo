@@ -45,7 +45,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true" AllowExcelExport="true" >
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Product"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
