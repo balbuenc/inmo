@@ -37,7 +37,10 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Brand>> GetAllBrands()
         {
             var db = dbConnection();
-            var sql = "select * from marcas order by marca asc";
+            var sql = @"select m.id_marca, m.marca, m.id_origen , o2.origen 
+                        from marcas m
+                        left outer join origenes o2 on o2.id_origen = m.id_origen
+                        order by m.marca asc";
 
             return await db.QueryAsync<Brand>(sql, new { });
         }
@@ -71,19 +74,28 @@ namespace CoreERP.Data.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"UPDATE public.marcas
+            
+            try
+            {
+                var sql = @"UPDATE public.marcas
                         set id_origen =@id_origen,
                             marca = @marca
-                        where id_marca=@id_marca;";
+                        where id_marca = @id_marca;";
 
-            var result = await db.ExecuteAsync(sql, new
-            {
-                brand.id_origen,
-                brand.marca
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    brand.id_origen,
+                    brand.marca,
+                    brand.id_marca
+                });
             }
-            );
+            catch (Exception ex)
+            {
+                return false;
+            }
 
-            return result > 0;
+
+            return true;
         }
     }
 }

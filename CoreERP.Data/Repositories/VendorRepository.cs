@@ -37,7 +37,10 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Vendor>> GetAllVendors()
         {
             var db = dbConnection();
-            var sql = @"select * from proveedores order by proveedor";
+            var sql = @"select p.id_proveedor , p.proveedor , p.descripcion, p.id_pais , p2.pais 
+                        from proveedores p
+                        left outer join paises p2 on p2.id_pais = p.id_pais 
+                        order by p.proveedor";
 
 
             return await db.QueryAsync<Vendor>(sql, new { });

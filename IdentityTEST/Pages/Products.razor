@@ -107,7 +107,7 @@
 
                                             <SfDropDownList DataSource="@vendors"
                                                             TItem="Vendor"
-                                                            TValue="Int32"
+                                                            TValue="Int32?"
                                                             @bind-Value="@(prod.id_proveedor)"
                                                             Placeholder="Proveedor"
                                                             FloatLabelType="FloatLabelType.Always">
@@ -134,12 +134,12 @@
                         <GridColumns>
                             <GridColumn Field=@nameof(Product.id_producto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
 
-                            <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="25"></GridColumn>
                             <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="20"></GridColumn>
-
+                            <GridColumn Field=@nameof(Product.proveedor) HeaderText="Proveedor" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Product.marca) HeaderText="Marca" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Product.precio) HeaderText="Precio" Width="10"></GridColumn>
-                            
+
 
                         </GridColumns>
                     </SfGrid>
@@ -180,7 +180,7 @@
             brands = await BrandService.GetAllBrands();
             origins = await OriginService.GetAllOrigins();
             vendors = await VendorService.GetAllVendors();
-         
+
         }
         catch (Exception ex)
         {
@@ -201,24 +201,27 @@
             await DeleteProduct(((Product)Args.Data).id_producto);
         }
 
+
         return;
     }
 
     protected async Task SaveProduct(Product product)
     {
         await ProductService.SaveProduct(product);
+        GridData = await ProductService.GetAllProducts();
+
         Grid.Refresh();
-      
     }
 
     protected async Task DeleteProduct(int id)
     {
         await ProductService.DeleteProduct(id);
+        GridData = await ProductService.GetAllProducts();
+
         Grid.Refresh();
-      
     }
 
-    
+
 }
 
 

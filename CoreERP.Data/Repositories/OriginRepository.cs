@@ -38,7 +38,9 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Origin>> GetAllOrigins()
         {
             var db = dbConnection();
-            var sql = "select * from origenes order by origen asc";
+            var sql = @"select o.id_origen, o.origen, o.id_pais, p.pais 
+                        from origenes o
+                        left outer join paises p on p.id_pais = o.id_pais";
 
             return await db.QueryAsync<Origin>(sql, new { });
         }

@@ -10,5 +10,7 @@ namespace CoreERP.Model
         public String proveedor { get; set; }
         public String descripcion { get; set; }
         public int id_pais { get; set; }
+
+        public string pais { get; set; }
     }
 }

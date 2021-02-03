@@ -90,6 +90,8 @@ namespace CoreERP.Data.Repositories
         {
             var db = dbConnection();
 
+            try
+            { 
             var sql = @"UPDATE public.productos
                         SET id_origen=@id_origen, producto=@producto, codigo=@codigo, id_marca=@id_marca, descripcion=@descripcion, id_proveedor=@id_proveedor, costo=@costo, precio=@precio, dias_garantia=@dias_garantia
                         WHERE id_producto=@id_producto;
@@ -110,7 +112,13 @@ namespace CoreERP.Data.Repositories
             }
             );
 
-            return result > 0;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

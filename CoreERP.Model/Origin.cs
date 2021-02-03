@@ -12,5 +12,7 @@ namespace CoreERP.Model
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo origen debe tener un valor.")]
         public String origen { get; set; }
         public int id_pais { get; set; }
+
+        public string pais { get; set; }
     }
 }
