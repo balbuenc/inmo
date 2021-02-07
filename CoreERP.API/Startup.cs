@@ -48,6 +48,7 @@ namespace CoreERP.API
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IVendorRepository, VendorRepository>();
             services.AddScoped<IOriginRepository, OriginRepository>();
+            services.AddScoped<IStockRepository, StockRepository>();
 
 
             services.AddControllers();

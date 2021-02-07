@@ -101,6 +101,12 @@ namespace CoreERP.UI
             services.AddHttpClient<IProductService, ProductService>(
                product => { product.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<IStoreService, StoreService>(
+               store => { store.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IStockService, StockService>(
+               stock => { stock.BaseAddress = new Uri("https://localhost:44342"); });
+
 
         }
 

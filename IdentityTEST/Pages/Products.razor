@@ -2,9 +2,9 @@
 @using Model
 @using Interfaces
 @inject IProductService ProductService
-@inject IBrandService BrandService  
-@inject IOriginService OriginService 
-@inject IVendorService VendorService 
+@inject IBrandService BrandService
+@inject IOriginService OriginService
+@inject IVendorService VendorService
 
 @attribute [Authorize]
 @using Syncfusion.Blazor
@@ -15,7 +15,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs;
 @using Syncfusion.Blazor.Calendars;
-
+@using Syncfusion.Blazor.Buttons
 
 
 
@@ -45,7 +45,8 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true" AllowExcelExport="true" >
+                    <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true" AllowExcelExport="true">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Product"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -89,7 +90,7 @@
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(prod.precio)" Enabled="true" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
@@ -125,21 +126,24 @@
                                                 <DropDownListFieldSettings Text="origen" Value="id_origen"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
-                                       
+
                                     </div>
-                                    
+
                                 </div>
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
                             <GridColumn Field=@nameof(Product.id_producto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="30"></GridColumn>
 
-                            <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="25"></GridColumn>
-                            <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Product.proveedor) HeaderText="Proveedor" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Product.marca) HeaderText="Marca" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Product.proveedor) HeaderText="Proveedor" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Product.marca) HeaderText="Marca" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Product.costo) HeaderText="Costo" Visible="false" Width="10" ></GridColumn>
                             <GridColumn Field=@nameof(Product.precio) HeaderText="Precio" Width="10"></GridColumn>
-
+                            <GridColumn Field=@nameof(Product.origen) HeaderText="Origen" Visible="false" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Product.descripcion) HeaderText="Descripción" Visible="false" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Product.dias_garantia) HeaderText="Garantía" Visible="false" Width="10"></GridColumn>
 
                         </GridColumns>
                     </SfGrid>
@@ -208,17 +212,18 @@
     protected async Task SaveProduct(Product product)
     {
         await ProductService.SaveProduct(product);
-       
-
-        Grid.Refresh();
     }
 
     protected async Task DeleteProduct(int id)
     {
         await ProductService.DeleteProduct(id);
-   
+    }
 
-        Grid.Refresh();
+    public async Task ExcelExport()
+    {
+        ExcelExportProperties ExportProperties = new ExcelExportProperties();
+        ExportProperties.IncludeHiddenColumn = true;
+        await this.Grid.ExcelExport(ExportProperties);
     }
 
 

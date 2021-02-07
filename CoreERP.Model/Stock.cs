@@ -10,6 +10,10 @@ namespace CoreERP.Model
         public int id_deposito { get; set; }
         public int id_producto { get; set; }
         public decimal cantidad { get; set; }
-        public int id_proveedor { get; set; }
+
+
+        public string codigo { get; set; }
+        public string deposito { get; set; }
+        public string producto { get; set; }
     }
 }

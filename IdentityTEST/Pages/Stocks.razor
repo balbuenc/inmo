@@ -1,8 +1,9 @@
-﻿@page "/Vendor"
+﻿@page "/Stock"
 @using Model
 @using Interfaces
-@inject IVendorService VendorService
-@inject ICountryService CountryService
+@inject IStockService StockService
+@inject IStoreService StoreService  
+
 
 @attribute [Authorize]
 @using Syncfusion.Blazor
@@ -20,12 +21,11 @@
 <div class="container-fluid">
     <div class="col-lg-12 control-section">
         <div class="content-wrapper">
-            <div class="row">
-                <div class="col-10">
-                    <div class="alert alert-heading" style="width:100%" role="banner"><h3>Proveedores</h3></div>
-                </div>
-
-            </div>
+           
+           
+               
+                    <div class="alert alert-heading" style="width:100%" role="banner">Stock de productos</div>
+            
         </div>
     </div>
 
@@ -45,66 +45,65 @@
                 {
                     <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true" AllowExcelExport="true">
 
-                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Vendor"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Stock"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
 
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
                             <HeaderTemplate>
                                 @{
-                                    var vend = (context as Vendor);
+                                    var stoc = (context as Stock);
                                 }
-                                <span>Detalle de Proveedor: @(vend.proveedor)</span>
+                                <span>Detalle del Stock: @(stoc.codigo)</span>
                             </HeaderTemplate>
                             <Template>
                                 @{
-                                    var vend = (context as Vendor);
+                                    var stoc = (context as Stock);
                                 }
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
 
-                                            <SfNumericTextBox @bind-Value="@(vend.id_proveedor)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                            <SfNumericTextBox @bind-Value="@(stoc.id_stock)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <SfTextBox @bind-Value="@(stoc.codigo)" Enabled="false" Placeholder="Código" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                         <div class="form-group col-md-9">
-
-                                            <SfTextBox @bind-Value="@(vend.proveedor)" Enabled="true" Placeholder="Proveedor" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                            <SfTextBox @bind-Value="@(stoc.producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-
-                                            <SfTextBox @bind-Value="@(vend.descripcion)" Enabled="true" Placeholder="Descripción" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
-                                        </div>
-                                       
-                                    </div>
-                                   
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
 
-                                            <SfDropDownList DataSource="@countries"
-                                                            TItem="Country"
+                                            <SfDropDownList DataSource="@stores"
+                                                            TItem="Store"
                                                             TValue="Int32"
-                                                            @bind-Value="@(vend.id_pais)"
-                                                            Placeholder="Pais"
+                                                            @bind-Value="@(stoc.id_deposito)"
+                                                            Placeholder="Depósito"
                                                             FloatLabelType="FloatLabelType.Always">
-                                                <DropDownListFieldSettings Value="id_pais" Text="pais"></DropDownListFieldSettings>
+                                                <DropDownListFieldSettings Value="id_deposito" Text="deposito"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
-                                       
-
+                                        <div class="form-group col-md-6">
+                                            <SfNumericTextBox @bind-Value="@(stoc.cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                        </div>
                                     </div>
+
+
 
                                 </div>
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
-                            <GridColumn Field=@nameof(Vendor.id_proveedor) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Stock.id_stock) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
 
-                            <GridColumn Field=@nameof(Vendor.proveedor) HeaderText="Proveedor" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Vendor.descripcion) HeaderText="Descripción" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Stock.codigo) HeaderText="Código" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Stock.producto) HeaderText="Producto" Width="50"></GridColumn>
+                            <GridColumn Field=@nameof(Stock.deposito) HeaderText="Depósito" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Stock.cantidad)  HeaderText="Cantidad" Width="20"></GridColumn>
 
-                            <GridColumn Field=@nameof(Vendor.pais) HeaderText="Pais" Width="30"></GridColumn>
-                            
+
+
 
 
                         </GridColumns>
@@ -120,19 +119,16 @@
 
 
 @code {
-    //public IEnumerable<Vendor> clients { get; set; }
+    //public IEnumerable<Stock> clients { get; set; }
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
     public string ErrorDetails = "";
 
-    public IEnumerable<Vendor> GridData { get; set; }
-    public IEnumerable<Country> countries { get; set; }
-  
+    public IEnumerable<Stock> GridData { get; set; }
+    public IEnumerable<Store> stores { get; set; }
 
 
-
-
-    SfGrid<Vendor> Grid { get; set; }
+    SfGrid<Stock> Grid { get; set; }
 
     private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
 
@@ -141,43 +137,42 @@
     {
         try
         {
-            GridData = await VendorService.GetAllVendors();
-            countries = await CountryService.GetAllCountries();
-           
+            GridData = await StockService.GetAllStocks();
+            stores = await StoreService.GetAllStores();
 
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener Proveedores: " + ex.Message;
+            Messsage = "Error al obtener Stock: " + ex.Message;
         }
     }
 
 
 
-    private async Task OnBeginHandler(ActionEventArgs<Vendor> Args)
+    private async Task OnBeginHandler(ActionEventArgs<Stock> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
-            await SaveVendor((Vendor)Args.Data);
+            await SaveStock((Stock)Args.Data);
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await DeleteVendor(((Vendor)Args.Data).id_proveedor);
+            await DeleteStock(((Stock)Args.Data).id_stock);
         }
 
         return;
     }
 
-    protected async Task SaveVendor(Vendor vendor)
+    protected async Task SaveStock(Stock stock)
     {
-        await VendorService.SaveVendor(vendor);
+        await StockService.SaveStock(stock);
         Grid.Refresh();
 
     }
 
-    protected async Task DeleteVendor(int id)
+    protected async Task DeleteStock(int id)
     {
-        await VendorService.DeleteVendor(id);
+        await StockService.DeleteStock(id);
         Grid.Refresh();
 
     }
