@@ -18,20 +18,14 @@
 
 
 <div class="container-fluid">
-    <div class="col-lg-12 control-section">
-        <div class="content-wrapper">
-            <div class="row">
-                <div class="col-10">
-                    <div class="alert alert-heading" style="width:100%" role="banner"><h3>Proveedores</h3></div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
     <p>@Messsage</p>
     <span class="error">@ErrorDetails</span>
+
+    <div class="col-lg-12" style="padding:1px; height:50px">
+        <div class="content-wrapper">
+            <div class="alert alert-primary" role="banner"><b>Proveedores</b></div>
+        </div>
+    </div>
 
 
     <div class="col-lg-12 control-section">
@@ -43,7 +37,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowGrouping="true" AllowExcelExport="true">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData"  AllowExcelExport="true">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Vendor"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -75,9 +69,9 @@
 
                                             <SfTextBox @bind-Value="@(vend.descripcion)" Enabled="true" Placeholder="Descripción" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
-                                       
+
                                     </div>
-                                   
+
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
 
@@ -90,7 +84,7 @@
                                                 <DropDownListFieldSettings Value="id_pais" Text="pais"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
-                                       
+
 
                                     </div>
 
@@ -104,7 +98,7 @@
                             <GridColumn Field=@nameof(Vendor.descripcion) HeaderText="Descripción" Width="20"></GridColumn>
 
                             <GridColumn Field=@nameof(Vendor.pais) HeaderText="Pais" Width="30"></GridColumn>
-                            
+
 
 
                         </GridColumns>
