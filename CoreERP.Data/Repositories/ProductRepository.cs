@@ -25,14 +25,24 @@ namespace CoreERP.Data.Repositories
 
         public async Task<bool> DeleteProduct(int id)
         {
-            var db = dbConnection();
+            try
+            {
+                var db = dbConnection();
+                var sql1 = @"delete from public.stock where id_producto =@Id";
+                var sql = @"DELETE FROM public.productos WHERE id_producto= @Id";
 
-            var sql = @"DELETE FROM public.productos
-                        WHERE id_producto= @Id);";
+                await db.ExecuteAsync(sql1, new { Id = id });
+                await db.ExecuteAsync(sql, new { Id = id });
 
-            var result = await db.ExecuteAsync(sql, new { Id = id });
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
 
-            return result > 0;
+
         }
 
         public async Task<IEnumerable<Product>> GetAllProducts()
@@ -91,29 +101,29 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             try
-            { 
-            var sql = @"UPDATE public.productos
+            {
+                var sql = @"UPDATE public.productos
                         SET id_origen=@id_origen, producto=@producto, codigo=@codigo, id_marca=@id_marca, descripcion=@descripcion, id_proveedor=@id_proveedor, costo=@costo, precio=@precio, dias_garantia=@dias_garantia
                         WHERE id_producto=@id_producto;
                         ;";
 
-            var result = await db.ExecuteAsync(sql, new
-            {
-                product.id_producto,
-                product.id_origen,
-                product.producto,
-                product.codigo,
-                product.id_marca,
-                product.descripcion,
-                product.id_proveedor,
-                product.costo,
-                product.precio,
-                product.dias_garantia
-            }
-            );
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    product.id_producto,
+                    product.id_origen,
+                    product.producto,
+                    product.codigo,
+                    product.id_marca,
+                    product.descripcion,
+                    product.id_proveedor,
+                    product.costo,
+                    product.precio,
+                    product.dias_garantia
+                }
+                );
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
