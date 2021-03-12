@@ -17,9 +17,11 @@ namespace CoreERP.Model
         public decimal precio { get; set; }
         public int dias_garantia { get; set; }
 
+        public int id_moneda { get; set; }
+
         public string origen { get; set; }
         public string proveedor { get; set; }
-        public string marca  { get; set; }
-
+        public string marca { get; set; }
+        public string moneda { get; set; }
     }
 }

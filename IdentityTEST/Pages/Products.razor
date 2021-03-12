@@ -5,6 +5,7 @@
 @inject IBrandService BrandService
 @inject IOriginService OriginService
 @inject IVendorService VendorService
+@inject ICurrencyService CurrencyService
 
 @attribute [Authorize]
 @using Syncfusion.Blazor
@@ -84,6 +85,17 @@
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(prod.precio)" Enabled="true" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
+                                        <div class="form-group col-md-3">
+
+                                            <SfDropDownList DataSource="@currencies"
+                                                            TItem="Currency"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(prod.id_moneda)"
+                                                            Placeholder="Moneda"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Value="id_moneda" Text="moneda"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
 
                                     </div>
                                     <div class="form-row">
@@ -161,7 +173,7 @@
     public IEnumerable<Brand> brands { get; set; }
     public IEnumerable<Origin> origins { get; set; }
     public IEnumerable<Vendor> vendors { get; set; }
-
+    public IEnumerable<Currency> currencies { get; set; }
 
 
 
@@ -178,7 +190,7 @@
             brands = await BrandService.GetAllBrands();
             origins = await OriginService.GetAllOrigins();
             vendors = await VendorService.GetAllVendors();
-
+            currencies = await CurrencyService.GetAllCurrencies();
         }
         catch (Exception ex)
         {

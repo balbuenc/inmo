@@ -48,11 +48,12 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
             var db = dbConnection();
-            var sql = @"select *, o.origen, m.marca, pro.proveedor 
+            var sql = @"select *, o.origen, m.marca, pro.proveedor , m2.moneda 
                         from productos p
                         left outer join origenes o on o.id_origen = p.id_origen
                         left outer join marcas m on m.id_marca = p.id_marca
-                        left outer join proveedores pro on pro.id_proveedor = p.id_proveedor";
+                        left outer join proveedores pro on pro.id_proveedor = p.id_proveedor
+                        left outer join monedas m2 on m2.id_moneda = p.id_moneda ";
 
             return await db.QueryAsync<Product>(sql, new { });
         }
@@ -76,8 +77,8 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @"INSERT INTO public.productos
-                        (id_origen, producto, codigo, id_marca, descripcion, id_proveedor, costo, precio, dias_garantia)
-                        values(@id_origen, @producto, @codigo, @id_marca, @descripcion, @id_proveedor, @costo, @precio, @dias_garantia)";
+                        (id_origen, producto, codigo, id_marca, descripcion, id_proveedor, costo, precio, dias_garantia, id_moneda)
+                        values(@id_origen, @producto, @codigo, @id_marca, @descripcion, @id_proveedor, @costo, @precio, @dias_garantia, @id_moneda)";
 
             var result = await db.ExecuteAsync(sql, new
             {
@@ -89,7 +90,8 @@ namespace CoreERP.Data.Repositories
                 product.id_proveedor,
                 product.costo,
                 product.precio,
-                product.dias_garantia
+                product.dias_garantia,
+                product.id_moneda
             }
             );
 
@@ -103,7 +105,7 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var sql = @"UPDATE public.productos
-                        SET id_origen=@id_origen, producto=@producto, codigo=@codigo, id_marca=@id_marca, descripcion=@descripcion, id_proveedor=@id_proveedor, costo=@costo, precio=@precio, dias_garantia=@dias_garantia
+                        SET id_origen=@id_origen, producto=@producto, codigo=@codigo, id_marca=@id_marca, descripcion=@descripcion, id_proveedor=@id_proveedor, costo=@costo, precio=@precio, dias_garantia=@dias_garantia, id_moneda=@id_moneda
                         WHERE id_producto=@id_producto;
                         ;";
 
@@ -118,7 +120,8 @@ namespace CoreERP.Data.Repositories
                     product.id_proveedor,
                     product.costo,
                     product.precio,
-                    product.dias_garantia
+                    product.dias_garantia,
+                    product.id_moneda
                 }
                 );
 
