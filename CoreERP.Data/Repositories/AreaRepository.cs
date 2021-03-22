@@ -36,10 +36,19 @@ namespace CoreERP.Data.Repositories
 
         public async Task<IEnumerable<Area>> GetAllAreas()
         {
-            var db = dbConnection();
-            var sql = "select * from Areas order by id_area asc";
+            try
+            {
+                var db = dbConnection();
+                var sql = "select * from Areas order by id_area asc";
 
-            return await db.QueryAsync<Area>(sql, new { });
+                var result = await db.QueryAsync<Area>(sql, new { });
+                
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public async Task<Area> GetAreaDetails(int id)

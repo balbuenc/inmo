@@ -47,7 +47,7 @@
                 {
                     <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
 
-                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Client"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Client"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
 
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
@@ -187,6 +187,11 @@
             <SfToast @ref="ToastObj" Title="@ToastTitle" Content="@ToastContent" CssClass="@ToastCssClass">
                 <ToastPosition X="Right" Y="Bottom"></ToastPosition>
             </SfToast>
+            <div class="col-lg-12 col-sm-12 col-md-12 center">
+                <div style="margin: auto; text-align: center">
+                    <SfButton @onclick="@ShowToast"> Show Toast </SfButton>
+                </div>
+            </div>
 
         </div>
 
@@ -287,7 +292,7 @@
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
             await SaveClient((Client)Args.Data);
-            await ShowToast();
+
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
@@ -295,6 +300,25 @@
 
             // Open Delete confirmation dialog
             this.DeleteRecordConfirmVisibility = true;
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    private async Task OnCompleteHandler(ActionEventArgs<Client> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            this.ToastTitle = "Completado!";
+            this.ToastContent = "Se ha creado el cliente.";
+            this.ToastCssClass = "e-toast-success";
+
+            await ShowToast();
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+
             StateHasChanged();
         }
 
@@ -345,11 +369,6 @@
 
     private async Task ShowToast()
     {
-        this.ToastFlag = 3;
-        this.ToastTitle = this.Toasts[this.ToastFlag].Title;
-        this.ToastContent = this.Toasts[this.ToastFlag].Content;
-        this.ToastCssClass = this.Toasts[this.ToastFlag].CssClass;
-        await Task.Delay(100);
         await this.ToastObj.Show();
     }
 

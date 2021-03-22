@@ -34,7 +34,7 @@ namespace CoreERP.Data.Repositories
                 await db.ExecuteAsync(sql1, new { Id = id });
                 await db.ExecuteAsync(sql, new { Id = id });
 
-                
+
                 return true;
             }
             catch (Exception ex)
@@ -47,15 +47,25 @@ namespace CoreERP.Data.Repositories
 
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            var db = dbConnection();
-            var sql = @"select *, o.origen, m.marca, pro.proveedor , m2.moneda 
+            try
+            {
+                var db = dbConnection();
+                var sql = @"select *, o.origen, m.marca, pro.proveedor , m2.moneda 
                         from productos p
                         left outer join origenes o on o.id_origen = p.id_origen
                         left outer join marcas m on m.id_marca = p.id_marca
                         left outer join proveedores pro on pro.id_proveedor = p.id_proveedor
                         left outer join monedas m2 on m2.id_moneda = p.id_moneda ";
 
-            return await db.QueryAsync<Product>(sql, new { });
+                var result = await db.QueryAsync<Product>(sql, new { });
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+
+            }
         }
 
         public async Task<Product> GetProductDetails(int id)
