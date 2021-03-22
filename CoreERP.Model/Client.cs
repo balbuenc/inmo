@@ -15,14 +15,18 @@ namespace CoreERP.Model
         public String sexo { get; set; }
         public DateTime fecha_nacimiento { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo CI debe tener un valor.")]
+        
         public String ci { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo RUC debe tener un valor.")]
         public String ruc { get; set; }
         public String direccion { get; set; }
         public String telefono { get; set; }
         public String email { get; set; }
         public String observaciones { get; set; }
         public DateTime fecha_alta { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Razón social debe tener un valor.")]
         public String razon_social { get; set; }
         public String codigo { get; set; }
         public String es_cliente_fiel { get; set; }

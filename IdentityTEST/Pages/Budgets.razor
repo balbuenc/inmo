@@ -1,0 +1,189 @@
+﻿@page "/Budget"
+@using Model
+@using Interfaces
+@inject IBudgetService BudgetService
+@inject IClientService ClientService
+
+@attribute [Authorize]
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using System.Collections.ObjectModel
+@inject NavigationManager NavigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Buttons
+
+
+
+<div class="container-fluid">
+    <p>@Messsage</p>
+    <span class="error">@ErrorDetails</span>
+
+    <div class="col-lg-12" style="padding:1px; height:50px">
+        <div class="content-wrapper">
+            <div class="alert alert-primary" role="banner"><b>Presupuestos</b></div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                @if (GridData == null)
+                {
+                    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
+                }
+                else
+                {
+                    <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowExcelExport="true">
+
+                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Budget"></GridEvents>
+                        <GridPageSettings PageSize="20"></GridPageSettings>
+
+                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
+                            <HeaderTemplate>
+                                @{
+                                    var budg = (context as Budget);
+                                }
+                                <span>Detalle de presupuesto: @(budg.nro_presupuesto)</span>
+                            </HeaderTemplate>
+                            <Template>
+                                @{
+                                    var budg = (context as Budget);
+                                }
+                                <div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+
+                                            <SfNumericTextBox @bind-Value="@(budg.id_presupuesto)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                        </div>
+                                        <div class="form-group col-md-9">
+
+                                            <SfNumericTextBox @bind-Value="@(budg.nro_presupuesto)" Enabled="true" Placeholder="Nro. presupuesto" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+
+                                            <SfDatePicker @bind-Value="@(budg.fecha)" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
+                                        </div>
+                                        <div class="form-group col-md-6">
+
+                                            <SfTextBox @bind-Value="@(budg.vendedor)" Enabled="false" Placeholder="Vendedor" FloatLabelType="FloatLabelType.Always" > </SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                       
+                                       
+                                        <div class="form-group col-md-6">
+
+                                            <SfDropDownList DataSource="@clients"
+                                                            TItem="Client"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(budg.id_cliente)"
+                                                            Placeholder="Cliente"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Value="id_cliente" Text="razon_social"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
+
+                                    </div>
+                                    
+
+                                </div>
+                            </Template>
+                        </GridEditSettings>
+                        <GridColumns>
+                            <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro. presupuesto" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="30"></GridColumn>
+
+                            <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
+                            
+
+                        </GridColumns>
+                    </SfGrid>
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+@code {
+    //public IEnumerable<Budget> clients { get; set; }
+    public string Messsage { get; set; }
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string ErrorDetails = "";
+
+    public IEnumerable<Budget> GridData { get; set; }
+    public IEnumerable<Client> clients { get; set; }
+  
+
+
+
+    SfGrid<Budget> Grid { get; set; }
+
+    private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            GridData = await BudgetService.GetAllBudgets();
+            clients = await ClientService.GetAllClients();
+         
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener presupuestos: " + ex.Message;
+        }
+    }
+
+
+
+    private async Task OnBeginHandler(ActionEventArgs<Budget> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await SaveBudget((Budget)Args.Data);
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await DeleteBudget(((Budget)Args.Data).id_presupuesto);
+        }
+
+
+        return;
+    }
+
+    protected async Task SaveBudget(Budget budguct)
+    {
+        await BudgetService.SaveBudget(budguct);
+    }
+
+    protected async Task DeleteBudget(int id)
+    {
+        await BudgetService.DeleteBudget(id);
+    }
+
+    public async Task ExcelExport()
+    {
+        ExcelExportProperties ExportProperties = new ExcelExportProperties();
+        ExportProperties.IncludeHiddenColumn = true;
+        await this.Grid.ExcelExport(ExportProperties);
+    }
+
+
+}
+
+

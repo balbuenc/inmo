@@ -107,6 +107,9 @@ namespace CoreERP.UI
             services.AddHttpClient<IStockService, StockService>(
                stock => { stock.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<IBudgetService, BudgetService>(
+              budget => { budget.BaseAddress = new Uri("https://localhost:44342"); });
+
 
         }
 

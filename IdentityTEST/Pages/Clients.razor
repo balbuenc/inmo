@@ -1,20 +1,26 @@
 ﻿@page "/Cliente"
 @using Model
 @using Interfaces
+
 @inject IClientService ClientService
 @inject INeighborhoodService NeighborhoodService
 @inject INationalityService NationalityService
 @inject IClientTypeService ClientTypeService
 @inject ICivilStatusService CivilStatusService
+@inject NavigationManager NavigationManager
+
 @attribute [Authorize]
+
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using System.Collections.ObjectModel
-@inject NavigationManager NavigationManager
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs;
 @using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Buttons
 
 
 
@@ -39,7 +45,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" >
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Client"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -154,12 +160,46 @@
                 }
 
             </div>
+            <SfDialog Target="#target"
+                      Width="300px"
+                      Height="130px"
+                      IsModal="true"
+                      ShowCloseIcon="false"
+                      @bind-Visible="DeleteRecordConfirmVisibility">
+                <DialogTemplates>
+                    <Header> Eliminar el registro? </Header>
+                    <Content>
+                        <div class="button-container">
+                            <button type="submit"
+                                    class="e-btn e-normal e-primary"
+                                    @onclick="ConfirmDeleteYes">
+                                Yes
+                            </button>
+                            <button type="submit"
+                                    class="e-btn e-normal"
+                                    @onclick="ConfirmDeleteNo">
+                                No
+                            </button>
+                        </div>
+                    </Content>
+                </DialogTemplates>
+            </SfDialog>
+            <SfToast @ref="ToastObj" Title="@ToastTitle" Content="@ToastContent" CssClass="@ToastCssClass">
+                <ToastPosition X="Right" Y="Bottom"></ToastPosition>
+            </SfToast>
+
         </div>
 
     </div>
 
 </div>
 
+<style>
+    #toast_default .e-meeting::before {
+        content: "\e705";
+        font-size: 17px;
+    }
+</style>
 
 @code {
     //public IEnumerable<Client> clients { get; set; }
@@ -173,6 +213,33 @@
     public IEnumerable<ClientType> clientTypes { get; set; }
     public IEnumerable<CivilStatus> civilStatus { get; set; }
 
+    public bool EditDialogVisibility { get; set; } = false;
+    public bool DeleteRecordConfirmVisibility { get; set; } = false;
+
+    public Int32 ID = 0;
+
+
+    SfToast ToastObj;
+
+    private int ToastFlag = 0;
+    private string ToastTitle = "";
+    private string ToastContent = "";
+    private string ToastCssClass = "";
+
+    private class ToastOption
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string CssClass { get; set; }
+    }
+
+    private ToastOption[] Toasts = new ToastOption[] {
+        new ToastOption { Title = "Warning !", Content = "There was a problem with your network connection.", CssClass = "e-toast-warning" },
+        new ToastOption { Title = "Success !", Content = "Your message has been sent successfully.", CssClass = "e-toast-success" },
+        new ToastOption { Title = "Error !", Content = "A problem has been occurred while submitting your data.", CssClass = "e-toast-danger" },
+        new ToastOption { Title = "Information !", Content = "Please read the comments carefully.", CssClass = "e-toast-info" }
+    };
+
 
 
     SfGrid<Client> Grid { get; set; }
@@ -184,6 +251,7 @@
         public string ID { get; set; }
         public string Text { get; set; }
     }
+
     List<Sexo> LocalSexo = new List<Sexo> {
     new Sexo() { ID= "M", Text= "Masculino" },
     new Sexo() { ID= "F", Text= "Femenino" },
@@ -219,10 +287,15 @@
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
             await SaveClient((Client)Args.Data);
+            await ShowToast();
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await DeleteClient(((Client)Args.Data).id_cliente);
+            ID = ((Client)Args.Data).id_cliente;
+
+            // Open Delete confirmation dialog
+            this.DeleteRecordConfirmVisibility = true;
+            StateHasChanged();
         }
 
         return;
@@ -245,6 +318,45 @@
     protected void ReloadPage()
     {
         NavigationManager.NavigateTo("/Cliente", true);
+    }
+
+    public async void ConfirmDeleteYes()
+    {
+        // The user selected Yes to delete the
+        // seleted Help Desk Ticket
+        // Delete the record
+        await DeleteClient(ID);
+
+        // Close the dialog
+        this.DeleteRecordConfirmVisibility = false;
+
+        // Refresh the SfGrid
+        // so the deleted record will not show
+        Grid.Refresh();
+    }
+
+    public void ConfirmDeleteNo()
+    {
+        // Open the dialog
+        // to give the user a chance
+        // to confim they want to delete the record
+        this.DeleteRecordConfirmVisibility = false;
+    }
+
+    private async Task ShowToast()
+    {
+        this.ToastFlag = 3;
+        this.ToastTitle = this.Toasts[this.ToastFlag].Title;
+        this.ToastContent = this.Toasts[this.ToastFlag].Content;
+        this.ToastCssClass = this.Toasts[this.ToastFlag].CssClass;
+        await Task.Delay(100);
+        await this.ToastObj.Show();
+    }
+
+    private async Task HideToast()
+    {
+
+        await this.ToastObj.Hide("All");
     }
 }
 

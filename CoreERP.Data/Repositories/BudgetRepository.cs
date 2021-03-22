@@ -37,7 +37,11 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Budget>> GetAllBudgets()
         {
             var db = dbConnection();
-            var sql = "select * from presupuestos order by id_presupuesto asc";
+            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, f2.usuario as vendedor, c2.razon_social as cliente
+                        from presupuestos p
+                        left outer join funcionarios f2 on f2.id_funcionario = p.id_funcionario
+                        left outer join clientes c2 on c2.id_cliente = p.id_cliente
+                        order by p.nro_presupuesto asc";
 
             return await db.QueryAsync<Budget>(sql, new { });
         }
@@ -54,18 +58,29 @@ namespace CoreERP.Data.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado) VALUES(@id_cliente, @id_funcionario, @fecha, @estado);";
-
-            var result = await db.ExecuteAsync(sql, new
+            try
             {
-                budget.id_cliente,
-                budget.id_funcionario,
-                budget.fecha,
-                budget.estado
-            }
-            );
+                var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado, nro_presupuesto) VALUES(@id_cliente, @id_funcionario, @fecha, @estado, @nro_presupuesto);";
+                
+                budget.id_funcionario = 6;
+                budget.estado = "Generado";
 
-            return result > 0;
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    budget.id_cliente,
+                    budget.id_funcionario,
+                    budget.fecha,
+                    budget.estado,
+                    budget.nro_presupuesto
+                }
+                );
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> UpdateBudget(Budget budget)
