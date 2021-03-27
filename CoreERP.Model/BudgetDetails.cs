@@ -12,5 +12,10 @@ namespace CoreERP.Model
         public decimal cantidad { get; set; }
         public decimal costo { get; set; }
         public decimal precio { get; set; }
+
+        public string codigo { get; set; }
+        public string producto { get; set; }
+        public string descuento { get; set; }
+        public decimal porcentaje { get; set; }
     }
 }

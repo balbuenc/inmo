@@ -21,7 +21,7 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
+        public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager)
         {
@@ -77,7 +77,8 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                Input.UserName = Input.UserName + "@lugaro";
+                if (Input.UserName != "cbalbuena")
+                    Input.UserName = Input.UserName + "@lugaro";
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true

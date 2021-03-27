@@ -3,6 +3,12 @@
 @using Interfaces
 @inject IBudgetService BudgetService
 @inject IClientService ClientService
+@inject IEmployeeService EmployeeService
+@inject IBudgetDetailsService BudgetDetailsService
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
 
 @attribute [Authorize]
 @using Syncfusion.Blazor
@@ -14,6 +20,7 @@
 @using Syncfusion.Blazor.Inputs;
 @using Syncfusion.Blazor.Calendars;
 @using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Navigations
 
 
 
@@ -39,9 +46,55 @@
                 {
                     <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
                     <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowExcelExport="true">
+                        <GridTemplates>
+                            <DetailTemplate>
+                                @{
+                                    Budget Bu = context as Budget;
 
-                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Budget"></GridEvents>
-                        <GridPageSettings PageSize="20"></GridPageSettings>
+                                }
+                                <SfTab Height="300" HeaderPlacement="HeaderPosition.Top">
+                                    <TabItems>
+                                        <TabItem>
+                                            <ChildContent>
+                                                <TabHeader Text="Detalles"></TabHeader>
+                                            </ChildContent>
+                                            <ContentTemplate>
+                                                <div class="inner-padding">
+                                                    <SfGrid Width="800px" TValue="BudgetDetails" DataSource="@budgetDetails" Query="@(new Query().Where("id_presupuesto", "equal", Bu.id_presupuesto))" AllowPaging="true">
+                                                        <GridPageSettings PageSize="4"></GridPageSettings>
+                                                        <GridAggregates>
+                                                            <GridAggregate>
+                                                                <GridAggregateColumns>
+                                                                    <GridAggregateColumn Field=@nameof(BudgetDetails.precio) Type="AggregateType.Sum" Format="C2">
+                                                                        <FooterTemplate Context="con">
+                                                                            @{
+                                                                                var aggregate = (con as AggregateTemplateContext);
+                                                                                <div>
+                                                                                    <p><b>Total: @aggregate.Sum</b></p>
+                                                                                </div>
+                                                                            }
+                                                                        </FooterTemplate>
+                                                                    </GridAggregateColumn>
+                                                                </GridAggregateColumns>
+                                                            </GridAggregate>
+                                                        </GridAggregates>
+                                                        <GridColumns>
+                                                            <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" Width="110"></GridColumn>
+                                                            <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="90"></GridColumn>
+
+                                                            <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="c2" TextAlign="TextAlign.Right" Width="70"></GridColumn>
+                                                            <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="c2" TextAlign="TextAlign.Right" Width="70"></GridColumn>
+                                                        </GridColumns>
+                                                    </SfGrid>
+                                                </div>
+                                            </ContentTemplate>
+                                        </TabItem>
+                                    </TabItems>
+                                </SfTab>
+                            </DetailTemplate>
+                        </GridTemplates>
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget"></GridEvents>
+                        <GridPageSettings PageSize="30"></GridPageSettings>
 
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
                             <HeaderTemplate>
@@ -70,28 +123,26 @@
 
                                             <SfDatePicker @bind-Value="@(budg.fecha)" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
                                         </div>
-                                        <div class="form-group col-md-6">
 
-                                            <SfTextBox @bind-Value="@(budg.vendedor)" Enabled="false" Placeholder="Vendedor" FloatLabelType="FloatLabelType.Always" > </SfTextBox>
-                                        </div>
                                     </div>
                                     <div class="form-row">
-                                       
-                                       
-                                        <div class="form-group col-md-6">
+
+                                        <div class="form-group col-md-12">
 
                                             <SfDropDownList DataSource="@clients"
                                                             TItem="Client"
-                                                            TValue="Int32"
+                                                            TValue="Int32?"
                                                             @bind-Value="@(budg.id_cliente)"
                                                             Placeholder="Cliente"
                                                             FloatLabelType="FloatLabelType.Always">
                                                 <DropDownListFieldSettings Value="id_cliente" Text="razon_social"></DropDownListFieldSettings>
                                             </SfDropDownList>
+
+
                                         </div>
 
                                     </div>
-                                    
+
 
                                 </div>
                             </Template>
@@ -104,7 +155,7 @@
                             <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
-                            
+
 
                         </GridColumns>
                     </SfGrid>
@@ -126,8 +177,10 @@
 
     public IEnumerable<Budget> GridData { get; set; }
     public IEnumerable<Client> clients { get; set; }
-  
+    public IEnumerable<Employee> employees { get; set; }
+    public IEnumerable<BudgetDetails> budgetDetails { get; set; }
 
+    public int? RowIndex { get; set; } = 15;
 
 
     SfGrid<Budget> Grid { get; set; }
@@ -141,7 +194,8 @@
         {
             GridData = await BudgetService.GetAllBudgets();
             clients = await ClientService.GetAllClients();
-         
+            employees = await EmployeeService.GetAllEmployees();
+            budgetDetails = await BudgetDetailsService.GetAllBudgetDetails();
         }
         catch (Exception ex)
         {
@@ -166,9 +220,24 @@
         return;
     }
 
-    protected async Task SaveBudget(Budget budguct)
+    private async Task ActionCompletedHandler(ActionEventArgs<Budget> Args)
     {
-        await BudgetService.SaveBudget(budguct);
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save || Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            GridData = await BudgetService.GetAllBudgets();
+            Grid.Refresh();
+        }
+
+    }
+
+
+
+
+
+    protected async Task SaveBudget(Budget budget)
+    {
+        budget.id_funcionario = GetEmployeeID(employees, httpContextAccessor.HttpContext.User.Identity.Name);
+        await BudgetService.SaveBudget(budget);
     }
 
     protected async Task DeleteBudget(int id)
@@ -181,6 +250,11 @@
         ExcelExportProperties ExportProperties = new ExcelExportProperties();
         ExportProperties.IncludeHiddenColumn = true;
         await this.Grid.ExcelExport(ExportProperties);
+    }
+
+    public Int32 GetEmployeeID(IEnumerable<Employee> emp, string username)
+    {
+        return emp.First(c => c.usuario == username).id_funcionario;
     }
 
 

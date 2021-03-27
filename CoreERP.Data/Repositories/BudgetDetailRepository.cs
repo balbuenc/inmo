@@ -37,7 +37,10 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<BudgetDetails>> GetAllBudgetDetails()
         {
             var db = dbConnection();
-            var sql = "select * from public.presupuesto_detalles order by id_presupuesto asc";
+            var sql = @"select pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, d.porcentaje 
+                        from presupuesto_detalles pd
+                        inner join productos p on p.id_producto = pd.id_producto
+                        left outer join descuentos d on d.id_descuento = pd.id_descuento";
 
             return await db.QueryAsync<BudgetDetails>(sql, new { });
         }
@@ -45,7 +48,11 @@ namespace CoreERP.Data.Repositories
         public async Task<BudgetDetails> GetBudgetDetailDetails(int id)
         {
             var db = dbConnection();
-            var sql = "select * from public.presupuesto_detalles  where id_presupuesto = @Id";
+            var sql = @"select pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, d.porcentaje 
+                        from presupuesto_detalles pd
+                        inner join productos p on p.id_producto = pd.id_producto
+                        left outer join descuentos d on d.id_descuento = pd.id_descuento 
+                        where pd.id_presupuesto = @Id";
 
 
             return await db.QueryFirstOrDefaultAsync<BudgetDetails>(sql, new { Id = id });

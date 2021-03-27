@@ -22,6 +22,7 @@ using CoreERP.UI.Interfaces;
 using CoreERP.UI.Services;
 using Microsoft.Extensions.Options;
 using Syncfusion.Blazor;
+using Microsoft.AspNetCore.Http;
 
 namespace CoreERP.UI
 {
@@ -57,6 +58,9 @@ namespace CoreERP.UI
             services.AddServerSideBlazor().AddCircuitOptions(options => options.DetailedErrors = true);
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSyncfusionBlazor();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextAccessor>();
 
 
             services.AddHttpClient<IClientService, ClientService>(
@@ -109,6 +113,12 @@ namespace CoreERP.UI
 
             services.AddHttpClient<IBudgetService, BudgetService>(
               budget => { budget.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IEmployeeService, EmployeeService>(
+            employee => { employee.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IBudgetDetailsService, BudgetDetailsService>(
+            budgetDetails => { budgetDetails.BaseAddress = new Uri("https://localhost:44342"); });
 
 
         }
