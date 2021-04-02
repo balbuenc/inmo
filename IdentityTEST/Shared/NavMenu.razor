@@ -26,6 +26,7 @@
                         <BarDropdownItem To="/Area">Areas</BarDropdownItem>
                         <BarDropdownItem To="/Position">Cargos</BarDropdownItem>
                         <BarDropdownItem To="/CivilStatus">Estados civiles</BarDropdownItem>
+
                     </BarDropdownMenu>
 
                 </BarDropdown>
@@ -72,7 +73,7 @@
                     </BarDropdownToggle>
                     <BarDropdownMenu>
                         <BarDropdownItem>Orden de compra</BarDropdownItem>
-                        
+
                     </BarDropdownMenu>
                 </BarDropdown>
             </BarItem>
@@ -84,8 +85,8 @@
                         Ventas
                     </BarDropdownToggle>
                     <BarDropdownMenu>
-                        <BarDropdownItem To="/Budget">Presupuestos</BarDropdownItem>
-                        <BarDropdownItem>Generar venta</BarDropdownItem>
+                        <BarDropdownItem To="/Budgets">Presupuestos</BarDropdownItem>
+                        <BarDropdownItem To="/Discounts">Descuentos</BarDropdownItem>
                     </BarDropdownMenu>
                 </BarDropdown>
             </BarItem>
@@ -107,11 +108,24 @@
             <BarItem>
                 <BarDropdown>
                     <BarDropdownToggle>
+                        <BarIcon IconName="@("fa-cog")"></BarIcon>
+                        Administración
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem To="/Configurations">Configuraciones</BarDropdownItem>
+                    </BarDropdownMenu>
+
+                </BarDropdown>
+            </BarItem>
+            <BarItem>
+                <BarDropdown>
+                    <BarDropdownToggle>
                         <BarIcon IconName="@("fa-power-off")"></BarIcon>
+                        Sesión
                     </BarDropdownToggle>
                     <BarDropdownMenu>
                         <BarDropdownItem To="Identity/Account/Login">LogIn</BarDropdownItem>
-                        <BarDropdownItem To="Identity/Account/LogOut">LogOut</BarDropdownItem>
+                        <BarDropdownItem To="Identity/Account/LogOut">LogOut</BarDropdownItem>                        
                     </BarDropdownMenu>
 
                 </BarDropdown>

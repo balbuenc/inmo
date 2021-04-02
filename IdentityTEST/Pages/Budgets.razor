@@ -1,4 +1,4 @@
-﻿@page "/Budget"
+﻿@page "/Budgets"
 @using Model
 @using Interfaces
 @inject IBudgetService BudgetService
@@ -45,12 +45,11 @@
                 else
                 {
                     <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowExcelExport="true">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
                         <GridTemplates>
                             <DetailTemplate>
                                 @{
                                     Budget Bu = context as Budget;
-
                                 }
                                 <SfTab Height="300" HeaderPlacement="HeaderPosition.Top">
                                     <TabItems>
@@ -60,32 +59,7 @@
                                             </ChildContent>
                                             <ContentTemplate>
                                                 <div class="inner-padding">
-                                                    <SfGrid Width="800px" TValue="BudgetDetails" DataSource="@budgetDetails" Query="@(new Query().Where("id_presupuesto", "equal", Bu.id_presupuesto))" AllowPaging="true">
-                                                        <GridPageSettings PageSize="4"></GridPageSettings>
-                                                        <GridAggregates>
-                                                            <GridAggregate>
-                                                                <GridAggregateColumns>
-                                                                    <GridAggregateColumn Field=@nameof(BudgetDetails.precio) Type="AggregateType.Sum" Format="C2">
-                                                                        <FooterTemplate Context="con">
-                                                                            @{
-                                                                                var aggregate = (con as AggregateTemplateContext);
-                                                                                <div>
-                                                                                    <p><b>Total: @aggregate.Sum</b></p>
-                                                                                </div>
-                                                                            }
-                                                                        </FooterTemplate>
-                                                                    </GridAggregateColumn>
-                                                                </GridAggregateColumns>
-                                                            </GridAggregate>
-                                                        </GridAggregates>
-                                                        <GridColumns>
-                                                            <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" Width="110"></GridColumn>
-                                                            <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="90"></GridColumn>
-
-                                                            <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="c2" TextAlign="TextAlign.Right" Width="70"></GridColumn>
-                                                            <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="c2" TextAlign="TextAlign.Right" Width="70"></GridColumn>
-                                                        </GridColumns>
-                                                    </SfGrid>
+                                                    <BDetails BudgetID="@Bu.id_presupuesto.ToString()"></BDetails>
                                                 </div>
                                             </ContentTemplate>
                                         </TabItem>
@@ -95,7 +69,6 @@
                         </GridTemplates>
                         <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget"></GridEvents>
                         <GridPageSettings PageSize="30"></GridPageSettings>
-
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
                             <HeaderTemplate>
                                 @{
@@ -110,25 +83,19 @@
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
-
                                             <SfNumericTextBox @bind-Value="@(budg.id_presupuesto)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-9">
-
                                             <SfNumericTextBox @bind-Value="@(budg.nro_presupuesto)" Enabled="true" Placeholder="Nro. presupuesto" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-
                                             <SfDatePicker @bind-Value="@(budg.fecha)" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
                                         </div>
-
                                     </div>
                                     <div class="form-row">
-
                                         <div class="form-group col-md-12">
-
                                             <SfDropDownList DataSource="@clients"
                                                             TItem="Client"
                                                             TValue="Int32?"
@@ -137,13 +104,8 @@
                                                             FloatLabelType="FloatLabelType.Always">
                                                 <DropDownListFieldSettings Value="id_cliente" Text="razon_social"></DropDownListFieldSettings>
                                             </SfDropDownList>
-
-
                                         </div>
-
                                     </div>
-
-
                                 </div>
                             </Template>
                         </GridEditSettings>
@@ -151,12 +113,9 @@
                             <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro. presupuesto" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="30"></GridColumn>
-
                             <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
-
-
                         </GridColumns>
                     </SfGrid>
                 }
@@ -172,16 +131,12 @@
 @code {
     //public IEnumerable<Budget> clients { get; set; }
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "ColumnChooser" };
     public string ErrorDetails = "";
 
     public IEnumerable<Budget> GridData { get; set; }
     public IEnumerable<Client> clients { get; set; }
     public IEnumerable<Employee> employees { get; set; }
-    public IEnumerable<BudgetDetails> budgetDetails { get; set; }
-
-    public int? RowIndex { get; set; } = 15;
-
 
     SfGrid<Budget> Grid { get; set; }
 
@@ -195,7 +150,7 @@
             GridData = await BudgetService.GetAllBudgets();
             clients = await ClientService.GetAllClients();
             employees = await EmployeeService.GetAllEmployees();
-            budgetDetails = await BudgetDetailsService.GetAllBudgetDetails();
+           
         }
         catch (Exception ex)
         {
@@ -229,9 +184,6 @@
         }
 
     }
-
-
-
 
 
     protected async Task SaveBudget(Budget budget)

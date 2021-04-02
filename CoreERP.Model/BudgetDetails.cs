@@ -6,6 +6,7 @@ namespace CoreERP.Model
 {
     public class BudgetDetails
     {
+        public int id_prepuesto_detalle { get; set; }
         public int id_presupuesto { get; set; }
         public int id_producto { get; set; }
         public int id_descuento { get; set; }

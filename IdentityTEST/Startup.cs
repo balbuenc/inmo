@@ -24,6 +24,7 @@ using Microsoft.Extensions.Options;
 using Syncfusion.Blazor;
 using Microsoft.AspNetCore.Http;
 
+
 namespace CoreERP.UI
 {
     public class Startup
@@ -120,6 +121,12 @@ namespace CoreERP.UI
             services.AddHttpClient<IBudgetDetailsService, BudgetDetailsService>(
             budgetDetails => { budgetDetails.BaseAddress = new Uri("https://localhost:44342"); });
 
+            services.AddHttpClient<IDiscountService, DiscountService>(
+            discount => { discount.BaseAddress = new Uri("https://localhost:44342"); });
+
+            services.AddHttpClient<IConfigurationService, ConfigurationService>(
+            configuration => { configuration.BaseAddress = new Uri("https://localhost:44342"); });
+        
 
         }
 
@@ -153,8 +160,8 @@ namespace CoreERP.UI
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllers();
-                endpoints.MapBlazorHub();
+            //endpoints.MapControllers();
+            endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

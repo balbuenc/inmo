@@ -1,6 +1,7 @@
 ﻿@page
 @model LoginModel
 
+
 @{
     ViewData["Title"] = "Log in";
 }
@@ -76,10 +77,14 @@
         </section>
     </div>*@
     <div class="col-md-6 col-md-offset-2 my-auto">
-        <img src="/Images/MovicorLOGO.png"  style="width:50%" />
+        <img id="logo" src="@Model.GetLogoImagePath"  style="width:50%" />
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+
+
+

@@ -33,10 +33,10 @@ namespace CoreERP.UI.Services
                  );
         }
 
-        public async Task<BudgetDetails> GetBudgetDetails(int id)
+        public async Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id)
         {
-            return await JsonSerializer.DeserializeAsync<BudgetDetails>(
-             await _httpClient.GetStreamAsync($"api/budgetDetails/{id}"),
+            return await JsonSerializer.DeserializeAsync< IEnumerable<BudgetDetails>>(
+             await _httpClient.GetStreamAsync($"api/budgetDetail/{id}"),
              new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
              );
         }
@@ -46,7 +46,7 @@ namespace CoreERP.UI.Services
             var clientJson = new StringContent(JsonSerializer.Serialize(budgetDetails),
                Encoding.UTF8, "application/json");
 
-            if (budgetDetails.id_presupuesto == 0)
+            if (budgetDetails.id_prepuesto_detalle == 0)
                 await _httpClient.PostAsync("api/BudgetDetail", clientJson);
             else
                 await _httpClient.PutAsync("api/BudgetDetail", clientJson);

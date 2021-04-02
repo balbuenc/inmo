@@ -27,7 +27,7 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @"DELETE FROM public.presupuesto_detalles
-                        WHERE id_presupuesto=0 AND id_producto=@id_producto;";
+                        WHERE id_presupuesto_detalle=@Id;";
 
             var result = await db.ExecuteAsync(sql, new { Id = id });
 
@@ -45,7 +45,7 @@ namespace CoreERP.Data.Repositories
             return await db.QueryAsync<BudgetDetails>(sql, new { });
         }
 
-        public async Task<BudgetDetails> GetBudgetDetailDetails(int id)
+        public async Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id)
         {
             var db = dbConnection();
             var sql = @"select pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, d.porcentaje 
@@ -55,51 +55,66 @@ namespace CoreERP.Data.Repositories
                         where pd.id_presupuesto = @Id";
 
 
-            return await db.QueryFirstOrDefaultAsync<BudgetDetails>(sql, new { Id = id });
+            return await db.QueryAsync<BudgetDetails>(sql, new { Id = id });
         }
 
         public async Task<bool> InsertBudgetDetail(BudgetDetails budgetDetail)
         {
-            var db = dbConnection();
+            try
+            {
+                var db = dbConnection();
 
-            var sql = @"INSERT INTO public.presupuesto_detalles
+                var sql = @"INSERT INTO public.presupuesto_detalles
                         (id_presupuesto, id_producto, id_descuento, cantidad, costo, precio)
                         VALUES(@id_presupuesto, @id_producto, @id_descuento, @cantidad, @costo, @precio);";
 
-            var result = await db.ExecuteAsync(sql, new
-            {
-                budgetDetail.id_presupuesto,
-                budgetDetail.id_producto,
-                budgetDetail.id_descuento,
-                budgetDetail.cantidad,
-                budgetDetail.costo,
-                budgetDetail.precio
-            }
-            );
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    budgetDetail.id_presupuesto,
+                    budgetDetail.id_producto,
+                    budgetDetail.id_descuento,
+                    budgetDetail.cantidad,
+                    budgetDetail.costo,
+                    budgetDetail.precio
+                }
+                );
 
-            return result > 0;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> UpdateBudgetDetail(BudgetDetails budgetDetail)
         {
-            var db = dbConnection();
-
-            var sql = @"UPDATE public.presupuesto_detalles
-                        SET id_descuento=@id_descuento, cantidad=@cantidad, costo=@costo, precio=@precio
-                        WHERE id_presupuesto=@id_presupuesto AND id_producto=@id_producto;";
-
-            var result = await db.ExecuteAsync(sql, new
+            try
             {
-                budgetDetail.id_presupuesto,
-                budgetDetail.id_producto,
-                budgetDetail.id_descuento,
-                budgetDetail.cantidad,
-                budgetDetail.costo,
-                budgetDetail.precio
-            }
-            );
+                var db = dbConnection();
 
-            return result > 0;
+                var sql = @"UPDATE public.presupuesto_detalles
+                        SET id_descuento=@id_descuento, cantidad=@cantidad, costo=@costo, precio=@precio
+                        WHERE id_presupuesto_detalle=@id_presupuesto_deatalle;";
+
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    budgetDetail.id_presupuesto,
+                    budgetDetail.id_producto,
+                    budgetDetail.id_descuento,
+                    budgetDetail.cantidad,
+                    budgetDetail.costo,
+                    budgetDetail.precio,
+                    budgetDetail.id_prepuesto_detalle
+                }
+                );
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

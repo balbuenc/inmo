@@ -1,0 +1,166 @@
+﻿@page "/BudgetDetails/{BudgetID}"
+@using Model
+@using Interfaces
+
+@inject IBudgetDetailsService BudgetDetailsService
+@inject IProductService ProductService
+@inject IDiscountService DiscountService
+
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+
+@attribute [Authorize]
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using System.Collections.ObjectModel
+@inject NavigationManager NavigationManager
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Navigations
+
+
+<div class="inner-padding">
+    <SfGrid ID="Grid" @ref="Grid" Width="1000px" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true" AllowSorting="true">
+        <GridEvents OnActionBegin="OnBeginHandler" TValue="BudgetDetails"></GridEvents>
+        <GridPageSettings PageSize="5"></GridPageSettings>
+        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal">
+        </GridEditSettings>
+        <GridAggregates>
+            <GridAggregate>
+                <GridAggregateColumns>
+                    <GridAggregateColumn Field=@nameof(BudgetDetails.precio) Type="AggregateType.Sum" Format="N2">
+                        <FooterTemplate Context="con">
+                            @{
+                                var aggregate = (con as AggregateTemplateContext);
+                                <div>
+                                    <p><b>Total: @aggregate.Sum</b></p>
+                                </div>
+                            }
+                        </FooterTemplate>
+                    </GridAggregateColumn>
+                </GridAggregateColumns>
+            </GridAggregate>
+        </GridAggregates>
+        <GridColumns>
+            <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" EditType="EditType.DropDownEdit" Width="110">
+                <EditTemplate>
+                    <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products">
+                        <DropDownListFieldSettings Text="codigo" Value="id_producto"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </EditTemplate>
+            </GridColumn>
+            <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="90">
+                <EditTemplate>
+                    <SfTextBox @bind-Value="@((context as BudgetDetails).producto)" Enabled="false" Placeholder="Prodúcto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                </EditTemplate>
+            </GridColumn>
+            <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="110">
+                <EditTemplate>
+                    <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts">
+                        <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </EditTemplate>
+            </GridColumn>
+            <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="N2" TextAlign="TextAlign.Right" Width="70">
+                <EditTemplate>
+                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                </EditTemplate>
+            </GridColumn>
+            <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="N2" TextAlign="TextAlign.Right" Width="70">
+                <EditTemplate>
+                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                </EditTemplate>
+            </GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div>
+
+@code {
+
+    [Parameter]
+    public string BudgetID { get; set; }
+
+
+    public string Messsage { get; set; }
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "ColumnChooser" };
+    public string ErrorDetails = "";
+
+
+
+    public IEnumerable<BudgetDetails> GridData { get; set; }
+    public IEnumerable<Product> products { get; set; }
+    public IEnumerable<Discount> discounts { get; set; }
+
+    SfGrid<BudgetDetails> Grid { get; set; }
+
+    private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            int id = Int32.Parse(BudgetID);
+            GridData = await BudgetDetailsService.GetBudgetDetails(id);
+            products = await ProductService.GetAllProducts();
+            discounts = await DiscountService.GetAllDiscounts();
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener detalles del presupuesto: " + ex.Message;
+        }
+    }
+
+
+
+    private async Task OnBeginHandler(ActionEventArgs<BudgetDetails> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            ((BudgetDetails)Args.Data).id_presupuesto = Int32.Parse(BudgetID);
+            await SaveBudgetDetail((BudgetDetails)Args.Data);
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await DeleteBudgetDetail(((BudgetDetails)Args.Data).id_presupuesto);
+        }
+
+
+        return;
+    }
+
+    private async Task ActionCompletedHandler(ActionEventArgs<BudgetDetails> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save || Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            int id = Int32.Parse(BudgetID);
+            GridData = await BudgetDetailsService.GetBudgetDetails(id);
+            Grid.Refresh();
+        }
+
+    }
+
+
+    protected async Task SaveBudgetDetail(BudgetDetails budgetDetails)
+    {
+        await BudgetDetailsService.SaveBudgetDetails(budgetDetails);
+    }
+
+    protected async Task DeleteBudgetDetail(int id)
+    {
+        await BudgetDetailsService.DeleteBudgetDetails(id);
+    }
+
+    public async Task ExcelExport()
+    {
+        ExcelExportProperties ExportProperties = new ExcelExportProperties();
+        ExportProperties.IncludeHiddenColumn = true;
+        await this.Grid.ExcelExport(ExportProperties);
+    }
+
+}

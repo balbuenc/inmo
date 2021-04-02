@@ -27,9 +27,9 @@ namespace CoreERP.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBudgetDetailDetails(int id)
+        public async Task<IActionResult> GetBudgetDetails(int id)
         {
-            return Ok(await _BudgetDetailRepository.GetBudgetDetailDetails(id));
+            return Ok(await _BudgetDetailRepository.GetBudgetDetails(id));
         }
 
         [HttpPost]

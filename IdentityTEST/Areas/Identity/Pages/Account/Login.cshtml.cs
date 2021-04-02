@@ -11,6 +11,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using CoreERP.UI.Services;
+using System.Net.Http;
+using CoreERP.UI.Interfaces;
+using CoreERP.Model;
+using CoreERP.UI.Tools;
+using Microsoft.AspNetCore.Html;
 
 namespace CoreERP.UI.Areas.Identity.Pages.Account
 {
@@ -20,7 +26,11 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private SystemTools erpTools;
 
+        private String mainURL;
+        private String mainLogo;
+        
         public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager)
@@ -28,6 +38,7 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            erpTools = new SystemTools();
         }
 
         [BindProperty]
@@ -54,6 +65,17 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
+        public HtmlString GetLogoImagePath
+        {
+            get
+            {
+                string imagePath;
+                imagePath = mainURL + mainLogo;
+                return new HtmlString(!string.IsNullOrEmpty(imagePath) ? imagePath : string.Empty) ;
+            }
+        }
+
+
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -69,7 +91,13 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
+
+            //Get System configuration
+            mainURL = await erpTools.GetSystemParam("BaseURL");
+            mainLogo = await erpTools.GetSystemParam("MainLogo");
         }
+
+      
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -79,6 +107,8 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
             {
                 if (Input.UserName != "cbalbuena")
                     Input.UserName = Input.UserName + "@lugaro";
+
+
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true

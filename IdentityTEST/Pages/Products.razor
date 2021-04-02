@@ -60,21 +60,17 @@
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
-
                                             <SfNumericTextBox @bind-Value="@(prod.id_producto)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-9">
-
                                             <SfTextBox @bind-Value="@(prod.producto)" Enabled="true" Placeholder="Prodúcto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-
                                             <SfTextBox @bind-Value="@(prod.codigo)" Enabled="true" Placeholder="Código" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                         <div class="form-group col-md-6">
-
                                             <SfTextBox @bind-Value="@(prod.descripcion)" Enabled="true" Placeholder="Descripción" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
@@ -86,7 +82,6 @@
                                             <SfNumericTextBox @bind-Value="@(prod.precio)" Enabled="true" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-3">
-
                                             <SfDropDownList DataSource="@currencies"
                                                             TItem="Currency"
                                                             TValue="Int32"
@@ -96,11 +91,9 @@
                                                 <DropDownListFieldSettings Value="id_moneda" Text="moneda"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
-
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
-
                                             <SfDropDownList DataSource="@brands"
                                                             TItem="Brand"
                                                             TValue="Int32"
@@ -111,7 +104,6 @@
                                             </SfDropDownList>
                                         </div>
                                         <div class="form-group col-md-3">
-
                                             <SfDropDownList DataSource="@vendors"
                                                             TItem="Vendor"
                                                             TValue="Int32?"
@@ -122,7 +114,6 @@
                                             </SfDropDownList>
                                         </div>
                                         <div class="form-group col-md-3">
-
                                             <SfDropDownList DataSource="@origins"
                                                             TItem="Origin"
                                                             TValue="Int32"
@@ -132,9 +123,7 @@
                                                 <DropDownListFieldSettings Text="origen" Value="id_origen"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
-
                                     </div>
-
                                 </div>
                             </Template>
                         </GridEditSettings>
@@ -142,7 +131,6 @@
                             <GridColumn Field=@nameof(Product.id_producto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="30"></GridColumn>
-
                             <GridColumn Field=@nameof(Product.proveedor) HeaderText="Proveedor" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Product.marca) HeaderText="Marca" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Product.costo) HeaderText="Costo" Visible="false" Width="10"></GridColumn>

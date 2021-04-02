@@ -10,7 +10,7 @@ namespace CoreERP.Data.Repositories
     {
         Task<IEnumerable<BudgetDetails>> GetAllBudgetDetails();
 
-        Task<BudgetDetails> GetBudgetDetailDetails(int id);
+        Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id);
 
         Task<bool> InsertBudgetDetail(BudgetDetails budgetDetail);
 

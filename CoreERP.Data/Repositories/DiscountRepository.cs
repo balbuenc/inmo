@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace CoreERP.Data.Repositories
 {
-    public class AreaRepository : IAreaRepository
+    public class DiscountRepository : IDiscountRepository
     {
         private SqlConfiguration _connectionString;
 
-        public AreaRepository(SqlConfiguration connectionStringg)
+        public DiscountRepository(SqlConfiguration connectionStringg)
         {
             _connectionString = connectionStringg;
         }
@@ -22,14 +22,14 @@ namespace CoreERP.Data.Repositories
             return new NpgsqlConnection(_connectionString.ConnectionString);
         }
 
-        public async Task<bool> DeleteArea(int id)
+        public async Task<bool> DeleteDiscount(int id)
         {
             try
             {
                 var db = dbConnection();
 
-                var sql = @"DELETE from areas
-                        WHERE id_area = @Id ";
+                var sql = @"DELETE from descuentos
+                        WHERE id_descuento = @Id ";
 
                 var result = await db.ExecuteAsync(sql, new { Id = id });
 
@@ -37,18 +37,18 @@ namespace CoreERP.Data.Repositories
             }
             catch (Exception ex)
             {
-                return false;
+                throw ex;
             }
         }
 
-        public async Task<IEnumerable<Area>> GetAllAreas()
+        public async Task<IEnumerable<Discount>> GetAllDiscounts()
         {
             try
             {
                 var db = dbConnection();
-                var sql = "select * from Areas order by id_area asc";
+                var sql = "select * from descuentos order by id_descuento asc";
 
-                var result = await db.QueryAsync<Area>(sql, new { });
+                var result = await db.QueryAsync<Discount>(sql, new { });
 
                 return result;
             }
@@ -58,15 +58,15 @@ namespace CoreERP.Data.Repositories
             }
         }
 
-        public async Task<Area> GetAreaDetails(int id)
+        public async Task<Discount> GetDiscountDetails(int id)
         {
             try
             {
                 var db = dbConnection();
-                var sql = "select * from areas  where id_area = @Id";
+                var sql = "select * from descuentos  where id_descuento = @Id";
 
 
-                return await db.QueryFirstOrDefaultAsync<Area>(sql, new { Id = id });
+                return await db.QueryFirstOrDefaultAsync<Discount>(sql, new { Id = id });
             }
             catch (Exception ex)
             {
@@ -74,17 +74,18 @@ namespace CoreERP.Data.Repositories
             }
         }
 
-        public async Task<bool> InsertArea(Area area)
+        public async Task<bool> InsertDiscount(Discount discount)
         {
             try
             {
                 var db = dbConnection();
 
-                var sql = @"INSERT INTO public.areas (area) VALUES(@area);";
+                var sql = @"INSERT INTO public.descuentos (descuento, porcentaje) VALUES(@descuento, @porcentaje);";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
-                    area.area
+                    discount.descuento,
+                    discount.porcentaje
                 }
                 );
 
@@ -96,20 +97,22 @@ namespace CoreERP.Data.Repositories
             }
         }
 
-        public async Task<bool> UpdateArea(Area area)
+        public async Task<bool> UpdateDiscount(Discount discount)
         {
             try
             {
                 var db = dbConnection();
 
-                var sql = @"UPDATE public.areas
-                        set area =@area
-                        where id_area=@id_area;";
+                var sql = @"UPDATE public.descuentos
+                        set descuento =@descuento,
+                            porcentaje =@porcentaje
+                        where id_descuento=@id_descuento;";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
-                    area.id_area,
-                    area.area
+                    discount.id_descuento,
+                    discount.descuento,
+                    discount.porcentaje
                 }
                 );
 
