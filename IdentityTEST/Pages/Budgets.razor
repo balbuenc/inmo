@@ -162,7 +162,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener presupuestos: " + ex.Message;
+            Messsage = "Error al obtener presupuestos [OnInitializedAsync] : " + ex.Message;
         }
     }
 
@@ -186,7 +186,7 @@
         }
         catch(Exception ex)
         {
-            Messsage = "Error al obtener presupuestos: " + ex.Message;
+            Messsage = "Error al obtener presupuestos [OnBeginHandler]: " + ex.Message + " Inner.: " + ex.InnerException;
             throw ex;
         }
     }
