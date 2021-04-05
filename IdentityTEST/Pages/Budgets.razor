@@ -170,17 +170,25 @@
 
     private async Task OnBeginHandler(ActionEventArgs<Budget> Args)
     {
-        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        try
         {
-            await SaveBudget((Budget)Args.Data);
-        }
-        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
-        {
-            await DeleteBudget(((Budget)Args.Data).id_presupuesto);
-        }
+            if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+            {
+                await SaveBudget((Budget)Args.Data);
+            }
+            else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+            {
+                await DeleteBudget(((Budget)Args.Data).id_presupuesto);
+            }
 
 
-        return;
+            return;
+        }
+        catch(Exception ex)
+        {
+            Messsage = "Error al obtener presupuestos: " + ex.Message;
+            throw ex;
+        }
     }
 
     private async Task ActionCompletedHandler(ActionEventArgs<Budget> Args)
@@ -196,8 +204,16 @@
 
     protected async Task SaveBudget(Budget budget)
     {
-        budget.id_funcionario = GetEmployeeID(employees, httpContextAccessor.HttpContext.User.Identity.Name);
-        await BudgetService.SaveBudget(budget);
+        try
+        {
+            budget.id_funcionario = GetEmployeeID(employees, httpContextAccessor.HttpContext.User.Identity.Name);
+            await BudgetService.SaveBudget(budget);
+        }
+        catch(Exception ex)
+        {
+            Messsage = "Error al registrar presupuesto: " + ex.Message;
+            throw ex;
+        }
     }
 
     protected async Task DeleteBudget(int id)
@@ -214,7 +230,19 @@
 
     public Int32 GetEmployeeID(IEnumerable<Employee> emp, string username)
     {
-        return emp.First(c => c.usuario == username).id_funcionario;
+        int id;
+
+        try
+        {
+            id = emp.First(c => c.usuario == username).id_funcionario;
+            return id;
+        }
+        catch(Exception ex)
+        {
+            Messsage = "Error al obtener ID de usuario : " + ex.Message;
+            return 1;
+        }
+
     }
 
 
