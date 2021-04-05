@@ -79,6 +79,10 @@
                             <Template>
                                 @{
                                     var budg = (context as Budget);
+                                    if (budg.fecha == t)
+                                        budg.fecha = hoy;
+                                    
+
                                 }
                                 <div>
                                     <div class="form-row">
@@ -91,7 +95,7 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <SfDatePicker @bind-Value="@(budg.fecha)" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
+                                            <SfDatePicker TValue="DateTime" @bind-Value="@(budg.fecha)" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"  > </SfDatePicker>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -138,6 +142,10 @@
     public IEnumerable<Client> clients { get; set; }
     public IEnumerable<Employee> employees { get; set; }
 
+
+    public DateTime hoy = DateTime.Today;
+    public DateTime t;
+
     SfGrid<Budget> Grid { get; set; }
 
     private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
@@ -150,7 +158,7 @@
             GridData = await BudgetService.GetAllBudgets();
             clients = await ClientService.GetAllClients();
             employees = await EmployeeService.GetAllEmployees();
-           
+
         }
         catch (Exception ex)
         {
