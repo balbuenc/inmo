@@ -25,15 +25,15 @@
 
 
 <div class="inner-padding">
-    <SfGrid ID="Grid" @ref="Grid" Width="1000px" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true" AllowSorting="true">
-        <GridEvents OnActionBegin="OnBeginHandler" TValue="BudgetDetails"></GridEvents>
+    <SfGrid ID="Grid" @ref="Grid" Width="1000px" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true" AllowSorting="true" >
+        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="BudgetDetails"></GridEvents>
         <GridPageSettings PageSize="5"></GridPageSettings>
         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal">
         </GridEditSettings>
         <GridAggregates>
             <GridAggregate>
                 <GridAggregateColumns>
-                    <GridAggregateColumn Field=@nameof(BudgetDetails.precio) Type="AggregateType.Sum" Format="N2">
+                    <GridAggregateColumn Field=@nameof(BudgetDetails.total) Type="AggregateType.Sum" Format="N2">
                         <FooterTemplate Context="con">
                             @{
                                 var aggregate = (con as AggregateTemplateContext);
@@ -47,6 +47,11 @@
             </GridAggregate>
         </GridAggregates>
         <GridColumns>
+            <GridColumn Field=@nameof(BudgetDetails.id_presupuesto_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true">
+                <EditTemplate>
+                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).id_presupuesto_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                </EditTemplate>
+            </GridColumn>
             <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" EditType="EditType.DropDownEdit" Width="110">
                 <EditTemplate>
                     <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products">
@@ -76,6 +81,11 @@
                     <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                 </EditTemplate>
             </GridColumn>
+            <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="N2" TextAlign="TextAlign.Right" Width="70">
+                <EditTemplate>
+                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                </EditTemplate>
+            </GridColumn>
         </GridColumns>
     </SfGrid>
 </div>
@@ -87,7 +97,7 @@
 
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "ColumnChooser" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel"};
     public string ErrorDetails = "";
 
 
@@ -98,7 +108,6 @@
 
     SfGrid<BudgetDetails> Grid { get; set; }
 
-    private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
 
 
     protected override async Task OnInitializedAsync()
@@ -127,12 +136,14 @@
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await DeleteBudgetDetail(((BudgetDetails)Args.Data).id_presupuesto);
+            await DeleteBudgetDetail(((BudgetDetails)Args.Data).id_presupuesto_detalle);
         }
 
 
         return;
     }
+
+   
 
     private async Task ActionCompletedHandler(ActionEventArgs<BudgetDetails> Args)
     {

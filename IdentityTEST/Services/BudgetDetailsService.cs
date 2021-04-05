@@ -46,7 +46,7 @@ namespace CoreERP.UI.Services
             var clientJson = new StringContent(JsonSerializer.Serialize(budgetDetails),
                Encoding.UTF8, "application/json");
 
-            if (budgetDetails.id_prepuesto_detalle == 0)
+            if (budgetDetails.id_presupuesto_detalle == 0)
                 await _httpClient.PostAsync("api/BudgetDetail", clientJson);
             else
                 await _httpClient.PutAsync("api/BudgetDetail", clientJson);
