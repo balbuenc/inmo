@@ -45,7 +45,7 @@
                 else
                 {
                     <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
+                    <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
                         <GridTemplates>
                             <DetailTemplate>
                                 @{
@@ -69,7 +69,7 @@
                         </GridTemplates>
                         <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget"></GridEvents>
                         <GridPageSettings PageSize="30"></GridPageSettings>
-                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
+                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" Dialog="DialogParams">
                             <HeaderTemplate>
                                 @{
                                     var budg = (context as Budget);
