@@ -7,7 +7,8 @@
 @inject IBudgetDetailsService BudgetDetailsService
 
 @using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor httpContextAccessor
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 @attribute [Authorize]
@@ -106,7 +107,7 @@
                                             </SfDropDownList>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </Template>
                         </GridEditSettings>
@@ -156,8 +157,10 @@
             GridData = await BudgetService.GetAllBudgets();
             clients = await ClientService.GetAllClients();
             employees = await EmployeeService.GetAllEmployees();
-            UserName = httpContextAccessor.HttpContext.User.Identity.Name;
-
+            
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            UserName = user.Identity.Name;
         }
         catch (Exception ex)
         {
@@ -183,7 +186,7 @@
 
             return;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Messsage = "Error al obtener presupuestos [OnBeginHandler]: " + ex.Message + " Inner.: " + ex.InnerException;
             throw ex;
@@ -208,7 +211,7 @@
             budget.id_funcionario = GetEmployeeID(UserName);
             await BudgetService.SaveBudget(budget);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Messsage = "Error al registrar presupuesto: " + ex.Message;
             throw ex;
@@ -235,7 +238,7 @@
             id = employees.First(c => c.usuario == username).id_funcionario;
             return id;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Messsage = "Error al obtener ID de usuario : " + ex.Message;
             return 1;

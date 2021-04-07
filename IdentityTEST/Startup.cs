@@ -60,8 +60,7 @@ namespace CoreERP.UI
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSyncfusionBlazor();
 
-            services.AddHttpContextAccessor();
-            services.AddScoped<HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
             services.AddHttpClient<IClientService, ClientService>(
