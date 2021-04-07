@@ -69,7 +69,7 @@
                         </GridTemplates>
                         <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget"></GridEvents>
                         <GridPageSettings PageSize="30"></GridPageSettings>
-                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal" Dialog="DialogParams">
+                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
                             <HeaderTemplate>
                                 @{
                                     var budg = (context as Budget);
@@ -81,25 +81,21 @@
                                     var budg = (context as Budget);
                                     if (budg.fecha == t)
                                         budg.fecha = hoy;
-                                    
-
                                 }
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(budg.id_presupuesto)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
-                                        <div class="form-group col-md-9">
+                                        <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(budg.nro_presupuesto)" Enabled="true" Placeholder="Nro. presupuesto" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <SfDatePicker TValue="DateTime" @bind-Value="@(budg.fecha)" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"  > </SfDatePicker>
+                                        <div class="form-group col-md-3">
+                                            <SfDatePicker TValue="DateTime" @bind-Value="@(budg.fecha)" Format="dd/MM/yyyy" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
                                         </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-9">
                                             <SfDropDownList DataSource="@clients"
                                                             TItem="Client"
                                                             TValue="Int32?"
@@ -110,6 +106,7 @@
                                             </SfDropDownList>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </Template>
                         </GridEditSettings>
@@ -118,7 +115,7 @@
                             <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro. presupuesto" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Format="dd/MM/yyyy" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
                         </GridColumns>
                     </SfGrid>
@@ -150,6 +147,7 @@
 
     private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
 
+    public string UserName;
 
     protected override async Task OnInitializedAsync()
     {
@@ -158,6 +156,7 @@
             GridData = await BudgetService.GetAllBudgets();
             clients = await ClientService.GetAllClients();
             employees = await EmployeeService.GetAllEmployees();
+            UserName = httpContextAccessor.HttpContext.User.Identity.Name;
 
         }
         catch (Exception ex)
@@ -206,7 +205,7 @@
     {
         try
         {
-            budget.id_funcionario = GetEmployeeID(employees, httpContextAccessor.HttpContext.User.Identity.Name);
+            budget.id_funcionario = GetEmployeeID(UserName);
             await BudgetService.SaveBudget(budget);
         }
         catch(Exception ex)
@@ -228,13 +227,12 @@
         await this.Grid.ExcelExport(ExportProperties);
     }
 
-    public Int32 GetEmployeeID(IEnumerable<Employee> emp, string username)
+    public Int32 GetEmployeeID(string username)
     {
         int id;
-
         try
         {
-            id = emp.First(c => c.usuario == username).id_funcionario;
+            id = employees.First(c => c.usuario == username).id_funcionario;
             return id;
         }
         catch(Exception ex)
@@ -242,7 +240,6 @@
             Messsage = "Error al obtener ID de usuario : " + ex.Message;
             return 1;
         }
-
     }
 
 

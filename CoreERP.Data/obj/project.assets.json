@@ -637,11 +637,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\CoreERP.Data.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\source\\repos\\Lugaro\\CoreERP.Data\\CoreERP.Data.csproj",
       "projectName": "CoreERP.Data",
-      "projectPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\CoreERP.Data.csproj",
+      "projectPath": "C:\\Users\\HP\\source\\repos\\Lugaro\\CoreERP.Data\\CoreERP.Data.csproj",
       "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Data\\obj\\",
+      "outputPath": "C:\\Users\\HP\\source\\repos\\Lugaro\\CoreERP.Data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -658,8 +658,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\CoreERP.Model.csproj": {
-              "projectPath": "C:\\Users\\HP\\source\\repos\\LugaroDEV\\CoreERP.Model\\CoreERP.Model.csproj"
+            "C:\\Users\\HP\\source\\repos\\Lugaro\\CoreERP.Model\\CoreERP.Model.csproj": {
+              "projectPath": "C:\\Users\\HP\\source\\repos\\Lugaro\\CoreERP.Model\\CoreERP.Model.csproj"
             }
           }
         }
