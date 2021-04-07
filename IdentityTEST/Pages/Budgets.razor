@@ -157,11 +157,13 @@
             GridData = await BudgetService.GetAllBudgets();
             clients = await ClientService.GetAllClients();
             employees = await EmployeeService.GetAllEmployees();
-            
+
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
-            UserName = user.Identity.Name;
-        }
+
+            string[] subs = user.Identity.Name.Split("@");
+            UserName = subs[0];
+        } 
         catch (Exception ex)
         {
             Messsage = "Error al obtener presupuestos [OnInitializedAsync] : " + ex.Message;
