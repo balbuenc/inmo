@@ -25,6 +25,12 @@ namespace CoreERP.API.Controllers
             return Ok(await _ProductRepository.GetAllProducts());
         }
 
+        [HttpGet("definitions")]
+        public async Task<IActionResult> GetProductsDefinitions()
+        {
+            return Ok(await _ProductRepository.GetProductsDefinitions());
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductDetails(int id)
         {

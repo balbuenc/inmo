@@ -116,8 +116,8 @@
         {
             int id = Int32.Parse(BudgetID);
             GridData = await BudgetDetailsService.GetBudgetDetails(id);
-            products = await ProductService.GetAllProducts();
-            discounts = await DiscountService.GetAllDiscounts();
+            //products = await ProductService.GetAllProducts();
+            //discounts = await DiscountService.GetAllDiscounts();
         }
         catch (Exception ex)
         {
@@ -138,12 +138,16 @@
         {
             await DeleteBudgetDetail(((BudgetDetails)Args.Data).id_presupuesto_detalle);
         }
-
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Add || Args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+            products = await ProductService.GetProductsDefinitions();
+            discounts = await DiscountService.GetAllDiscounts();
+        }
 
         return;
     }
 
-   
+
 
     private async Task ActionCompletedHandler(ActionEventArgs<BudgetDetails> Args)
     {

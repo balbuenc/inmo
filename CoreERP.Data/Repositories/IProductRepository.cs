@@ -10,6 +10,8 @@ namespace CoreERP.Data.Repositories
     {
         Task<IEnumerable<Product>> GetAllProducts();
 
+        Task<IEnumerable<Product>> GetProductsDefinitions();
+
         Task<Product> GetProductDetails(int id);
 
         Task<bool> InsertProduct(Product product);

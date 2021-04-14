@@ -68,6 +68,24 @@ namespace CoreERP.Data.Repositories
             }
         }
 
+        public async Task<IEnumerable<Product>> GetProductsDefinitions()
+        {
+            try
+            {
+                var db = dbConnection();
+                var sql = @"select p.id_producto, p.codigo, p.producto from productos p order by p.codigo";
+
+                var result = await db.QueryAsync<Product>(sql, new { });
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+
         public async Task<Product> GetProductDetails(int id)
         {
             var db = dbConnection();

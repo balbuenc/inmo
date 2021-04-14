@@ -41,7 +41,7 @@
                 else
                 {
                     <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData"  AllowExcelExport="true">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData"  AllowExcelExport="true" ShowColumnChooser="true">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Product"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -154,7 +154,7 @@
 @code {
     //public IEnumerable<Product> clients { get; set; }
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" ,"Search"};
     public string ErrorDetails = "";
 
     public IEnumerable<Product> GridData { get; set; }

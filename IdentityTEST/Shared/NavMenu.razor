@@ -125,12 +125,24 @@
                     </BarDropdownToggle>
                     <BarDropdownMenu>
                         <BarDropdownItem To="Identity/Account/Login">LogIn</BarDropdownItem>
-                        <BarDropdownItem To="Identity/Account/LogOut">LogOut</BarDropdownItem>                        
-                    </BarDropdownMenu>
+                        <BarDropdownItem To="Identity/Account/LogOut">LogOut</BarDropdownItem>
+                        <BarDropdownItem To="Identity/Account/Manage">
+                            <AuthorizeView>
+                                <Authorized>
+                                    <span class="fas fa-id-badge"></span><a href="Identity/Account/Manage"> <b>@context.User.Identity.Name</b></a>
+                                </Authorized>
+                                <NotAuthorized>
+                                    <span class="fas fa-user-alt-slash"></span>
+                                </NotAuthorized>
+                            </AuthorizeView>
 
+                        </BarDropdownItem>
+                    </BarDropdownMenu>
                 </BarDropdown>
             </BarItem>
+
         </BarStart>
+
     </BarMenu>
 </Bar>
 

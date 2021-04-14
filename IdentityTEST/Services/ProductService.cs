@@ -33,6 +33,21 @@ namespace CoreERP.UI.Services
                 );
         }
 
+        public async Task<IEnumerable<Product>> GetProductsDefinitions()
+        {
+            try
+            {
+                return await JsonSerializer.DeserializeAsync<IEnumerable<Product>>(
+                    await _httpClient.GetStreamAsync($"api/product/definitions"),
+                    new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
+                    );
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<Product> GetProductDetails(int id)
         {
             return await JsonSerializer.DeserializeAsync<Product>(
