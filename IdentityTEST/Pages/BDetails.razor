@@ -25,7 +25,7 @@
 
 
 <div class="inner-padding">
-    <SfGrid ID="Grid" @ref="Grid" Width="1000px" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true" AllowSorting="true" >
+    <SfGrid ID="Grid" @ref="Grid" Width="1000px" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true"  >
         <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="BudgetDetails"></GridEvents>
         <GridPageSettings PageSize="5"></GridPageSettings>
         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal">
@@ -97,7 +97,7 @@
 
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel"};
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
     public string ErrorDetails = "";
 
 

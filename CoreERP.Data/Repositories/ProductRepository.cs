@@ -105,8 +105,8 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @"INSERT INTO public.productos
-                        (id_origen, producto, codigo, id_marca, descripcion, id_proveedor, costo, precio, dias_garantia, id_moneda)
-                        values(@id_origen, @producto, @codigo, @id_marca, @descripcion, @id_proveedor, @costo, @precio, @dias_garantia, @id_moneda)";
+                        (id_origen, producto, codigo, id_marca, descripcion, id_proveedor, costo, precio, dias_garantia, id_moneda, iamgen)
+                        values(@id_origen, @producto, @codigo, @id_marca, @descripcion, @id_proveedor, @costo, @precio, @dias_garantia, @id_moneda, @imagen)";
 
             var result = await db.ExecuteAsync(sql, new
             {
@@ -119,7 +119,8 @@ namespace CoreERP.Data.Repositories
                 product.costo,
                 product.precio,
                 product.dias_garantia,
-                product.id_moneda
+                product.id_moneda,
+                product.imagen
             }
             );
 
@@ -133,7 +134,7 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var sql = @"UPDATE public.productos
-                        SET id_origen=@id_origen, producto=@producto, codigo=@codigo, id_marca=@id_marca, descripcion=@descripcion, id_proveedor=@id_proveedor, costo=@costo, precio=@precio, dias_garantia=@dias_garantia, id_moneda=@id_moneda
+                        SET id_origen=@id_origen, producto=@producto, codigo=@codigo, id_marca=@id_marca, descripcion=@descripcion, id_proveedor=@id_proveedor, costo=@costo, precio=@precio, dias_garantia=@dias_garantia, id_moneda=@id_moneda,imagen=@imagen
                         WHERE id_producto=@id_producto;
                         ;";
 
@@ -149,7 +150,8 @@ namespace CoreERP.Data.Repositories
                     product.costo,
                     product.precio,
                     product.dias_garantia,
-                    product.id_moneda
+                    product.id_moneda,
+                    product.imagen
                 }
                 );
 

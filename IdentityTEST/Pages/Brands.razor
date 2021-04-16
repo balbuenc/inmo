@@ -29,7 +29,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems"  DataSource="@GridData">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Brand"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -62,7 +62,7 @@
 @code {
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
 
     public IEnumerable<Brand> GridData { get; set; }
     public IEnumerable<Origin> origins { get; set; }
@@ -100,15 +100,15 @@
     {
         await BrandService.SaveBrand(position);
         Grid.Refresh();
-        
+
     }
 
     protected async Task DeleteBrand(int id)
     {
         await BrandService.DeleteBrand(id);
         Grid.Refresh();
-       
+
     }
 
-   
+
 }

@@ -46,7 +46,7 @@
                 else
                 {
                     <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
-                    <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
+                    <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true"  Toolbar="@ToolbarItems"  DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
                         <GridTemplates>
                             <DetailTemplate>
                                 @{
@@ -133,7 +133,7 @@
 @code {
     //public IEnumerable<Budget> clients { get; set; }
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "ColumnChooser" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel",  "Search","ColumnChooser" };
     public string ErrorDetails = "";
 
     public IEnumerable<Budget> GridData { get; set; }

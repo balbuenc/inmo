@@ -17,12 +17,7 @@
             <div class="alert alert-primary" role="banner"><b>Areas</b></div>
         </div>
     </div>
-
-
-
-    <SfUploader AutoUpload="false">
-        <UploaderEvents ValueChange="OnChange"></UploaderEvents>
-    </SfUploader>
+   
     <div class="col-lg-12 control-section">
         <div class="content-wrapper">
             <div class="row">
@@ -32,7 +27,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" AllowSorting="true" DataSource="@GridData">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Area"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -57,7 +52,7 @@
 @code {
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
 
     public ObservableCollection<Area> GridData { get; set; }
 
@@ -101,18 +96,6 @@
         Grid.Refresh();
     }
 
-    private void OnChange(UploadChangeEventArgs args)
-    {
-        string path = "./wwwroot/Images/";
-        foreach (var file in args.Files)
-        {
-            
-            path = path + file.FileInfo.Name;
-            FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
-            file.Stream.WriteTo(filestream);
-            filestream.Close();
-            file.Stream.Close();
-        }
-    }
+  
 }
 

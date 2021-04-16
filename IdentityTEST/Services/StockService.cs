@@ -44,7 +44,7 @@ namespace CoreERP.UI.Services
             var clientJson = new StringContent(JsonSerializer.Serialize(stock),
              Encoding.UTF8, "application/json");
 
-            if (stock.id_deposito == 0)
+            if (stock.id_stock == 0)
                 await _httpClient.PostAsync("api/stock", clientJson);
             else
                 await _httpClient.PutAsync("api/stock", clientJson);

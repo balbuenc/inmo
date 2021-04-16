@@ -51,9 +51,9 @@ namespace CoreERP.API.Controllers
             if (stock == null)
                 return BadRequest();
 
-            if (stock.codigo.Trim() == string.Empty)
+            if (stock.id_deposito == 0)
             {
-                ModelState.AddModelError("Stock", "Stock name shouldn't be empty");
+                ModelState.AddModelError("Stock", "Stock Deposit shouldn't be empty");
             }
 
             if (!ModelState.IsValid)

@@ -123,6 +123,9 @@
                                                 <DropDownListFieldSettings Text="origen" Value="id_origen"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
+                                        <div cla>
+
+                                        </div>
                                     </div>
                                 </div>
                             </Template>
@@ -154,7 +157,7 @@
 @code {
     //public IEnumerable<Product> clients { get; set; }
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" ,"Search"};
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" ,  "Search" , "ColumnChooser"};
     public string ErrorDetails = "";
 
     public IEnumerable<Product> GridData { get; set; }

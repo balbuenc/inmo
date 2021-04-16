@@ -26,7 +26,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" DataSource="@GridData" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Toolbar="@ToolbarItems">
+                    <SfGrid ID="Grid" @ref="Grid" DataSource="@GridData" AllowPaging="true" AllowSorting="true"  Toolbar="@ToolbarItems">
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="ClientType"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
@@ -50,7 +50,7 @@
 {
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
 
     public IEnumerable<ClientType> GridData { get; set; }
 

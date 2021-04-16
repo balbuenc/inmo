@@ -19,6 +19,8 @@ namespace CoreERP.Model
 
         public int id_moneda { get; set; }
 
+        public String imagen { get; set; }
+
         public string origen { get; set; }
         public string proveedor { get; set; }
         public string marca { get; set; }

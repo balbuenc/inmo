@@ -32,7 +32,7 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" AllowFiltering="true" DataSource="@GridData">
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems"  DataSource="@GridData">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Configuration"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -57,7 +57,7 @@
 @code {
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
 
     public ObservableCollection<Configuration> GridData { get; set; }
 
