@@ -54,7 +54,7 @@
                 <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true">
                     <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="BudgetDetails"></GridEvents>
                     <GridPageSettings PageSize="5"></GridPageSettings>
-                    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal">
+                    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
                     </GridEditSettings>
                     <GridAggregates>
                         <GridAggregate>
@@ -82,15 +82,18 @@
                             <Template>
                                 @{
                                     var det = (context as BudgetDetails);
-                                    <div class="image">
-                                        <img src="@($"/Images/{det.codigo}.jpg")" alt="@det.codigo" />
+                                    <div class="image" >
+                                        <img src="@($"/Images/{det.codigo}.jpg")" alt="@det.codigo" width="100px" />
                                     </div>
                                 }
                             </Template>
+                            <EditTemplate>
+
+                            </EditTemplate>
                         </GridColumn>
                         <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" EditType="EditType.DropDownEdit" Width="100">
                             <EditTemplate>
-                                <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products">
+                                <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products" AllowFiltering="true" >
                                     <DropDownListFieldSettings Text="codigo" Value="id_producto"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </EditTemplate>
