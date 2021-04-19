@@ -5,6 +5,7 @@
 @inject IBudgetDetailsService BudgetDetailsService
 @inject IProductService ProductService
 @inject IDiscountService DiscountService
+@inject IBudgetService BudgetService
 
 
 @using Microsoft.AspNetCore.Http
@@ -24,71 +25,112 @@
 @using Syncfusion.Blazor.Navigations
 
 
-<div class="inner-padding">
-    <SfGrid ID="Grid" @ref="Grid" Width="1000px" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true"  >
-        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="BudgetDetails"></GridEvents>
-        <GridPageSettings PageSize="5"></GridPageSettings>
-        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal">
-        </GridEditSettings>
-        <GridAggregates>
-            <GridAggregate>
-                <GridAggregateColumns>
-                    <GridAggregateColumn Field=@nameof(BudgetDetails.total) Type="AggregateType.Sum" Format="N2">
-                        <FooterTemplate Context="con">
-                            @{
-                                var aggregate = (con as AggregateTemplateContext);
-                                <div>
-                                    <p><b>Total: @aggregate.Sum</b></p>
-                                </div>
-                            }
-                        </FooterTemplate>
-                    </GridAggregateColumn>
-                </GridAggregateColumns>
-            </GridAggregate>
-        </GridAggregates>
-        <GridColumns>
-            <GridColumn Field=@nameof(BudgetDetails.id_presupuesto_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true">
-                <EditTemplate>
-                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).id_presupuesto_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                </EditTemplate>
-            </GridColumn>
-            <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" EditType="EditType.DropDownEdit" Width="110">
-                <EditTemplate>
-                    <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products">
-                        <DropDownListFieldSettings Text="codigo" Value="id_producto"></DropDownListFieldSettings>
-                    </SfDropDownList>
-                </EditTemplate>
-            </GridColumn>
-            <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="90">
-                <EditTemplate>
-                    <SfTextBox @bind-Value="@((context as BudgetDetails).producto)" Enabled="false" Placeholder="Prodúcto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
-                </EditTemplate>
-            </GridColumn>
-            <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="110">
-                <EditTemplate>
-                    <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts">
-                        <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
-                    </SfDropDownList>
-                </EditTemplate>
-            </GridColumn>
-            <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="N2" TextAlign="TextAlign.Right" Width="70">
-                <EditTemplate>
-                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                </EditTemplate>
-            </GridColumn>
-            <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="N2" TextAlign="TextAlign.Right" Width="70">
-                <EditTemplate>
-                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                </EditTemplate>
-            </GridColumn>
-            <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="N2" TextAlign="TextAlign.Right" Width="70">
-                <EditTemplate>
-                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                </EditTemplate>
-            </GridColumn>
-        </GridColumns>
-    </SfGrid>
+<div class="container-fluid">
+    <p>@Messsage</p>
+    <span class="error">@ErrorDetails</span>
+
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="card" style="width:100%">
+                    <div class="card-header" style="background-color:cornflowerblue">
+                        @Titulo
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title"><b>@Cliente</b>          <b>Vendedor:</b> @Vendedor</h6>
+                        <ul class="card-text">
+                            <li><b>Nro.:</b> @NroPresupuesto          <b>Estado:</b> @Estado</li>
+                            <li><b>Fecha:</b> @Fecha</li>
+                            <li><b>Moneda:</b> @Moneda         <b>Cotización:</b> @Cotizacion</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="alert alert-light" role="banner"><b>Detalles del prespuesto</b></div>
+
+            </div>
+            <div class="row">
+                <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true">
+                    <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="BudgetDetails"></GridEvents>
+                    <GridPageSettings PageSize="5"></GridPageSettings>
+                    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Normal">
+                    </GridEditSettings>
+                    <GridAggregates>
+                        <GridAggregate>
+                            <GridAggregateColumns>
+                                <GridAggregateColumn Field=@nameof(BudgetDetails.total) Type="AggregateType.Sum" Format="N2">
+                                    <FooterTemplate Context="con">
+                                        @{
+                                            var aggregate = (con as AggregateTemplateContext);
+                                            <div>
+                                                <p><b>Total: @aggregate.Sum</b></p>
+                                            </div>
+                                        }
+                                    </FooterTemplate>
+                                </GridAggregateColumn>
+                            </GridAggregateColumns>
+                        </GridAggregate>
+                    </GridAggregates>
+                    <GridColumns>
+                        <GridColumn Field=@nameof(BudgetDetails.id_presupuesto_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as BudgetDetails).id_presupuesto_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn HeaderText="Imagen" TextAlign="TextAlign.Center" Width="120">
+                            <Template>
+                                @{
+                                    var det = (context as BudgetDetails);
+                                    <div class="image">
+                                        <img src="@($"/Images/{det.codigo}.jpg")" alt="@det.codigo" />
+                                    </div>
+                                }
+                            </Template>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" EditType="EditType.DropDownEdit" Width="100">
+                            <EditTemplate>
+                                <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products">
+                                    <DropDownListFieldSettings Text="codigo" Value="id_producto"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="150">
+                            <EditTemplate>
+                                <SfTextBox @bind-Value="@((context as BudgetDetails).producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="50">
+                            <EditTemplate>
+                                <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts">
+                                    <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="N2" TextAlign="TextAlign.Right" Width="50">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="N2" TextAlign="TextAlign.Right" Width="70">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="N2" TextAlign="TextAlign.Right" Width="70">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
 
 @code {
 
@@ -99,12 +141,20 @@
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
     public string ErrorDetails = "";
-
+    public string Titulo = "";
+    public string Cliente = "";
+    public string Fecha = "";
+    public string NroPresupuesto = "";
+    public string Moneda = "";
+    public string Cotizacion = "";
+    public string Estado = "";
+    public string Vendedor = "";
 
 
     public IEnumerable<BudgetDetails> GridData { get; set; }
     public IEnumerable<Product> products { get; set; }
     public IEnumerable<Discount> discounts { get; set; }
+    public Budget header { get; set; }
 
     SfGrid<BudgetDetails> Grid { get; set; }
 
@@ -116,8 +166,17 @@
         {
             int id = Int32.Parse(BudgetID);
             GridData = await BudgetDetailsService.GetBudgetDetails(id);
-            //products = await ProductService.GetAllProducts();
-            //discounts = await DiscountService.GetAllDiscounts();
+            header = await BudgetService.GetBudgetDetails(id);
+
+            //Load header data
+            Titulo = "Detalle de prespuesto ID. " + BudgetID;
+            Cliente = header.cliente;
+            Fecha = header.fecha.ToShortDateString();
+            NroPresupuesto = header.nro_presupuesto.ToString();
+            Moneda = header.moneda;
+            Cotizacion = header.cotizacion.ToString();
+            Estado = header.estado;
+            Vendedor = header.vendedor;
         }
         catch (Exception ex)
         {

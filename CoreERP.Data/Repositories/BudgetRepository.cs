@@ -50,7 +50,12 @@ namespace CoreERP.Data.Repositories
         public async Task<Budget> GetBudgetDetails(int id)
         {
             var db = dbConnection();
-            var sql = "select * from presupuestos  where id_presupuesto = @Id";
+            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda
+                        from presupuestos p
+                        left outer join funcionarios f2 on f2.id_funcionario = p.id_funcionario
+                        left outer join clientes c2 on c2.id_cliente = p.id_cliente
+                        left outer join monedas m2 on m2.id_moneda = p.id_moneda
+                        where p.id_presupuesto = @Id";
 
             return await db.QueryFirstOrDefaultAsync<Budget>(sql, new { Id = id });
         }
