@@ -5,6 +5,7 @@
 @inject IClientService ClientService
 @inject IEmployeeService EmployeeService
 @inject IBudgetDetailsService BudgetDetailsService
+@inject ICurrencyService CurrencyService
 
 @using Microsoft.AspNetCore.Http
 
@@ -46,8 +47,8 @@
                 else
                 {
                     <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
-                    <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true"  Toolbar="@ToolbarItems"  DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
-                        <GridTemplates>
+                    <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
+                        @*<GridTemplates>
                             <DetailTemplate>
                                 @{
                                     Budget Bu = context as Budget;
@@ -67,7 +68,7 @@
                                     </TabItems>
                                 </SfTab>
                             </DetailTemplate>
-                        </GridTemplates>
+                        </GridTemplates>*@
                         <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget"></GridEvents>
                         <GridPageSettings PageSize="30"></GridPageSettings>
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
@@ -91,6 +92,16 @@
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(budg.nro_presupuesto)" Enabled="true" Placeholder="Nro. presupuesto" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
+                                        <div class="form-group col-md-3">
+                                            <SfDropDownList DataSource="@currencies"
+                                                            TItem="Currency"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(budg.id_moneda)"
+                                                            Placeholder="Moneda"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Value="id_moneda" Text="moneda"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
@@ -112,12 +123,22 @@
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
+                            <GridColumn HeaderText="Detalles" TextAlign="TextAlign.Center" Width="5">
+                                <Template>
+                                    @{
+                                        var Bud = (context as Budget);
+                                        <div><a href="#" @onclick="@(() => Navigate(Bud))">Ver</a></div>
+                                    }
+                                </Template>
+                            </GridColumn>
                             <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro. presupuesto" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.moneda) HeaderText="Moneda" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Format="dd/MM/yyyy" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
+
                         </GridColumns>
                     </SfGrid>
                 }
@@ -133,13 +154,13 @@
 @code {
     //public IEnumerable<Budget> clients { get; set; }
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel",  "Search","ColumnChooser" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search", "ColumnChooser" };
     public string ErrorDetails = "";
 
     public IEnumerable<Budget> GridData { get; set; }
     public IEnumerable<Client> clients { get; set; }
     public IEnumerable<Employee> employees { get; set; }
-
+    public IEnumerable<Currency> currencies { get; set; }
 
     public DateTime hoy = DateTime.Today;
     public DateTime t;
@@ -157,13 +178,15 @@
             GridData = await BudgetService.GetAllBudgets();
             clients = await ClientService.GetAllClients();
             employees = await EmployeeService.GetAllEmployees();
+            currencies = await CurrencyService.GetAllCurrencies();
+
 
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
 
             string[] subs = user.Identity.Name.Split("@");
             UserName = subs[0];
-        } 
+        }
         catch (Exception ex)
         {
             Messsage = "Error al obtener presupuestos [OnInitializedAsync] : " + ex.Message;
@@ -245,6 +268,11 @@
             Messsage = "Error al obtener ID de usuario : " + ex.Message;
             return 1;
         }
+    }
+
+    private void Navigate(Budget budget)
+    {
+        NavigationManager.NavigateTo($"/BudgetDetails/{budget.id_presupuesto}");
     }
 
 

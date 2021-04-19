@@ -37,10 +37,11 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Budget>> GetAllBudgets()
         {
             var db = dbConnection();
-            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado,p.id_cliente , f2.usuario as vendedor, c2.razon_social as cliente
+            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda
                         from presupuestos p
                         left outer join funcionarios f2 on f2.id_funcionario = p.id_funcionario
                         left outer join clientes c2 on c2.id_cliente = p.id_cliente
+                        left outer join monedas m2 on m2.id_moneda = p.id_moneda 
                         order by p.nro_presupuesto asc";
 
             return await db.QueryAsync<Budget>(sql, new { });
@@ -57,10 +58,21 @@ namespace CoreERP.Data.Repositories
         public async Task<bool> InsertBudget(Budget budget)
         {
             var db = dbConnection();
+            
 
             try
             {
-                var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado, nro_presupuesto) VALUES(@id_cliente, @id_funcionario, @fecha, @estado, @nro_presupuesto);";
+                var sqlCotization = @"select * from monedas m where id_moneda = @id_moneda;";
+
+                var resulCotizacion = await db.QueryFirstOrDefaultAsync<Currency> (sqlCotization, new
+                {
+                    budget.id_moneda
+                }
+                );
+
+                budget.cotizacion = resulCotizacion.cotizacion;
+
+                var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado, nro_presupuesto,id_moneda,cotizacion) VALUES(@id_cliente, @id_funcionario, @fecha, @estado, @nro_presupuesto,@id_moneda,@cotizacion);";
                 
             
                 budget.estado = "Generado";
@@ -71,7 +83,9 @@ namespace CoreERP.Data.Repositories
                     budget.id_funcionario,
                     budget.fecha,
                     budget.estado,
-                    budget.nro_presupuesto
+                    budget.nro_presupuesto,
+                    budget.id_moneda,
+                    budget.cotizacion
                 }
                 );
 
@@ -88,7 +102,7 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @"UPDATE public.presupuestos
-                        SET id_cliente=@id_cliente, id_funcionario=@id_funcionario, fecha=@fecha, estado=@estado, nro_presupuesto=@nro_presupuesto
+                        SET id_cliente=@id_cliente, id_funcionario=@id_funcionario, fecha=@fecha, estado=@estado, nro_presupuesto=@nro_presupuesto, id_moneda=@id_moneda
                         WHERE id_presupuesto=@id_presupuesto;
                         ";
 
@@ -99,7 +113,8 @@ namespace CoreERP.Data.Repositories
                 budget.id_funcionario,
                 budget.fecha,
                 budget.estado,
-                budget.nro_presupuesto
+                budget.nro_presupuesto,
+                budget.id_moneda
             }
             );
 

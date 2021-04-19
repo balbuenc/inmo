@@ -13,7 +13,7 @@ namespace CoreERP.Model
         public String moneda { get; set; }
         public String simbolo { get; set; }
 
-        
+        public decimal cotizacion { get; set; }
 
     }
 }

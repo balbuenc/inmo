@@ -13,8 +13,12 @@ namespace CoreERP.Model
         public String estado { get; set; }
 
         public Int32 nro_presupuesto { get; set; }
+        public Int32  id_moneda { get; set; }
+        public decimal cotizacion { get; set; }
 
         public string vendedor { get; set; }
         public string cliente { get; set; }
+
+        public string moneda { get; set; }
     }
 }

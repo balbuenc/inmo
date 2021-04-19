@@ -1,8 +1,8 @@
-﻿@page "/Area"
+﻿@page "/Currency"
 @using Syncfusion.Blazor.Grids
 @using Model
 @using Interfaces
-@inject IAreaService AreaService
+@inject ICurrencyService CurrencyService
 @attribute [Authorize]
 @using System.Collections.ObjectModel
 @using Syncfusion.Blazor.Inputs
@@ -14,10 +14,10 @@
 
     <div class="col-lg-12" style="padding:1px; height:50px">
         <div class="content-wrapper">
-            <div class="alert alert-primary" role="banner"><b>Areas</b></div>
+            <div class="alert alert-primary" role="banner"><b>Monedas</b></div>
         </div>
     </div>
-   
+
     <div class="col-lg-12 control-section">
         <div class="content-wrapper">
             <div class="row">
@@ -29,14 +29,15 @@
                 {
                     <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" AllowSorting="true" DataSource="@GridData">
 
-                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Area"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" TValue="Currency"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
 
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
                         <GridColumns>
-                            <GridColumn Field=@nameof(Area.id_area) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Area.area) HeaderText="Area" Width="150"></GridColumn>
-
+                            <GridColumn Field=@nameof(Currency.id_moneda) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Currency.moneda) HeaderText="Moneda" Width="150"></GridColumn>
+                            <GridColumn Field=@nameof(Currency.simbolo) HeaderText="Símbolo" Width="50"></GridColumn>
+                            <GridColumn Field=@nameof(Currency.cotizacion) HeaderText="Símbolo" Width="50"></GridColumn>
                         </GridColumns>
                     </SfGrid>
                 }
@@ -54,48 +55,48 @@
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
 
-    public IEnumerable<Area> GridData { get; set; }
+    public IEnumerable<Currency> GridData { get; set; }
 
-    SfGrid<Area> Grid { get; set; }
+    SfGrid<Currency> Grid { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
         try
         {
-            GridData = await AreaService.GetAllAreas();
+            GridData = await CurrencyService.GetAllCurrencies();
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener areas: " + ex.Message;
+            Messsage = "Error al obtener monedas: " + ex.Message;
         }
     }
 
-    private async Task OnBeginHandler(ActionEventArgs<Area> Args)
+    private async Task OnBeginHandler(ActionEventArgs<Currency> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
-            await SaveArea((Area)Args.Data);
+            await SaveCurrency((Currency)Args.Data);
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            await DeleteArea(((Area)Args.Data).id_area);
+            await DeleteCurrency(((Currency)Args.Data).id_moneda);
         }
 
         return;
     }
 
-    protected async Task SaveArea(Area nationality)
+    protected async Task SaveCurrency(Currency currency)
     {
-        await AreaService.SaveArea(nationality);
+        await CurrencyService.SaveCurrency(currency);
         Grid.Refresh();
     }
 
-    protected async Task DeleteArea(int id)
+    protected async Task DeleteCurrency(int id)
     {
-        await AreaService.DeleteArea(id);
+        await CurrencyService.DeleteCurrency(id);
         Grid.Refresh();
     }
 
-  
+
 }
 

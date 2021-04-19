@@ -46,12 +46,13 @@ namespace CoreERP.Data.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"INSERT INTO public.monedas (moneda, simbolo) VALUES(@moneda,@simbolo);";
+            var sql = @"INSERT INTO public.monedas (moneda, simbolo, cotizacion) VALUES(@moneda,@simbolo,@cotizacion);";
 
             var result = await db.ExecuteAsync(sql, new
             {
                 currency.moneda,
-                currency.simbolo
+                currency.simbolo,
+                currency.cotizacion
             }
             );
 
@@ -64,14 +65,16 @@ namespace CoreERP.Data.Repositories
 
             var sql = @"UPDATE public.monedas
                         set moneda =@moneda,
-                            simbolo=@simbolo
+                            simbolo=@simbolo,
+                            cotizacion=@cotizacion
                         where id_moneda=@id_moneda;";
 
             var result = await db.ExecuteAsync(sql, new
             {
                 currency.id_moneda,
                 currency.moneda,
-                currency.simbolo
+                currency.simbolo,
+                currency.cotizacion
             }
             );
 
