@@ -30,6 +30,7 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
 
         private String mainURL;
         private String mainLogo;
+        private String appRoot;
         
         public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
@@ -95,6 +96,7 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
             //Get System configuration
             mainURL = await erpTools.GetSystemParam("BaseURL");
             mainLogo = await erpTools.GetSystemParam("MainLogo");
+            appRoot = await erpTools.GetSystemParam("AppRoot");
         }
 
       
@@ -103,10 +105,13 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
+            //Get System configuration
+            appRoot = await erpTools.GetSystemParam("AppRoot");
+
             if (ModelState.IsValid)
             {
                 if (Input.UserName != "cbalbuena")
-                    Input.UserName = Input.UserName + "@lugaro";
+                    Input.UserName = Input.UserName + "@" + appRoot;
 
 
 
