@@ -87,6 +87,8 @@ namespace CoreERP.Data.Repositories
                         VALUES(@nombres,@apellidos,@sexo,@fecha_nacimiento,@ci,@ruc,@direccion,@telefono,@email,@observaciones,@fecha_alta,@razon_social,@codigo,@es_cliente_fiel,@id_estado_civil,@tipo_vivienda,@id_nacionalidad,@direccion_envio,@id_barrio,@id_tipo_cliente);";
             try
             {
+
+
                 var result = await db.ExecuteAsync(sql, new
                 {
                     client.nombres,
