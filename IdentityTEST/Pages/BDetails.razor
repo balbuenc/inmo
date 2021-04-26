@@ -30,6 +30,18 @@
 @inject IJSRuntime Js
 
 
+<style>
+    .e-custom {
+        border-radius: 10px;
+        height: 30px;
+        width: 95px;
+    }
+
+        .e-custom, .e-custom:hover, .e-custom:focus, .e-custom:active {
+            background-color: #ff6e40;
+            color: #fff;
+        }
+</style>
 
 <div class="container-fluid">
     <p>@Messsage</p>
@@ -80,15 +92,14 @@
                     </table>
 
                     <small class="mb-0">@Titulo</small>
-
+                    @if (!this.IsPrintable)
+                    {
+                        <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print" @ref="PrintBtn">Imprimir</SfButton>
+                    }
                 </div>
             </div>
             <div class="row">
                 <div class="alert alert-light" role="banner"><b>Detalles del presupuesto</b></div>
-                @if (!this.IsPrintable)
-                {
-                    <SfButton IconCss="e-icons e-play-icon" IconPosition="IconPosition.Right" OnClick="Print" @ref="PrintBtn">Imprimir presupuesto</SfButton>
-                }
             </div>
             <div class="row">
                 <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems" AllowTextWrap="true">
