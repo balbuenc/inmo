@@ -17,6 +17,7 @@ using CoreERP.UI.Interfaces;
 using CoreERP.Model;
 using CoreERP.UI.Tools;
 using Microsoft.AspNetCore.Html;
+using Microsoft.Extensions.Configuration;
 
 namespace CoreERP.UI.Areas.Identity.Pages.Account
 {
@@ -27,6 +28,7 @@ namespace CoreERP.UI.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private SystemTools erpTools;
+        private IConfiguration _configuration;
 
         private String mainURL;
         private String mainLogo;

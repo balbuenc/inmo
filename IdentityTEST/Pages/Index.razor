@@ -1,6 +1,9 @@
 ﻿@page "/"
 @attribute [Authorize]
 @using CoreERP.UI.Tools
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 
 
 <Jumbotron Background="Background.Transparent" Margin="Margin.Is4.FromBottom">
@@ -8,7 +11,7 @@
     <JumbotronSubtitle>
         <div class="row">
             <div class="col-md-6 col-md-offset-2 my-auto">
-                <img  src="@imagePath" style="width:40%" />
+                <img src="@imagePath" style="width:40%" />
             </div>
         </div>
     </JumbotronSubtitle>
@@ -29,7 +32,7 @@
     private String mainLogo;
     private string ErrorDetails;
     private string imagePath;
-
+    private IConfiguration configuration;
 
     protected override async Task OnInitializedAsync()
     {

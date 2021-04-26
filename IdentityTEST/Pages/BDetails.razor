@@ -1,4 +1,5 @@
 ﻿@page "/BudgetDetails/{BudgetID}"
+
 @using Model
 @using Interfaces
 
@@ -23,6 +24,10 @@
 @using Syncfusion.Blazor.Calendars;
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+
+@inject IJSRuntime Js
+
 
 
 <div class="container-fluid">
@@ -32,23 +37,9 @@
     <div class="col-lg-12 control-section">
         <div class="content-wrapper">
             <div class="row">
-                @*<div class="card" style="width:100%">
-                        <div class="card-header" style="background-color:cornflowerblue">
-                            @Titulo
-                        </div>
-                        <div class="card-body">
-                            <h6 class="card-title"><b>@Cliente</b>          <b>Vendedor:</b> @Vendedor</h6>
-                            <ul class="card-text">
-                                <li><b>Nro.:</b> @NroPresupuesto          <b>Estado:</b> @Estado</li>
-                                <li><b>Fecha:</b> @Fecha</li>
-                                <li><b>Moneda:</b> @Moneda         <b>Cotización:</b> @Cotizacion</li>
-                            </ul>
-                        </div>
-                    </div>*@
-
                 <div class="jumbotron py-4" style="width: 100%;">
                     <div class="d-flex align-items-stretch flex-column flex-md-row">
-                        <img src="/images/cropped-LugaroColorHorizontal-154x56.png" style="object-fit: contain;" width="154" >
+                        <img src="/images/cropped-LugaroColorHorizontal-154x56.png" style="object-fit: contain;" width="154">
                         <div class="ml-4 d-sm-none d-md-block"></div>
                         <div class="mt-2 d-sm-block d-md-none"></div>
                         <div class="flex-fill align-self-md-center">
@@ -93,22 +84,29 @@
             </div>
             <div class="row">
                 <div class="alert alert-light" role="banner"><b>Detalles del presupuesto</b></div>
+                @if (!this.IsPrintable)
+                {
+                    <SfButton IconCss="e-icons e-play-icon" IconPosition="IconPosition.Right" OnClick="Print" @ref="PrintBtn">Imprimir presupuesto</SfButton>
+                }
             </div>
             <div class="row">
-                <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems" AllowPaging="true">
+                <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems">
                     <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="BudgetDetails"></GridEvents>
-                    <GridPageSettings PageSize="5"></GridPageSettings>
+                    <GridPageSettings PageSize="@PageSize"></GridPageSettings>
                     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
                     </GridEditSettings>
                     <GridAggregates>
                         <GridAggregate>
                             <GridAggregateColumns>
-                                <GridAggregateColumn Field=@nameof(BudgetDetails.total) Type="AggregateType.Sum" Format="N2">
+                                <GridAggregateColumn Field=@nameof(BudgetDetails.total) Type="AggregateType.Sum" Format="N0">
                                     <FooterTemplate Context="con">
                                         @{
                                             var aggregate = (con as AggregateTemplateContext);
-                                            <div>
-                                                <p><b>Total: @aggregate.Sum</b></p>
+                                            <div class="row">
+                                                <div class="col-12 text-right">
+                                                    <b >@aggregate.Sum </b>
+                                                </div>
+
                                             </div>
                                         }
                                     </FooterTemplate>
@@ -142,29 +140,29 @@
                                 </SfDropDownList>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="150">
+                        <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="200">
                             <EditTemplate>
                                 <SfTextBox @bind-Value="@((context as BudgetDetails).producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="50">
+                        <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="30">
                             <EditTemplate>
                                 <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts">
                                     <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="N2" TextAlign="TextAlign.Right" Width="50">
+                        <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="N2" TextAlign="TextAlign.Right" Width="30">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="N2" TextAlign="TextAlign.Right" Width="70">
+                        <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="N0" TextAlign="TextAlign.Right" Width="70">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="N2" TextAlign="TextAlign.Right" Width="70">
+                        <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="N0" TextAlign="TextAlign.Right" Width="100">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
@@ -178,15 +176,20 @@
 
 
 
-
 @code {
 
     [Parameter]
     public string BudgetID { get; set; }
+    [Parameter]
+    public bool IsPrintable { get; set; } = false;
+
+    SfButton PrintBtn;
 
 
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
+    public int PageSize = 100;
+
     public string ErrorDetails = "";
     public string Titulo = "";
     public string Cliente = "";
@@ -205,7 +208,10 @@
 
     SfGrid<BudgetDetails> Grid { get; set; }
 
-
+    private async Task Print()
+    {
+        await Js.InvokeAsync<object>("open", new object[] { "/BudgetPrintable/" + BudgetID, "_blank" });
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -224,6 +230,12 @@
             Cotizacion = header.cotizacion.ToString();
             Estado = header.estado;
             Vendedor = header.vendedor;
+
+            //Verify if prinatable layout
+            if (IsPrintable)
+            {
+                ToolbarItems = null;
+            }
         }
         catch (Exception ex)
         {

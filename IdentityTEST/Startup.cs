@@ -35,11 +35,14 @@ namespace CoreERP.UI
         }
 
         public IConfiguration Configuration { get; }
+        private string apiurl;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            apiurl = Configuration["api"];
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
                     Configuration.GetConnectionString("AuthenticationDB")));
@@ -62,69 +65,68 @@ namespace CoreERP.UI
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-
             services.AddHttpClient<IClientService, ClientService>(
-                client => { client.BaseAddress = new Uri("https://localhost:44342"); });
+                client => { client.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IAreaService, AreaService>(
-                 area => { area.BaseAddress = new Uri("https://localhost:44342"); });
+                 area => { area.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<INeighborhoodService, NeighborhoodService>(
-                 neighborhood => { neighborhood.BaseAddress = new Uri("https://localhost:44342"); });
+                 neighborhood => { neighborhood.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<ICityService, CityService>(
-                 cities => { cities.BaseAddress = new Uri("https://localhost:44342"); });
+                 cities => { cities.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IPositionService, PositionService>(
-                 position => { position.BaseAddress = new Uri("https://localhost:44342"); });
+                 position => { position.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<INationalityService, NationalityService>(
-                nationality => { nationality.BaseAddress = new Uri("https://localhost:44342"); });
+                nationality => { nationality.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IClientTypeService, ClientTypeService>(
-                clientType => { clientType.BaseAddress = new Uri("https://localhost:44342"); });
+                clientType => { clientType.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<ICountryService, CountryService>(
-                country => { country.BaseAddress = new Uri("https://localhost:44342"); });
+                country => { country.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<ICurrencyService, CurrencyService>(
-                currency => { currency.BaseAddress = new Uri("https://localhost:44342"); });
+                currency => { currency.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<ICivilStatusService, CivilStatusService>(
-               civilStatus => { civilStatus.BaseAddress = new Uri("https://localhost:44342"); });
+               civilStatus => { civilStatus.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IBrandService, BrandService>(
-                brand => { brand.BaseAddress = new Uri("https://localhost:44342"); });
+                brand => { brand.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IOriginService, OriginService>(
-             origin => { origin.BaseAddress = new Uri("https://localhost:44342"); });
+             origin => { origin.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IVendorService, VendorService>(
-                vendor => { vendor.BaseAddress = new Uri("https://localhost:44342"); });
+                vendor => { vendor.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IProductService, ProductService>(
-               product => { product.BaseAddress = new Uri("https://localhost:44342"); });
+               product => { product.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IStoreService, StoreService>(
-               store => { store.BaseAddress = new Uri("https://localhost:44342"); });
+               store => { store.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IStockService, StockService>(
-               stock => { stock.BaseAddress = new Uri("https://localhost:44342"); });
+               stock => { stock.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IBudgetService, BudgetService>(
-              budget => { budget.BaseAddress = new Uri("https://localhost:44342"); });
+              budget => { budget.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IEmployeeService, EmployeeService>(
-            employee => { employee.BaseAddress = new Uri("https://localhost:44342"); });
+            employee => { employee.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IBudgetDetailsService, BudgetDetailsService>(
-            budgetDetails => { budgetDetails.BaseAddress = new Uri("https://localhost:44342"); });
+            budgetDetails => { budgetDetails.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IDiscountService, DiscountService>(
-            discount => { discount.BaseAddress = new Uri("https://localhost:44342"); });
+            discount => { discount.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IConfigurationService, ConfigurationService>(
-            configuration => { configuration.BaseAddress = new Uri("https://localhost:44342"); });
+            configuration => { configuration.BaseAddress = new Uri(apiurl); });
         
 
         }
