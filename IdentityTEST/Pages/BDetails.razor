@@ -2,6 +2,7 @@
 
 @using Model
 @using Interfaces
+@using CoreERP.UI.Tools
 
 @inject IBudgetDetailsService BudgetDetailsService
 @inject IProductService ProductService
@@ -39,7 +40,7 @@
             <div class="row">
                 <div class="jumbotron py-4" style="width: 100%;">
                     <div class="d-flex align-items-stretch flex-column flex-md-row">
-                        <img src="/images/cropped-LugaroColorHorizontal-154x56.png" style="object-fit: contain;" width="154">
+                        <img src="@imagePath" style="object-fit: contain;" width="154">
                         <div class="ml-4 d-sm-none d-md-block"></div>
                         <div class="mt-2 d-sm-block d-md-none"></div>
                         <div class="flex-fill align-self-md-center">
@@ -90,7 +91,7 @@
                 }
             </div>
             <div class="row">
-                <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems">
+                <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems" AllowTextWrap="true">
                     <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="BudgetDetails"></GridEvents>
                     <GridPageSettings PageSize="@PageSize"></GridPageSettings>
                     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
@@ -104,7 +105,7 @@
                                             var aggregate = (con as AggregateTemplateContext);
                                             <div class="row">
                                                 <div class="col-12 text-right">
-                                                    <b >@aggregate.Sum </b>
+                                                    <b>@aggregate.Sum </b>
                                                 </div>
 
                                             </div>
@@ -133,31 +134,31 @@
 
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Cod. producto" EditType="EditType.DropDownEdit" Width="100">
+                        <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Código" EditType="EditType.DropDownEdit" Width="60">
                             <EditTemplate>
                                 <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products" AllowFiltering="true">
                                     <DropDownListFieldSettings Text="codigo" Value="id_producto"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="200">
+                        <GridColumn Field=@nameof(BudgetDetails.producto) HeaderText="Producto" Width="200" AllowGrouping="false">
                             <EditTemplate>
                                 <SfTextBox @bind-Value="@((context as BudgetDetails).producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="30">
+                        <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="50">
                             <EditTemplate>
                                 <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts">
                                     <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cantidad" Format="N2" TextAlign="TextAlign.Right" Width="30">
+                        <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cant." Format="N2" TextAlign="TextAlign.Right" Width="50">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="N0" TextAlign="TextAlign.Right" Width="70">
+                        <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="N0" TextAlign="TextAlign.Right" Width="50">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
@@ -189,6 +190,11 @@
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
     public int PageSize = 100;
+
+    private SystemTools erpTools;
+    private String mainURL;
+    private String mainLogo;
+    private string imagePath;
 
     public string ErrorDetails = "";
     public string Titulo = "";
@@ -236,6 +242,15 @@
             {
                 ToolbarItems = null;
             }
+
+            erpTools = new SystemTools();
+
+            //Get System configuration
+            mainURL = await erpTools.GetSystemParam("BaseURL");
+            mainLogo = await erpTools.GetSystemParam("MainLogo");
+
+            imagePath = mainURL + mainLogo;
+
         }
         catch (Exception ex)
         {

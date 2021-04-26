@@ -46,29 +46,8 @@
                 }
                 else
                 {
-                    <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
-                    <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
-                        @*<GridTemplates>
-                            <DetailTemplate>
-                                @{
-                                    Budget Bu = context as Budget;
-                                }
-                                <SfTab Height="300" HeaderPlacement="HeaderPosition.Top">
-                                    <TabItems>
-                                        <TabItem>
-                                            <ChildContent>
-                                                <TabHeader Text="Detalles"></TabHeader>
-                                            </ChildContent>
-                                            <ContentTemplate>
-                                                <div class="inner-padding">
-                                                    <BDetails BudgetID="@Bu.id_presupuesto.ToString()"></BDetails>
-                                                </div>
-                                            </ContentTemplate>
-                                        </TabItem>
-                                    </TabItems>
-                                </SfTab>
-                            </DetailTemplate>
-                        </GridTemplates>*@
+                    @*<SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>*@
+                    <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true" AllowTextWrap="true">
                         <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget"></GridEvents>
                         <GridPageSettings PageSize="30"></GridPageSettings>
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
@@ -123,7 +102,7 @@
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
-                            <GridColumn HeaderText="Detalles" TextAlign="TextAlign.Center" Width="5">
+                            <GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
                                 <Template>
                                     @{
                                         var Bud = (context as Budget);
@@ -131,11 +110,11 @@
                                     }
                                 </Template>
                             </GridColumn>
-                            <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro. presupuesto" Width="10"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.moneda) HeaderText="Moneda" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro." Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="60" ></GridColumn>
+                            <GridColumn Field=@nameof(Budget.moneda) HeaderText="Moneda" Width="15"></GridColumn>
                             <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Format="dd/MM/yyyy" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
 
