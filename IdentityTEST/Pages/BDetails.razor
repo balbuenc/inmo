@@ -159,12 +159,12 @@
                         </GridColumn>
                         <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" EditType="EditType.DropDownEdit" Width="50">
                             <EditTemplate>
-                                <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts">
+                                <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts" AllowFiltering="true">
                                     <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cant." Format="N2" TextAlign="TextAlign.Right" Width="50">
+                        <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cant." Format="N0" TextAlign="TextAlign.Right" Width="50">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>

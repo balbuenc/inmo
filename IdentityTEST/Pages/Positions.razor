@@ -38,7 +38,7 @@
                             <GridColumn Field=@nameof(Position.id_cargo) HeaderText="ID" TextAlign="TextAlign.Center" Width="20" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Position.area) HeaderText="Area" Width="30" EditType="EditType.DropDownEdit">
                                 <EditTemplate>
-                                    <SfDropDownList TValue="Int32" TItem="Area" @bind-Value="@((context as Position).id_area)" Placeholder="Selecccione Area" DataSource="@areas">
+                                    <SfDropDownList TValue="Int32" TItem="Area" @bind-Value="@((context as Position).id_area)" Placeholder="Selecccione Area" DataSource="@areas" AllowFiltering="true">
                                         <DropDownListFieldSettings Text="area" Value="id_area"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </EditTemplate>

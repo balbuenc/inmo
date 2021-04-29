@@ -40,7 +40,7 @@
                             <GridColumn Field=@nameof(Brand.marca) HeaderText="Marca" Width="50"></GridColumn>
                             <GridColumn Field=@nameof(Brand.origen) HeaderText="Origen" Width="30" EditType="EditType.DropDownEdit">
                                 <EditTemplate>
-                                    <SfDropDownList TValue="Int32" TItem="Origin" @bind-Value="@((context as Brand).id_origen)" Placeholder="Origen" FloatLabelType="FloatLabelType.Always" DataSource="@origins">
+                                    <SfDropDownList TValue="Int32" TItem="Origin" @bind-Value="@((context as Brand).id_origen)" Placeholder="Origen" FloatLabelType="FloatLabelType.Always" DataSource="@origins" AllowFiltering="true">
                                         <DropDownListFieldSettings Text="origen" Value="id_origen"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </EditTemplate>

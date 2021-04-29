@@ -118,7 +118,7 @@
                                                             TValue="Int32?"
                                                             @bind-Value="@(cli.id_nacionalidad)"
                                                             Placeholder="Nacionalidad"
-                                                            FloatLabelType="FloatLabelType.Always">
+                                                            FloatLabelType="FloatLabelType.Always" AllowFiltering="true">
                                                 <DropDownListFieldSettings Text="nacionalidad" Value="id_nacionalidad"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
-                                            <SfDropDownList TValue="Int32?" TItem="Neighborhood" @bind-Value="@(cli.id_barrio)" Placeholder="Barrio" DataSource="@neighborhoods" FloatLabelType="FloatLabelType.Always">
+                                            <SfDropDownList TValue="Int32?" TItem="Neighborhood" @bind-Value="@(cli.id_barrio)" Placeholder="Barrio" DataSource="@neighborhoods" FloatLabelType="FloatLabelType.Always" AllowFiltering="true">
                                                 <DropDownListFieldSettings Text="barrio" Value="id_barrio"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
