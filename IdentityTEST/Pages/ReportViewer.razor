@@ -1,0 +1,39 @@
+﻿@page "/ReportViewer/{BudgetID}"
+@layout BlankLayout
+
+@using Microsoft.AspNetCore.Http
+
+
+
+@attribute [Authorize]
+
+
+<iframe src="@url" @ref="frame" style="width:100%; height:500px" sandbox="allow-scripts"  ></iframe>
+
+<div ></div>
+
+
+@code{
+
+    [Parameter]
+    public string BudgetID { get; set; }
+
+    HttpClientHandler sHandler = new HttpClientHandler();
+
+    public string url;
+
+    ElementReference frame;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sHandler.Credentials = new System.Net.NetworkCredential("cbalbuena", "Paraguay1", "itcs");
+        HttpClient client = new HttpClient(sHandler);
+
+        url = @"http://192.168.0.19/ReportServer/Pages/ReportViewer.aspx?%2fLugaroSSRS%2fPrespuesto&id_presupuesto=" + @BudgetID + "&rs:Command=Render&rs:Embed=true";
+
+        await client.GetAsync(url);
+
+        
+    }
+
+}

@@ -19,13 +19,15 @@
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Grids
 @using System.Collections.ObjectModel
-@inject NavigationManager NavigationManager
+
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs;
 @using Syncfusion.Blazor.Calendars;
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
+
+
 
 @inject IJSRuntime Js
 
@@ -227,7 +229,8 @@
 
     private async Task Print()
     {
-        await Js.InvokeAsync<object>("open", new object[] { "/BudgetPrintable/" + BudgetID, "_blank" });
+        //await Js.InvokeAsync<object>("open", new object[] { "/BudgetPrintable/" + BudgetID, "_blank" });
+        await Js.InvokeAsync<object>("open", new object[] { "/ReportViewer/" + BudgetID, "_blank" });
     }
 
     protected override async Task OnInitializedAsync()

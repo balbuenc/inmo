@@ -97,6 +97,19 @@
                                             </SfDropDownList>
                                         </div>
                                     </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <SfTextBox @bind-Value="@(budg.plazo_entrega)" Enabled="true" Placeholder="Plazo de entrega" FloatLabelType="FloatLabelType.Always"></SfTextBox>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <SfTextBox @bind-Value="@(budg.forma_pago)" Enabled="true" Placeholder="Forma de pago" FloatLabelType="FloatLabelType.Always"></SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <SfTextBox @bind-Value="@(budg.observaciones)" Enabled="true" Placeholder="Observaciones" FloatLabelType="FloatLabelType.Always" Multiline="true" ></SfTextBox>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </Template>
@@ -113,7 +126,7 @@
                             <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro." Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="60" ></GridColumn>
+                            <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="60"></GridColumn>
                             <GridColumn Field=@nameof(Budget.moneda) HeaderText="Moneda" Width="15"></GridColumn>
                             <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Format="dd/MM/yyyy" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
@@ -186,7 +199,6 @@
             {
                 await DeleteBudget(((Budget)Args.Data).id_presupuesto);
             }
-
 
             return;
         }

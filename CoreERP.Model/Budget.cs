@@ -20,5 +20,9 @@ namespace CoreERP.Model
         public string cliente { get; set; }
 
         public string moneda { get; set; }
+
+        public string forma_pago { get; set; }
+        public string plazo_entrega { get; set; }
+        public string observaciones { get; set; }
     }
 }
