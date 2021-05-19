@@ -14,9 +14,18 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\Images\cropped-LugaroColorHorizontal-154x56.png" />
+    <Content Remove="wwwroot\Reports\Presupuesto.rdlc" />
+    <Content Remove="wwwroot\Reports\PresupuestosDS.xsc" />
+    <Content Remove="wwwroot\Reports\PresupuestosDS.xsd" />
+    <Content Remove="wwwroot\Reports\PresupuestosDS.xss" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="wwwroot\Reports\Presupuesto.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Blazorise.Bootstrap" Version="0.9.1.2" />
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.7" />
@@ -36,6 +45,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageReference Include="Syncfusion.Blazor" Version="18.3.0.44" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +56,17 @@
 
   <ItemGroup>
     <None Include="wwwroot\Images\cropped-LugaroColorHorizontal-154x56.png" />
+    <None Include="wwwroot\Reports\PresupuestosDS.xsc">
+      <DependentUpon>PresupuestosDS.xsd</DependentUpon>
+    </None>
+    <None Include="wwwroot\Reports\PresupuestosDS.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>PresupuestosDS.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
+    <None Include="wwwroot\Reports\PresupuestosDS.xss">
+      <DependentUpon>PresupuestosDS.xsd</DependentUpon>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

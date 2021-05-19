@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreERP.Model", "..\CoreERP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreERP.Data", "..\CoreERP.Data\CoreERP.Data.csproj", "{3A26A6BB-0743-4F2F-9920-9E013755350E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDesign", "..\ReportDesign\ReportDesign.csproj", "{C56E6F39-B828-4EC3-A161-B3FD5ED907F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3A26A6BB-0743-4F2F-9920-9E013755350E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A26A6BB-0743-4F2F-9920-9E013755350E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A26A6BB-0743-4F2F-9920-9E013755350E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56E6F39-B828-4EC3-A161-B3FD5ED907F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56E6F39-B828-4EC3-A161-B3FD5ED907F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56E6F39-B828-4EC3-A161-B3FD5ED907F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56E6F39-B828-4EC3-A161-B3FD5ED907F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

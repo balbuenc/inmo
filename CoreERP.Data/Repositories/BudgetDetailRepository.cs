@@ -58,6 +58,19 @@ namespace CoreERP.Data.Repositories
             return await db.QueryAsync<BudgetDetails>(sql, new { Id = id });
         }
 
+        public async Task<IEnumerable<BudgetDetails>> GetBudgetPDFDetails(int id)
+        {
+            var db = dbConnection();
+            var sql = @"SELECT id_presupuesto, nro_presupuesto, fecha, estado, forma_pago, plazo_entrega, observaciones, codigo, producto, cantidad, precio, total, descuento, imagen, cliente, direccion, telefono
+                        FROM public.v_impresion_presupuestos
+                        where id_presupuesto = @Id";
+
+
+            return await db.QueryAsync<BudgetDetails>(sql, new { Id = id });
+        }
+
+
+
         public async Task<bool> InsertBudgetDetail(BudgetDetails budgetDetail)
         {
             Discount discount;

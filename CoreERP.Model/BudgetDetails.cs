@@ -23,5 +23,20 @@ namespace CoreERP.Model
         public string producto { get; set; }
         public string descuento { get; set; }
         public decimal porcentaje { get; set; }
+
+        public DateTime fecha { get; set; }
+
+        public string cliente { get; set; }
+
+        public string direccion { get; set; }
+
+        public string telefono { get; set; }
+        public string imagen { get; set; }
+
+        public string observaciones { get; set; }
+
+        public string plazo_entrega { get; set; }
+
+        public string forma_pago { get; set; }
     }
 }

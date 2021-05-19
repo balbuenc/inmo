@@ -32,6 +32,14 @@ namespace CoreERP.API.Controllers
             return Ok(await _BudgetDetailRepository.GetBudgetDetails(id));
         }
 
+        [HttpGet]
+        [Route("BudgetPDF/{id}")]
+        public async Task<IActionResult> GetBudgetPDFDetails(int id)
+        {
+            return Ok(await _BudgetDetailRepository.GetBudgetPDFDetails(id));
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CreateBudgetDetail([FromBody] BudgetDetails budgetDetails)
         {

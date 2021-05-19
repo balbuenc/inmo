@@ -127,6 +127,8 @@ namespace CoreERP.UI
 
             services.AddHttpClient<IConfigurationService, ConfigurationService>(
             configuration => { configuration.BaseAddress = new Uri(apiurl); });
+
+            
         
 
         }

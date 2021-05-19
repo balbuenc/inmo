@@ -12,6 +12,8 @@ namespace CoreERP.Data.Repositories
 
         Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id);
 
+        Task<IEnumerable<BudgetDetails>> GetBudgetPDFDetails(int id);
+
         Task<bool> InsertBudgetDetail(BudgetDetails budgetDetail);
 
         Task<bool> UpdateBudgetDetail(BudgetDetails budgetDetail);

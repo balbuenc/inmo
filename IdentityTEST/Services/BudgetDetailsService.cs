@@ -1,7 +1,10 @@
 ﻿using CoreERP.Model;
 using CoreERP.UI.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -39,6 +42,14 @@ namespace CoreERP.UI.Services
              await _httpClient.GetStreamAsync($"api/budgetDetail/{id}"),
              new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
              );
+        }
+
+        public async Task<byte[]> GetBudgetPDF(int id)
+        {
+
+            var response =  await _httpClient.GetByteArrayAsync($"api/Report/DownloadReport/{id}");
+            return response;
+            
         }
 
         public async Task SaveBudgetDetails(BudgetDetails budgetDetails)
