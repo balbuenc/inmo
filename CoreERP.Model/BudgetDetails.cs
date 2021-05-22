@@ -38,5 +38,12 @@ namespace CoreERP.Model
         public string plazo_entrega { get; set; }
 
         public string forma_pago { get; set; }
+
+        public string vendedor { get; set; }
+        public string moneda { get; set; }
+        public decimal cotizacion { get; set; }
+
+        public string ruc { get; set; }
+
     }
 }

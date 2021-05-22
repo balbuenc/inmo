@@ -61,7 +61,7 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<BudgetDetails>> GetBudgetPDFDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"SELECT id_presupuesto, nro_presupuesto, fecha, estado, forma_pago, plazo_entrega, observaciones, codigo, producto, cantidad, precio, total, descuento, imagen, cliente, direccion, telefono
+            var sql = @"SELECT id_presupuesto, nro_presupuesto, fecha, estado, forma_pago, plazo_entrega, observaciones, codigo, producto, cantidad, precio, total, descuento, imagen, cliente, direccion, telefono, moneda, vendedor, porcentaje, cotizacion, ruc
                         FROM public.v_impresion_presupuestos
                         where id_presupuesto = @Id";
 
@@ -75,12 +75,21 @@ namespace CoreERP.Data.Repositories
         {
             Discount discount;
             Product product;
+            Currency currency;
+            Budget budget;
 
             try
             {
                 var db = dbConnection();
 
-                var sql_producto = "select costo, precio from productos d where d.id_producto = @id_producto";
+                var sql_presupuesto = "select id_moneda from presupuestos p2  where id_presupuesto =@id_presupuesto";
+                budget = await db.QueryFirstOrDefaultAsync<Budget>(sql_presupuesto, new
+                {
+                    budgetDetail.id_presupuesto
+                });
+                
+                                 
+                var sql_producto = "select costo, precio, id_moneda from productos d where d.id_producto = @id_producto";
                 product = await db.QueryFirstOrDefaultAsync<Product>(sql_producto, new
                 {
                     budgetDetail.id_producto
@@ -95,11 +104,23 @@ namespace CoreERP.Data.Repositories
                 discount = await db.QueryFirstOrDefaultAsync<Discount>(sql_descuento, new
                 {
                     budgetDetail.id_descuento
-                    
+
                 }
                 );
 
-                budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje/100))) * budgetDetail.cantidad;
+                var sql_moneda = "select cotizacion from  monedas m where m.id_moneda =@id_moneda";
+                currency = await db.QueryFirstOrDefaultAsync<Currency>(sql_moneda, new
+                {
+                    product.id_moneda
+                }
+                ); 
+
+                if(product.id_moneda != budget.id_moneda)
+                {
+                    budgetDetail.precio = budgetDetail.precio * currency.cotizacion;
+                }
+
+                budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100))) * budgetDetail.cantidad;
 
                 var sql = @"INSERT INTO public.presupuesto_detalles
                         (id_presupuesto, id_producto, id_descuento, cantidad, costo, precio,total)
