@@ -52,6 +52,15 @@ namespace CoreERP.UI.Services
             
         }
 
+        public async Task<byte[]> GetInvoicePDF(int id)
+        {
+
+            var response = await _httpClient.GetByteArrayAsync($"api/InvoicePrint/DownloadInvoice/{id}");
+            return response;
+
+        }
+
+
         public async Task SaveBudgetDetails(BudgetDetails budgetDetails)
         {
             var clientJson = new StringContent(JsonSerializer.Serialize(budgetDetails),

@@ -12,7 +12,7 @@
 
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor
-
+@inject NavigationManager NavigationManager
 
 
 @attribute [Authorize]
@@ -46,6 +46,26 @@
             background-color: #ff6e40;
             color: #fff;
         }
+
+    .e-require {
+        border-radius: 10px;
+        height: 30px;
+        width: 180px;
+        background-color: lawngreen
+    }
+
+        .e-require, .e-require:hover {
+            color: white;
+            background-color: red;
+        }
+
+    .e-approve {
+        border-radius: 10px;
+        height: 30px;
+        width: 180px;
+        background-color: seagreen;
+        color: red
+    }
 </style>
 
 <div class="container-fluid">
@@ -99,7 +119,23 @@
                     <small class="mb-0">@Titulo</small>
                     @if (!this.IsPrintable)
                     {
-                        <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print" @ref="PrintBtn">Imprimir</SfButton>
+                        <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print">Imprimir</SfButton>
+                    }
+                    @if (Estado == "Generado")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="RequireAutorization">Solicitar autorización</SfButton>
+                    }
+                    @if (Estado == "Pendiente")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Autorization">Aprobar presupuesto</SfButton>
+                    }
+                    @if (Estado == "Aprobado")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Invoice">Facturar</SfButton>
+                    }
+                    @if (Estado == "Facturado")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
                     }
                 </div>
             </div>
@@ -162,7 +198,7 @@
                                 <SfTextBox @bind-Value="@((context as BudgetDetails).producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" Format = "@format" EditType="EditType.DropDownEdit" Width="50">
+                        <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" Format="@format" EditType="EditType.DropDownEdit" Width="50">
                             <EditTemplate>
                                 <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts" AllowFiltering="true">
                                     <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
@@ -174,12 +210,12 @@
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format = "@format" TextAlign="TextAlign.Right" Width="50">
+                        <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="@format" TextAlign="TextAlign.Right" Width="50">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format = "@format" TextAlign="TextAlign.Right" Width="100">
+                        <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="@format" TextAlign="TextAlign.Right" Width="100">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
@@ -201,7 +237,7 @@
     [Parameter]
     public bool IsPrintable { get; set; } = false;
 
-    SfButton PrintBtn;
+
 
 
     public string Messsage { get; set; }
@@ -245,10 +281,52 @@
             await Js.SaveAs(filename, r.ToArray());
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }
+    }
+
+    protected async Task PrintInvoice()
+    {
+        try
+        {
+            byte[] r;
+            r = await BudgetDetailsService.GetInvoicePDF(Convert.ToInt32(BudgetID));
+
+            String filename;
+            filename = String.Concat("Factura", BudgetID, ".pdf");
+
+            await Js.SaveAs(filename, r.ToArray());
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    protected async Task RequireAutorization()
+    {
+        header.estado = "Pendiente";
+        await BudgetService.SaveBudget(header);
+        Navigate();
+
+    }
+
+    protected async Task Autorization()
+    {
+        header.estado = "Aprobado";
+        await BudgetService.SaveBudget(header);
+        Navigate();
+    }
+
+    protected async Task Invoice()
+    {
+        header.estado = "Facturado";
+        await BudgetService.SaveBudget(header);
+        await PrintInvoice();
+        Navigate();
     }
 
     protected override async Task OnInitializedAsync()
@@ -275,7 +353,7 @@
                 ToolbarItems = null;
             }
 
-            //Set the Number format by the Currency 
+            //Set the Number format by the Currency
             if (Moneda == "Dolar")
             {
                 format = "N2";
@@ -353,6 +431,11 @@
         ExcelExportProperties ExportProperties = new ExcelExportProperties();
         ExportProperties.IncludeHiddenColumn = true;
         await this.Grid.ExcelExport(ExportProperties);
+    }
+
+    private void Navigate()
+    {
+        NavigationManager.NavigateTo($"/Budgets");
     }
 
 }

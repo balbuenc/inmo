@@ -128,8 +128,10 @@ namespace CoreERP.UI
             services.AddHttpClient<IConfigurationService, ConfigurationService>(
             configuration => { configuration.BaseAddress = new Uri(apiurl); });
 
-            
-        
+            services.AddHttpClient<IInvoiceTypeService, InvoiceTypeService>(
+            invoiceType => { invoiceType.BaseAddress = new Uri(apiurl); });
+
+
 
         }
 

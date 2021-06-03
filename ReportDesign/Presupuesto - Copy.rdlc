@@ -99,30 +99,6 @@
         </Field>
         <Field Name="porcentaje">
           <DataField>porcentaje</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="ruc">
-          <DataField>ruc</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="contacto">
-          <DataField>contacto</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="direccion_entrega">
-          <DataField>direccion_entrega</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="condicion">
-          <DataField>condicion</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="total_prespuesto">
-          <DataField>total_prespuesto</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="monto_total">
-          <DataField>monto_total</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -576,7 +552,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(First(Fields!moneda.Value, "PresupuestosDataSet") ="Dolar",Format(Fields!precio.Value, "N2"),Format(Fields!precio.Value, "N0"))</Value>
+                                  <Value>=IIf(Parameters!p_moneda.Value ="Dolar",Format(Fields!precio.Value, "N2"),Format(Fields!precio.Value, "N0"))</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                   </Style>
@@ -610,7 +586,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(First(Fields!moneda.Value, "PresupuestosDataSet") ="Dolar",Format(Fields!total.Value, "N2"),Format(Fields!total.Value, "N0"))</Value>
+                                  <Value>=IIf(Parameters!p_moneda.Value ="Dolar",Format(Fields!total.Value, "N2"),Format(Fields!total.Value, "N0"))</Value>
                                   <Style>
                                     <FontSize>7pt</FontSize>
                                     <Format>#,0;(#,0)</Format>
@@ -634,7 +610,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -691,7 +666,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(First(Fields!moneda.Value, "PresupuestosDataSet") ="Dolar",Format(Sum(Fields!total.Value), "N2"),Format(Sum(Fields!total.Value), "N0"))</Value>
+                                  <Value>=IIf(Parameters!p_moneda.Value ="Dolar",Format(Sum(Fields!total.Value), "N2"),Format(Sum(Fields!total.Value), "N0"))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -970,7 +945,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!forma_pago.Value, "PresupuestosDataSet")</Value>
+                    <Value>=Parameters!p_forma_pago.Value</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -1002,7 +977,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!plazo_entrega.Value, "PresupuestosDataSet")</Value>
+                    <Value>=Parameters!p_plazo_entrega.Value</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -1034,7 +1009,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="Observaciones: " + First(Fields!observaciones.Value, "PresupuestosDataSet")</Value>
+                    <Value>="Observaciones: " + Parameters!p_observaciones.Value</Value>
                     <Style>
                       <FontStyle>Italic</FontStyle>
                       <FontSize>8pt</FontSize>
@@ -1294,7 +1269,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!cliente.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_cliente.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                       </Style>
@@ -1360,7 +1335,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Sum(Fields!id_presupuesto.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_id_presupuesto.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1394,7 +1369,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!fecha.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_fecha.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                         <Format>d</Format>
@@ -1429,7 +1404,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!direccion.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_direccion.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                       </Style>
@@ -1462,7 +1437,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!telefono.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_telefono.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                       </Style>
@@ -1528,7 +1503,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!ruc.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_ruc.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                       </Style>
@@ -1594,7 +1569,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!moneda.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_moneda.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -1672,7 +1647,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!contacto.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_contacto.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                       </Style>
@@ -1738,7 +1713,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!direccion_entrega.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_direccion_entrega.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                       </Style>
@@ -1804,7 +1779,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!condicion.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_condicion.Value</Value>
                       <Style>
                         <FontSize>9pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2080,7 +2055,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!vendedor.Value, "PresupuestosDataSet")</Value>
+                      <Value>=Parameters!p_vendedor.Value</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
@@ -2123,10 +2098,166 @@
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="p_id_presupuesto">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_fecha">
+      <DataType>DateTime</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_cliente">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_telefono">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_forma_pago">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_plazo_entrega">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_direccion">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_ruc">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_observaciones">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_vendedor">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_moneda">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_contacto">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_direccion_entrega">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="p_condicion">
+      <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
       <NumberOfRows>4</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>p_id_presupuesto</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>p_fecha</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>p_cliente</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>p_telefono</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>p_forma_pago</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>p_plazo_entrega</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>p_direccion</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>p_ruc</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>p_observaciones</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>p_vendedor</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>p_moneda</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>p_contacto</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>p_direccion_entrega</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>p_condicion</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <EmbeddedImages>

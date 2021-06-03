@@ -16,6 +16,8 @@ namespace CoreERP.Model
         public Int32  id_moneda { get; set; }
         public decimal cotizacion { get; set; }
 
+        public Int32 id_condicion_venta { get; set; }
+
         public string vendedor { get; set; }
         public string cliente { get; set; }
 
@@ -24,5 +26,10 @@ namespace CoreERP.Model
         public string forma_pago { get; set; }
         public string plazo_entrega { get; set; }
         public string observaciones { get; set; }
+
+        public string direccion_entrega { get; set; }
+        public string contacto { get; set; }
+
+        public String condicion { get; set; }
     }
 }

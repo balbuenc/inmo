@@ -13,7 +13,9 @@ namespace CoreERP.UI.Interfaces
 
         Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id);
 
-       Task<byte[]> GetBudgetPDF(int id);
+        Task<byte[]> GetBudgetPDF(int id);
+
+        Task<byte[]> GetInvoicePDF(int id);
 
         Task SaveBudgetDetails(BudgetDetails budget);
 

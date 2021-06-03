@@ -45,5 +45,13 @@ namespace CoreERP.Model
 
         public string ruc { get; set; }
 
+        public string contacto { get; set; }
+
+        public string direccion_entrega { get; set; }
+
+        public string condicion { get; set; }
+
+        public string monto_total { get; set; }
+
     }
 }

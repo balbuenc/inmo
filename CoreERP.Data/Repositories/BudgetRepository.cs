@@ -37,11 +37,12 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Budget>> GetAllBudgets()
         {
             var db = dbConnection();
-            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones
+            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones, p.contacto, p.direccion_entrega, cv.condicion, p.id_condicion_venta
                         from presupuestos p
                         left outer join funcionarios f2 on f2.id_funcionario = p.id_funcionario
                         left outer join clientes c2 on c2.id_cliente = p.id_cliente
                         left outer join monedas m2 on m2.id_moneda = p.id_moneda 
+                        left outer join condicion_venta cv on cv.id_condicion_venta  = p.id_condicion_venta 
                         order by p.nro_presupuesto asc";
 
             return await db.QueryAsync<Budget>(sql, new { });
@@ -50,11 +51,12 @@ namespace CoreERP.Data.Repositories
         public async Task<Budget> GetBudgetDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones
+            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones, p.contacto, p.direccion_entrega, cv.condicion, p.id_condicion_venta,p.id_funcionario
                         from presupuestos p
                         left outer join funcionarios f2 on f2.id_funcionario = p.id_funcionario
                         left outer join clientes c2 on c2.id_cliente = p.id_cliente
                         left outer join monedas m2 on m2.id_moneda = p.id_moneda
+                        left outer join condicion_venta cv on cv.id_condicion_venta  = p.id_condicion_venta 
                         where p.id_presupuesto = @Id";
 
             return await db.QueryFirstOrDefaultAsync<Budget>(sql, new { Id = id });
@@ -63,13 +65,13 @@ namespace CoreERP.Data.Repositories
         public async Task<bool> InsertBudget(Budget budget)
         {
             var db = dbConnection();
-            
+
 
             try
             {
                 var sqlCotization = @"select * from monedas m where id_moneda = @id_moneda;";
 
-                var resulCotizacion = await db.QueryFirstOrDefaultAsync<Currency> (sqlCotization, new
+                var resulCotizacion = await db.QueryFirstOrDefaultAsync<Currency>(sqlCotization, new
                 {
                     budget.id_moneda
                 }
@@ -77,9 +79,9 @@ namespace CoreERP.Data.Repositories
 
                 budget.cotizacion = resulCotizacion.cotizacion;
 
-                var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado, nro_presupuesto,id_moneda,cotizacion,plazo_entrega,forma_pago,observaciones) VALUES(@id_cliente, @id_funcionario, @fecha, @estado, @nro_presupuesto,@id_moneda,@cotizacion,@plazo_entrega,@forma_pago,@observaciones);";
-                
-            
+                var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado, nro_presupuesto,id_moneda,cotizacion,plazo_entrega,forma_pago,observaciones,contacto,direccion_entrega,id_condicion_venta) VALUES(@id_cliente, @id_funcionario, @fecha, @estado, @nro_presupuesto,@id_moneda,@cotizacion,@plazo_entrega,@forma_pago,@observaciones,@contacto,@direccion_entrega,@id_condicion_venta);";
+
+
                 budget.estado = "Generado";
 
                 var result = await db.ExecuteAsync(sql, new
@@ -93,7 +95,10 @@ namespace CoreERP.Data.Repositories
                     budget.cotizacion,
                     budget.plazo_entrega,
                     budget.forma_pago,
-                    budget.observaciones
+                    budget.observaciones,
+                    budget.contacto,
+                    budget.direccion_entrega,
+                    budget.id_condicion_venta
                 }
                 );
 
@@ -107,29 +112,40 @@ namespace CoreERP.Data.Repositories
 
         public async Task<bool> UpdateBudget(Budget budget)
         {
-            var db = dbConnection();
+            try
+            {
+                var db = dbConnection();
 
-            var sql = @"UPDATE public.presupuestos
-                        SET id_cliente=@id_cliente, id_funcionario=@id_funcionario, fecha=@fecha, estado=@estado, nro_presupuesto=@nro_presupuesto, id_moneda=@id_moneda,plazo_entrega=@plazo_entrega,forma_pago=@forma_pago,observaciones=@observaciones
+                var sql = @"UPDATE public.presupuestos
+                        SET id_cliente=@id_cliente, id_funcionario=@id_funcionario, fecha=@fecha, estado=@estado, nro_presupuesto=@nro_presupuesto, id_moneda=@id_moneda,plazo_entrega=@plazo_entrega,forma_pago=@forma_pago,observaciones=@observaciones,contacto=@contacto,direccion_entrega=@direccion_entrega,id_condicion_venta=@id_condicion_venta
                         WHERE id_presupuesto=@id_presupuesto;
                         ";
 
-            var result = await db.ExecuteAsync(sql, new
-            {
-                budget.id_presupuesto,
-                budget.id_cliente,
-                budget.id_funcionario,
-                budget.fecha,
-                budget.estado,
-                budget.nro_presupuesto,
-                budget.id_moneda,
-                budget.plazo_entrega,
-                budget.forma_pago,
-                budget.observaciones
-            }
-            );
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    budget.id_presupuesto,
+                    budget.id_cliente,
+                    budget.id_funcionario,
+                    budget.fecha,
+                    budget.estado,
+                    budget.nro_presupuesto,
+                    budget.id_moneda,
+                    budget.plazo_entrega,
+                    budget.forma_pago,
+                    budget.observaciones,
+                    budget.contacto,
+                    budget.direccion_entrega,
+                    budget.id_condicion_venta
+                }
+                );
 
-            return result > 0;
+                return result > 0;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

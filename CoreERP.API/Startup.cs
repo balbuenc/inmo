@@ -51,6 +51,7 @@ namespace CoreERP.API
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<IDiscountRepository, DiscountRepository>();
             services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+            services.AddScoped<IInvoiceTypeRepository, InvoiceTypeRepository>();
 
             services.AddControllers();
 

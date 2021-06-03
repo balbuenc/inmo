@@ -6,6 +6,7 @@
 @inject IEmployeeService EmployeeService
 @inject IBudgetDetailsService BudgetDetailsService
 @inject ICurrencyService CurrencyService
+@inject IInvoiceTypeService InvoiceTypeService
 
 @using Microsoft.AspNetCore.Http
 
@@ -98,16 +99,34 @@
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-3">
                                             <SfTextBox @bind-Value="@(budg.plazo_entrega)" Enabled="true" Placeholder="Plazo de entrega" FloatLabelType="FloatLabelType.Always"></SfTextBox>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-3">
                                             <SfTextBox @bind-Value="@(budg.forma_pago)" Enabled="true" Placeholder="Forma de pago" FloatLabelType="FloatLabelType.Always"></SfTextBox>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <SfDropDownList DataSource="@invoiceTypes"
+                                                            TItem="InvoiceType"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(budg.id_condicion_venta)"
+                                                            Placeholder="Tipo factura"
+                                                            FloatLabelType="FloatLabelType.Always" AllowFiltering="true">
+                                                <DropDownListFieldSettings Value="id_condicion_venta" Text="condicion"></DropDownListFieldSettings>
+                                            </SfDropDownList>
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <SfTextBox @bind-Value="@(budg.observaciones)" Enabled="true" Placeholder="Observaciones" FloatLabelType="FloatLabelType.Always" Multiline="true" ></SfTextBox>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <SfTextBox @bind-Value="@(budg.contacto)" Enabled="true" Placeholder="Contacto" FloatLabelType="FloatLabelType.Always"></SfTextBox>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <SfTextBox @bind-Value="@(budg.direccion_entrega)" Enabled="true" Placeholder="Dirección de entrega" FloatLabelType="FloatLabelType.Always"></SfTextBox>
                                         </div>
                                     </div>
 
@@ -124,12 +143,15 @@
                                 </Template>
                             </GridColumn>
                             <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro." Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro." Visible="false" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="60"></GridColumn>
                             <GridColumn Field=@nameof(Budget.moneda) HeaderText="Moneda" Width="15"></GridColumn>
                             <GridColumn Field=@nameof(Budget.fecha) HeaderText="Fecha" Format="dd/MM/yyyy" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado" Visible="false" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.estado) HeaderText="Estado"  Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.direccion_entrega) HeaderText="Entregar en" Visible="false" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.contacto) HeaderText="Contacto" Visible="false" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.condicion) HeaderText="Tipo factura" Visible="false" Width="10"></GridColumn>
 
                         </GridColumns>
                     </SfGrid>
@@ -153,6 +175,7 @@
     public IEnumerable<Client> clients { get; set; }
     public IEnumerable<Employee> employees { get; set; }
     public IEnumerable<Currency> currencies { get; set; }
+    public IEnumerable<InvoiceType> invoiceTypes { get; set; }
 
     public DateTime hoy = DateTime.Today;
     public DateTime t;
@@ -171,6 +194,7 @@
             clients = await ClientService.GetAllClients();
             employees = await EmployeeService.GetAllEmployees();
             currencies = await CurrencyService.GetAllCurrencies();
+            invoiceTypes = await InvoiceTypeService.GetAllInvoiceTypes();
 
 
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();

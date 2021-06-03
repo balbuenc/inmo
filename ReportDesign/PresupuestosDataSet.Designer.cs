@@ -323,6 +323,16 @@ namespace ReportDesign {
             
             private global::System.Data.DataColumn columnruc;
             
+            private global::System.Data.DataColumn columncontacto;
+            
+            private global::System.Data.DataColumn columndireccion_entrega;
+            
+            private global::System.Data.DataColumn columncondicion;
+            
+            private global::System.Data.DataColumn columntotal_prespuesto;
+            
+            private global::System.Data.DataColumn columnmonto_total;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public PresupuestosDataSetDataTable() {
@@ -534,6 +544,46 @@ namespace ReportDesign {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn contactoColumn {
+                get {
+                    return this.columncontacto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn direccion_entregaColumn {
+                get {
+                    return this.columndireccion_entrega;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn condicionColumn {
+                get {
+                    return this.columncondicion;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn total_prespuestoColumn {
+                get {
+                    return this.columntotal_prespuesto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn monto_totalColumn {
+                get {
+                    return this.columnmonto_total;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -591,7 +641,12 @@ namespace ReportDesign {
                         string moneda, 
                         decimal cotizacion, 
                         decimal porcentaje, 
-                        string ruc) {
+                        string ruc, 
+                        string contacto, 
+                        string direccion_entrega, 
+                        string condicion, 
+                        decimal total_prespuesto, 
+                        string monto_total) {
                 PresupuestosDataSetRow rowPresupuestosDataSetRow = ((PresupuestosDataSetRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id_presupuesto,
@@ -615,7 +670,12 @@ namespace ReportDesign {
                         moneda,
                         cotizacion,
                         porcentaje,
-                        ruc};
+                        ruc,
+                        contacto,
+                        direccion_entrega,
+                        condicion,
+                        total_prespuesto,
+                        monto_total};
                 rowPresupuestosDataSetRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPresupuestosDataSetRow);
                 return rowPresupuestosDataSetRow;
@@ -660,6 +720,11 @@ namespace ReportDesign {
                 this.columncotizacion = base.Columns["cotizacion"];
                 this.columnporcentaje = base.Columns["porcentaje"];
                 this.columnruc = base.Columns["ruc"];
+                this.columncontacto = base.Columns["contacto"];
+                this.columndireccion_entrega = base.Columns["direccion_entrega"];
+                this.columncondicion = base.Columns["condicion"];
+                this.columntotal_prespuesto = base.Columns["total_prespuesto"];
+                this.columnmonto_total = base.Columns["monto_total"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -709,6 +774,16 @@ namespace ReportDesign {
                 base.Columns.Add(this.columnporcentaje);
                 this.columnruc = new global::System.Data.DataColumn("ruc", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnruc);
+                this.columncontacto = new global::System.Data.DataColumn("contacto", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncontacto);
+                this.columndireccion_entrega = new global::System.Data.DataColumn("direccion_entrega", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndireccion_entrega);
+                this.columncondicion = new global::System.Data.DataColumn("condicion", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncondicion);
+                this.columntotal_prespuesto = new global::System.Data.DataColumn("total_prespuesto", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columntotal_prespuesto);
+                this.columnmonto_total = new global::System.Data.DataColumn("monto_total", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmonto_total);
                 this.columnestado.MaxLength = 64;
                 this.columnforma_pago.MaxLength = 64;
                 this.columnplazo_entrega.MaxLength = 128;
@@ -723,6 +798,10 @@ namespace ReportDesign {
                 this.columnvendedor.MaxLength = 4095;
                 this.columnmoneda.MaxLength = 32;
                 this.columnruc.MaxLength = 32;
+                this.columncontacto.MaxLength = 128;
+                this.columndireccion_entrega.MaxLength = 256;
+                this.columncondicion.MaxLength = 128;
+                this.columnmonto_total.MaxLength = 4095;
                 this.ExtendedProperties.Add("Generator_TablePropName", "_PresupuestosDataSet");
                 this.ExtendedProperties.Add("Generator_UserTableName", "PresupuestosDataSet");
             }
@@ -1219,6 +1298,88 @@ namespace ReportDesign {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string contacto {
+                get {
+                    try {
+                        return ((string)(this[this.tablePresupuestosDataSet.contactoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'contacto\' in table \'PresupuestosDataSet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePresupuestosDataSet.contactoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string direccion_entrega {
+                get {
+                    try {
+                        return ((string)(this[this.tablePresupuestosDataSet.direccion_entregaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'direccion_entrega\' in table \'PresupuestosDataSet\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tablePresupuestosDataSet.direccion_entregaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string condicion {
+                get {
+                    try {
+                        return ((string)(this[this.tablePresupuestosDataSet.condicionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'condicion\' in table \'PresupuestosDataSet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePresupuestosDataSet.condicionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public decimal total_prespuesto {
+                get {
+                    try {
+                        return ((decimal)(this[this.tablePresupuestosDataSet.total_prespuestoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'total_prespuesto\' in table \'PresupuestosDataSet\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tablePresupuestosDataSet.total_prespuestoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string monto_total {
+                get {
+                    try {
+                        return ((string)(this[this.tablePresupuestosDataSet.monto_totalColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'monto_total\' in table \'PresupuestosDataSet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePresupuestosDataSet.monto_totalColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool Isid_presupuestoNull() {
                 return this.IsNull(this.tablePresupuestosDataSet.id_presupuestoColumn);
             }
@@ -1480,6 +1641,66 @@ namespace ReportDesign {
             public void SetrucNull() {
                 this[this.tablePresupuestosDataSet.rucColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IscontactoNull() {
+                return this.IsNull(this.tablePresupuestosDataSet.contactoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetcontactoNull() {
+                this[this.tablePresupuestosDataSet.contactoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool Isdireccion_entregaNull() {
+                return this.IsNull(this.tablePresupuestosDataSet.direccion_entregaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void Setdireccion_entregaNull() {
+                this[this.tablePresupuestosDataSet.direccion_entregaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IscondicionNull() {
+                return this.IsNull(this.tablePresupuestosDataSet.condicionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetcondicionNull() {
+                this[this.tablePresupuestosDataSet.condicionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool Istotal_prespuestoNull() {
+                return this.IsNull(this.tablePresupuestosDataSet.total_prespuestoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void Settotal_prespuestoNull() {
+                this[this.tablePresupuestosDataSet.total_prespuestoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool Ismonto_totalNull() {
+                return this.IsNull(this.tablePresupuestosDataSet.monto_totalColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void Setmonto_totalNull() {
+                this[this.tablePresupuestosDataSet.monto_totalColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -1663,6 +1884,11 @@ namespace ReportDesign.PresupuestosDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("cotizacion", "cotizacion");
             tableMapping.ColumnMappings.Add("porcentaje", "porcentaje");
             tableMapping.ColumnMappings.Add("ruc", "ruc");
+            tableMapping.ColumnMappings.Add("contacto", "contacto");
+            tableMapping.ColumnMappings.Add("direccion_entrega", "direccion_entrega");
+            tableMapping.ColumnMappings.Add("condicion", "condicion");
+            tableMapping.ColumnMappings.Add("total_prespuesto", "total_prespuesto");
+            tableMapping.ColumnMappings.Add("monto_total", "monto_total");
             this._adapter.TableMappings.Add(tableMapping);
         }
         

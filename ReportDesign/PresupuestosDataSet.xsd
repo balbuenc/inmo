@@ -42,6 +42,11 @@ FROM        "public".v_impresion_presupuestos</CommandText>
               <Mapping SourceColumn="cotizacion" DataSetColumn="cotizacion" />
               <Mapping SourceColumn="porcentaje" DataSetColumn="porcentaje" />
               <Mapping SourceColumn="ruc" DataSetColumn="ruc" />
+              <Mapping SourceColumn="contacto" DataSetColumn="contacto" />
+              <Mapping SourceColumn="direccion_entrega" DataSetColumn="direccion_entrega" />
+              <Mapping SourceColumn="condicion" DataSetColumn="condicion" />
+              <Mapping SourceColumn="total_prespuesto" DataSetColumn="total_prespuesto" />
+              <Mapping SourceColumn="monto_total" DataSetColumn="monto_total" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -159,6 +164,35 @@ FROM        "public".v_impresion_presupuestos</CommandText>
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="32" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="contacto" msprop:Generator_ColumnVarNameInTable="columncontacto" msprop:Generator_ColumnPropNameInRow="contacto" msprop:Generator_ColumnPropNameInTable="contactoColumn" msprop:Generator_UserColumnName="contacto" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="direccion_entrega" msprop:Generator_ColumnVarNameInTable="columndireccion_entrega" msprop:Generator_ColumnPropNameInRow="direccion_entrega" msprop:Generator_ColumnPropNameInTable="direccion_entregaColumn" msprop:Generator_UserColumnName="direccion_entrega" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="256" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="condicion" msprop:Generator_ColumnVarNameInTable="columncondicion" msprop:Generator_ColumnPropNameInRow="condicion" msprop:Generator_ColumnPropNameInTable="condicionColumn" msprop:Generator_UserColumnName="condicion" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="total_prespuesto" msprop:Generator_ColumnVarNameInTable="columntotal_prespuesto" msprop:Generator_ColumnPropNameInRow="total_prespuesto" msprop:Generator_ColumnPropNameInTable="total_prespuestoColumn" msprop:Generator_UserColumnName="total_prespuesto" type="xs:decimal" minOccurs="0" />
+              <xs:element name="monto_total" msprop:Generator_ColumnVarNameInTable="columnmonto_total" msprop:Generator_ColumnPropNameInRow="monto_total" msprop:Generator_ColumnPropNameInTable="monto_totalColumn" msprop:Generator_UserColumnName="monto_total" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="4095" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
