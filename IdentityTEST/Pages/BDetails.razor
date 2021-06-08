@@ -8,6 +8,7 @@
 @inject IProductService ProductService
 @inject IDiscountService DiscountService
 @inject IBudgetService BudgetService
+@inject IPrintService PrintService 
 
 
 @using Microsoft.AspNetCore.Http
@@ -292,7 +293,7 @@
         try
         {
             byte[] r;
-            r = await BudgetDetailsService.GetInvoicePDF(Convert.ToInt32(BudgetID));
+            r = await PrintService.GetInvoicePDF(Convert.ToInt32(BudgetID));
 
             String filename;
             filename = String.Concat("Factura", BudgetID, ".pdf");

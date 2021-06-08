@@ -146,16 +146,19 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>2.3cm</Width>
+                      <Width>1.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>7cm</Width>
+                      <Width>8.5cm</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>2cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>2.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>3.5cm</Width>
+                      <Width>2.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>2.5cm</Width>
@@ -266,13 +269,46 @@
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="Textbox2">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style>
+                                        <FontSize>8pt</FontSize>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox2</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>1pt</PaddingLeft>
+                                <PaddingRight>1pt</PaddingRight>
+                                <PaddingTop>1pt</PaddingTop>
+                                <PaddingBottom>1pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="Textbox16">
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=FormatNumber(Fields!total.Value,0)</Value>
+                                      <Value EvaluationMode="Constant" />
                                       <Style>
                                         <FontFamily>Times New Roman</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -306,7 +342,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=FormatNumber(Fields!total.Value,0)</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -341,6 +377,7 @@
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
+                    <TablixMember />
                   </TablixMembers>
                 </TablixColumnHierarchy>
                 <TablixRowHierarchy>
@@ -353,7 +390,7 @@
                 <KeepTogether>true</KeepTogether>
                 <DataSetName>VentasDS</DataSetName>
                 <Height>1.3cm</Height>
-                <Width>17.8cm</Width>
+                <Width>19.5cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -367,8 +404,8 @@
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>0.01389in</Top>
-            <Height>5.5cm</Height>
-            <Width>19.4404cm</Width>
+            <Height>18cm</Height>
+            <Width>20.5cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -386,7 +423,7 @@
                     <Style>
                       <FontFamily>Times New Roman</FontFamily>
                       <FontSize>9pt</FontSize>
-                      <Format>n</Format>
+                      <Format>#,0;(#,0)</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -395,9 +432,9 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>6.5cm</Top>
-            <Left>16.6cm</Left>
-            <Height>0.79375cm</Height>
+            <Top>19.3175cm</Top>
+            <Left>17.365cm</Left>
+            <Height>0.53975cm</Height>
             <Width>2.5cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -426,10 +463,10 @@
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>6.5cm</Top>
-            <Left>4.02917cm</Left>
-            <Height>1cm</Height>
-            <Width>10.65875cm</Width>
+            <Top>18.5cm</Top>
+            <Left>1.14125cm</Left>
+            <Height>0.58208cm</Height>
+            <Width>16.11975cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -448,7 +485,7 @@
                     <Style>
                       <FontFamily>Times New Roman</FontFamily>
                       <FontSize>9pt</FontSize>
-                      <Format>n</Format>
+                      <Format>#,0;(#,0)</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -457,8 +494,8 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>5.90042cm</Top>
-            <Left>11.8cm</Left>
+            <Top>18.5cm</Top>
+            <Left>17.365cm</Left>
             <Height>0.58208cm</Height>
             <Width>2.5cm</Width>
             <ZIndex>3</ZIndex>
@@ -473,17 +510,17 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>8.57197cm</Height>
+        <Height>20.11125cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>19.4404cm</Width>
+      <Width>20.5cm</Width>
       <Page>
         <PageHeader>
-          <Height>7.5cm</Height>
+          <Height>7.7cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -493,7 +530,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!fecha.Value, "VentasDS")</Value>
+                      <Value>=DatePart("d",First(Fields!fecha.Value, "VentasDS"),0,0)</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
                         <FontSize>9pt</FontSize>
@@ -506,10 +543,10 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>4.8cm</Top>
+              <Top>5cm</Top>
               <Left>3.5cm</Left>
               <Height>0.6cm</Height>
-              <Width>4.84188cm</Width>
+              <Width>1.85738cm</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -538,10 +575,10 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.5cm</Top>
-              <Left>4.5cm</Left>
+              <Top>5.8cm</Top>
+              <Left>3.5cm</Left>
               <Height>0.6cm</Height>
-              <Width>9.56639cm</Width>
+              <Width>10.56639cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -571,7 +608,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.5cm</Top>
+              <Top>5.8cm</Top>
               <Left>14.84576cm</Left>
               <Height>0.6cm</Height>
               <Width>2.96776cm</Width>
@@ -602,10 +639,10 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>6.2cm</Top>
-              <Left>2.5cm</Left>
+              <Top>6.5cm</Top>
+              <Left>2.2cm</Left>
               <Height>0.6cm</Height>
-              <Width>11.56639cm</Width>
+              <Width>11.86639cm</Width>
               <ZIndex>3</ZIndex>
               <Style>
                 <Border>
@@ -637,7 +674,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox7</rd:DefaultName>
-              <Top>4.8cm</Top>
+              <Top>4.3cm</Top>
               <Left>17.5cm</Left>
               <Height>0.52062cm</Height>
               <Width>0.67438cm</Width>
@@ -672,7 +709,7 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox7</rd:DefaultName>
-              <Top>4.83827cm</Top>
+              <Top>4.3cm</Top>
               <Left>15.6cm</Left>
               <Height>0.52062cm</Height>
               <Width>0.78021cm</Width>
@@ -687,13 +724,13 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Textbox Name="RUCTextbox2">
+            <Textbox Name="TelefonoTextBox">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!ruc.Value, "VentasDS")</Value>
+                      <Value>=First(Fields!telefono.Value, "VentasDS")</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
                         <FontSize>9pt</FontSize>
@@ -705,11 +742,79 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.2cm</Top>
-              <Left>14.84576cm</Left>
+              <Top>6.43528cm</Top>
+              <Left>14.83224cm</Left>
               <Height>0.6cm</Height>
               <Width>2.96776cm</Width>
               <ZIndex>6</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="FechaTextbox2">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=DatePart("yyyy", First(Fields!fecha.Value, "VentasDS"), 0, 0)</Value>
+                      <Style>
+                        <FontFamily>Times New Roman</FontFamily>
+                        <FontSize>9pt</FontSize>
+                        <Format>d</Format>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>5cm</Top>
+              <Left>14.5cm</Left>
+              <Height>0.6cm</Height>
+              <Width>1.85738cm</Width>
+              <ZIndex>7</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="FechaTextbox3">
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=UCase(Monthname(DatePart("m", First(Fields!fecha.Value, "VentasDS"), 0, 0)))</Value>
+                      <Style>
+                        <FontFamily>Times New Roman</FontFamily>
+                        <FontSize>9pt</FontSize>
+                        <Format>d</Format>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>5cm</Top>
+              <Left>7cm</Left>
+              <Height>0.6cm</Height>
+              <Width>2.53471cm</Width>
+              <ZIndex>8</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -727,7 +832,7 @@
             </Border>
           </Style>
         </PageHeader>
-        <PageHeight>23cm</PageHeight>
+        <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
         <LeftMargin>0cm</LeftMargin>
         <RightMargin>0cm</RightMargin>
