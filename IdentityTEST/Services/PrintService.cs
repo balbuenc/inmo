@@ -23,5 +23,13 @@ namespace CoreERP.UI.Interfaces
             return response;
 
         }
+
+        public async Task<byte[]> GetRemissionPDF(int id)
+        {
+
+            var response = await _httpClient.GetByteArrayAsync($"api/RemissionPrint/DownloadRemission/{id}");
+            return response;
+
+        }
     }
 }

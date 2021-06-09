@@ -137,6 +137,12 @@
                     @if (Estado == "Facturado")
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Remission">Generar remisión</SfButton>
+                    }
+                    @if (Estado == "Remitido")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintRemission">Imprimir remisión</SfButton>
                     }
                 </div>
             </div>
@@ -307,6 +313,25 @@
         }
     }
 
+    protected async Task PrintRemission()
+    {
+        try
+        {
+            byte[] r;
+            r = await PrintService.GetRemissionPDF(Convert.ToInt32(BudgetID));
+
+            String filename;
+            filename = String.Concat("Remision", BudgetID, ".pdf");
+
+            await Js.SaveAs(filename, r.ToArray());
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     protected async Task RequireAutorization()
     {
         header.estado = "Pendiente";
@@ -327,6 +352,14 @@
         header.estado = "Facturado";
         await BudgetService.SaveBudget(header);
         await PrintInvoice();
+        Navigate();
+    }
+
+    protected async Task Remission()
+    {
+        header.estado = "Remitido";
+        await BudgetService.SaveBudget(header);
+
         Navigate();
     }
 
