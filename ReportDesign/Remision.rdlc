@@ -149,24 +149,15 @@
                       <Width>1.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>8.5cm</Width>
+                      <Width>1.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>2cm</Width>
-                    </TablixColumn>
-                    <TablixColumn>
-                      <Width>2.5cm</Width>
-                    </TablixColumn>
-                    <TablixColumn>
-                      <Width>2.5cm</Width>
-                    </TablixColumn>
-                    <TablixColumn>
-                      <Width>2.5cm</Width>
+                      <Width>16cm</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
                     <TablixRow>
-                      <Height>1.3cm</Height>
+                      <Height>0.58562cm</Height>
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
@@ -180,7 +171,7 @@
                                       <Value>=Fields!cantidad.Value</Value>
                                       <Style>
                                         <FontFamily>Times New Roman</FontFamily>
-                                        <FontSize>8pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -204,6 +195,38 @@
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="Textbox4">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style>
+                                        <FontFamily>Times New Roman</FontFamily>
+                                        <FontSize>8pt</FontSize>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox4</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>1pt</PaddingLeft>
+                                <PaddingRight>1pt</PaddingRight>
+                                <PaddingTop>1pt</PaddingTop>
+                                <PaddingBottom>1pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="producto">
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
@@ -213,7 +236,7 @@
                                       <Value>=Fields!producto.Value</Value>
                                       <Style>
                                         <FontFamily>Times New Roman</FontFamily>
-                                        <FontSize>8pt</FontSize>
+                                        <FontSize>6pt</FontSize>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -235,146 +258,12 @@
                             </Textbox>
                           </CellContents>
                         </TablixCell>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="Importe">
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value />
-                                      <Style>
-                                        <FontSize>8pt</FontSize>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Right</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>Importe</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Style>None</Style>
-                                </Border>
-                                <PaddingLeft>1pt</PaddingLeft>
-                                <PaddingRight>1pt</PaddingRight>
-                                <PaddingTop>1pt</PaddingTop>
-                                <PaddingBottom>1pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="Textbox2">
-                              <CanGrow>true</CanGrow>
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value />
-                                      <Style>
-                                        <FontSize>8pt</FontSize>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Right</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>Textbox2</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Style>None</Style>
-                                </Border>
-                                <PaddingLeft>1pt</PaddingLeft>
-                                <PaddingRight>1pt</PaddingRight>
-                                <PaddingTop>1pt</PaddingTop>
-                                <PaddingBottom>1pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="Textbox16">
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value EvaluationMode="Constant" />
-                                      <Style>
-                                        <FontFamily>Times New Roman</FontFamily>
-                                        <FontSize>8pt</FontSize>
-                                        <Format>#,0;(#,0)</Format>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Right</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>Textbox16</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Style>None</Style>
-                                </Border>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="Importe1">
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value>=FormatNumber(Fields!total.Value,0)</Value>
-                                      <Style>
-                                        <FontSize>8pt</FontSize>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Right</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>Importe1</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Style>None</Style>
-                                </Border>
-                                <PaddingLeft>1pt</PaddingLeft>
-                                <PaddingRight>1pt</PaddingRight>
-                                <PaddingTop>1pt</PaddingTop>
-                                <PaddingBottom>1pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
                       </TablixCells>
                     </TablixRow>
                   </TablixRows>
                 </TablixBody>
                 <TablixColumnHierarchy>
                   <TablixMembers>
-                    <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
@@ -389,8 +278,8 @@
                 </TablixRowHierarchy>
                 <KeepTogether>true</KeepTogether>
                 <DataSetName>VentasDS</DataSetName>
-                <Height>1.3cm</Height>
-                <Width>19.5cm</Width>
+                <Height>0.58562cm</Height>
+                <Width>19cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -404,7 +293,7 @@
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>0.01389in</Top>
-            <Height>18cm</Height>
+            <Height>6cm</Height>
             <Width>20.5cm</Width>
             <Style>
               <Border>
@@ -412,105 +301,8 @@
               </Border>
             </Style>
           </Rectangle>
-          <Textbox Name="TotalTextbox">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Sum(Fields!total.Value, "VentasDS")</Value>
-                    <Style>
-                      <FontFamily>Times New Roman</FontFamily>
-                      <FontSize>9pt</FontSize>
-                      <Format>#,0;(#,0)</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>19.3175cm</Top>
-            <Left>17.365cm</Left>
-            <Height>0.53975cm</Height>
-            <Width>2.5cm</Width>
-            <ZIndex>1</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Numero_letras">
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!monto_total.Value, "VentasDS")</Value>
-                    <Style>
-                      <FontFamily>Times New Roman</FontFamily>
-                      <FontSize>8pt</FontSize>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <Top>18.5cm</Top>
-            <Left>1.14125cm</Left>
-            <Height>0.58208cm</Height>
-            <Width>16.11975cm</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Textbox>
-          <Textbox Name="TotalTextbox2">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Sum(Fields!total.Value, "VentasDS")</Value>
-                    <Style>
-                      <FontFamily>Times New Roman</FontFamily>
-                      <FontSize>9pt</FontSize>
-                      <Format>#,0;(#,0)</Format>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>18.5cm</Top>
-            <Left>17.365cm</Left>
-            <Height>0.58208cm</Height>
-            <Width>2.5cm</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
         </ReportItems>
-        <Height>20.11125cm</Height>
+        <Height>6.72333cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -520,7 +312,7 @@
       <Width>20.5cm</Width>
       <Page>
         <PageHeader>
-          <Height>7.7cm</Height>
+          <Height>16cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -530,10 +322,10 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=DatePart("d",First(Fields!fecha.Value, "VentasDS"),0,0)</Value>
+                      <Value>=First(Fields!fecha.Value, "VentasDS")</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>6pt</FontSize>
                         <Format>d</Format>
                       </Style>
                     </TextRun>
@@ -545,7 +337,7 @@
               </Paragraphs>
               <Top>5cm</Top>
               <Left>3.5cm</Left>
-              <Height>0.6cm</Height>
+              <Height>0.4cm</Height>
               <Width>1.85738cm</Width>
               <Style>
                 <Border>
@@ -566,7 +358,7 @@
                       <Value>=First(Fields!cliente.Value, "VentasDS")</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -575,10 +367,10 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.8cm</Top>
-              <Left>3.5cm</Left>
-              <Height>0.6cm</Height>
-              <Width>10.56639cm</Width>
+              <Top>6.15889cm</Top>
+              <Left>4cm</Left>
+              <Height>0.4cm</Height>
+              <Width>11.46776cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -599,7 +391,7 @@
                       <Value>=First(Fields!ruc.Value, "VentasDS")</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -608,9 +400,9 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5.8cm</Top>
-              <Left>14.84576cm</Left>
-              <Height>0.6cm</Height>
+              <Top>6.7cm</Top>
+              <Left>12.5cm</Left>
+              <Height>0.4cm</Height>
               <Width>2.96776cm</Width>
               <ZIndex>2</ZIndex>
               <Style>
@@ -632,17 +424,17 @@
                       <Value>=First(Fields!direccion.Value, "VentasDS")</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>6pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>6.5cm</Top>
-              <Left>2.2cm</Left>
-              <Height>0.6cm</Height>
-              <Width>11.86639cm</Width>
+              <Top>6.7cm</Top>
+              <Left>2.17354cm</Left>
+              <Height>0.4cm</Height>
+              <Width>10.15007cm</Width>
               <ZIndex>3</ZIndex>
               <Style>
                 <Border>
@@ -654,30 +446,29 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox7">
-              <CanGrow>true</CanGrow>
+            <Textbox Name="MotivoTextBox">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>XX</Value>
+                      <Value>Venta</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>6pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Center</TextAlign>
+                    <TextAlign>Right</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox7</rd:DefaultName>
-              <Top>4.3cm</Top>
-              <Left>17.5cm</Left>
-              <Height>0.52062cm</Height>
-              <Width>0.67438cm</Width>
+              <Top>11.5cm</Top>
+              <Left>2cm</Left>
+              <Height>0.4cm</Height>
+              <Width>1cm</Width>
               <ZIndex>4</ZIndex>
               <Style>
                 <Border>
@@ -689,30 +480,29 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox8">
-              <CanGrow>true</CanGrow>
+            <Textbox Name="MotivoTextBox2">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>XX</Value>
+                      <Value>Venta</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>6pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Center</TextAlign>
+                    <TextAlign>Right</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <rd:DefaultName>Textbox7</rd:DefaultName>
-              <Top>4.3cm</Top>
-              <Left>15.6cm</Left>
-              <Height>0.52062cm</Height>
-              <Width>0.78021cm</Width>
+              <Top>7.5cm</Top>
+              <Left>3.5cm</Left>
+              <Height>0.4cm</Height>
+              <Width>1cm</Width>
               <ZIndex>5</ZIndex>
               <Style>
                 <Border>
@@ -724,16 +514,17 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Textbox Name="TelefonoTextBox">
+            <Textbox Name="MotivoTextBox3">
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!telefono.Value, "VentasDS")</Value>
+                      <Value>Factura</Value>
                       <Style>
                         <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
+                        <FontSize>6pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -742,79 +533,11 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.43528cm</Top>
-              <Left>14.83224cm</Left>
-              <Height>0.6cm</Height>
-              <Width>2.96776cm</Width>
+              <Top>7.5cm</Top>
+              <Left>15cm</Left>
+              <Height>0.4cm</Height>
+              <Width>1cm</Width>
               <ZIndex>6</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="FechaTextbox2">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=DatePart("yyyy", First(Fields!fecha.Value, "VentasDS"), 0, 0)</Value>
-                      <Style>
-                        <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
-                        <Format>d</Format>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>5cm</Top>
-              <Left>14.5cm</Left>
-              <Height>0.6cm</Height>
-              <Width>1.85738cm</Width>
-              <ZIndex>7</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="FechaTextbox3">
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=UCase(Monthname(DatePart("m", First(Fields!fecha.Value, "VentasDS"), 0, 0)))</Value>
-                      <Style>
-                        <FontFamily>Times New Roman</FontFamily>
-                        <FontSize>9pt</FontSize>
-                        <Format>d</Format>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>5cm</Top>
-              <Left>7cm</Left>
-              <Height>0.6cm</Height>
-              <Width>2.53471cm</Width>
-              <ZIndex>8</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>

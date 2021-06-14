@@ -8,7 +8,7 @@
 @inject IProductService ProductService
 @inject IDiscountService DiscountService
 @inject IBudgetService BudgetService
-@inject IPrintService PrintService 
+@inject IPrintService PrintService
 
 
 @using Microsoft.AspNetCore.Http
@@ -40,7 +40,7 @@
     .e-custom {
         border-radius: 10px;
         height: 30px;
-        width: 95px;
+        width: 180px;
     }
 
         .e-custom, .e-custom:hover, .e-custom:focus, .e-custom:active {
@@ -60,12 +60,12 @@
             background-color: red;
         }
 
-    .e-approve {
+    .e-approve, .e-approve:hover, .e-approve:focus, .e-approve:active {
         border-radius: 10px;
         height: 30px;
         width: 180px;
         background-color: seagreen;
-        color: red
+        color: white
     }
 </style>
 
@@ -120,29 +120,29 @@
                     <small class="mb-0">@Titulo</small>
                     @if (!this.IsPrintable)
                     {
-                        <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print">Imprimir</SfButton>
+                    <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print">Imprimir presupuesto</SfButton>
                     }
                     @if (Estado == "Generado")
                     {
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="RequireAutorization">Solicitar autorización</SfButton>
+                    <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="RequireAutorization">Solicitar autorización</SfButton>
                     }
                     @if (Estado == "Pendiente")
                     {
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Autorization">Aprobar presupuesto</SfButton>
+                    <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Autorization">Aprobar presupuesto</SfButton>
                     }
                     @if (Estado == "Aprobado")
                     {
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Invoice">Facturar</SfButton>
+                    <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Invoice">Facturar</SfButton>
                     }
                     @if (Estado == "Facturado")
                     {
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Remission">Generar remisión</SfButton>
+                    <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
+                    <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="Remission">Generar remisión</SfButton>
                     }
                     @if (Estado == "Remitido")
                     {
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintRemission">Imprimir remisión</SfButton>
+                    <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
+                    <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintRemission">Imprimir remisión</SfButton>
                     }
                 </div>
             </div>
