@@ -31,5 +31,7 @@ namespace CoreERP.Model
         public string contacto { get; set; }
 
         public String condicion { get; set; }
+
+        public string obra { get; set; }
     }
 }
