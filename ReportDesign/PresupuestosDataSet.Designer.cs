@@ -333,6 +333,8 @@ namespace ReportDesign {
             
             private global::System.Data.DataColumn columnmonto_total;
             
+            private global::System.Data.DataColumn columnobra;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public PresupuestosDataSetDataTable() {
@@ -584,6 +586,14 @@ namespace ReportDesign {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn obraColumn {
+                get {
+                    return this.columnobra;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -646,7 +656,8 @@ namespace ReportDesign {
                         string direccion_entrega, 
                         string condicion, 
                         decimal total_prespuesto, 
-                        string monto_total) {
+                        string monto_total, 
+                        string obra) {
                 PresupuestosDataSetRow rowPresupuestosDataSetRow = ((PresupuestosDataSetRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id_presupuesto,
@@ -675,7 +686,8 @@ namespace ReportDesign {
                         direccion_entrega,
                         condicion,
                         total_prespuesto,
-                        monto_total};
+                        monto_total,
+                        obra};
                 rowPresupuestosDataSetRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPresupuestosDataSetRow);
                 return rowPresupuestosDataSetRow;
@@ -725,6 +737,7 @@ namespace ReportDesign {
                 this.columncondicion = base.Columns["condicion"];
                 this.columntotal_prespuesto = base.Columns["total_prespuesto"];
                 this.columnmonto_total = base.Columns["monto_total"];
+                this.columnobra = base.Columns["obra"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -784,6 +797,8 @@ namespace ReportDesign {
                 base.Columns.Add(this.columntotal_prespuesto);
                 this.columnmonto_total = new global::System.Data.DataColumn("monto_total", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnmonto_total);
+                this.columnobra = new global::System.Data.DataColumn("obra", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnobra);
                 this.columnestado.MaxLength = 64;
                 this.columnforma_pago.MaxLength = 64;
                 this.columnplazo_entrega.MaxLength = 128;
@@ -802,6 +817,7 @@ namespace ReportDesign {
                 this.columndireccion_entrega.MaxLength = 256;
                 this.columncondicion.MaxLength = 128;
                 this.columnmonto_total.MaxLength = 4095;
+                this.columnobra.MaxLength = 128;
                 this.ExtendedProperties.Add("Generator_TablePropName", "_PresupuestosDataSet");
                 this.ExtendedProperties.Add("Generator_UserTableName", "PresupuestosDataSet");
             }
@@ -1380,6 +1396,22 @@ namespace ReportDesign {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string obra {
+                get {
+                    try {
+                        return ((string)(this[this.tablePresupuestosDataSet.obraColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'obra\' in table \'PresupuestosDataSet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePresupuestosDataSet.obraColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool Isid_presupuestoNull() {
                 return this.IsNull(this.tablePresupuestosDataSet.id_presupuestoColumn);
             }
@@ -1701,6 +1733,18 @@ namespace ReportDesign {
             public void Setmonto_totalNull() {
                 this[this.tablePresupuestosDataSet.monto_totalColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsobraNull() {
+                return this.IsNull(this.tablePresupuestosDataSet.obraColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetobraNull() {
+                this[this.tablePresupuestosDataSet.obraColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -1889,6 +1933,7 @@ namespace ReportDesign.PresupuestosDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("condicion", "condicion");
             tableMapping.ColumnMappings.Add("total_prespuesto", "total_prespuesto");
             tableMapping.ColumnMappings.Add("monto_total", "monto_total");
+            tableMapping.ColumnMappings.Add("obra", "obra");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -1896,7 +1941,7 @@ namespace ReportDesign.PresupuestosDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.Odbc.OdbcConnection();
-            this._connection.ConnectionString = "";
+            this._connection.ConnectionString = global::ReportDesign.Properties.Settings.Default.ConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1905,8 +1950,8 @@ namespace ReportDesign.PresupuestosDataSetTableAdapters {
             this._commandCollection = new global::System.Data.Odbc.OdbcCommand[1];
             this._commandCollection[0] = new global::System.Data.Odbc.OdbcCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT     \"public\".v_impresion_presupuestos.*\r\nFROM        \"public\".v_impresion_" +
-                "presupuestos";
+            this._commandCollection[0].CommandText = "SELECT        \"public\".v_impresion_presupuestos.*\r\nFROM            \"public\".v_imp" +
+                "resion_presupuestos";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         

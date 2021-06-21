@@ -66,7 +66,7 @@
                                                             TValue="Int32"
                                                             @bind-Value="@(stoc.id_producto)"
                                                             Placeholder="Producto"
-                                                            FloatLabelType="FloatLabelType.Always" AllowFiltering="true">
+                                                            FloatLabelType="FloatLabelType.Always" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                                 <DropDownListFieldSettings Value="id_producto" Text="codigo"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
@@ -82,7 +82,7 @@
                                                             TValue="Int32"
                                                             @bind-Value="@(stoc.id_deposito)"
                                                             Placeholder="Depósito"
-                                                            FloatLabelType="FloatLabelType.Always" AllowFiltering="true">
+                                                            FloatLabelType="FloatLabelType.Always" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                                 <DropDownListFieldSettings Value="id_deposito" Text="deposito"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>

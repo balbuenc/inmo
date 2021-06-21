@@ -4,16 +4,16 @@
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
-          <Connection AppSettingsPropertyName="ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString ()" Provider="System.Data.Odbc" />
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString (Settings)" PropertyReference="ApplicationSettings.ReportDesign.Properties.Settings.GlobalReference.Default.ConnectionString" Provider="System.Data.Odbc" />
         </Connections>
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="PresupuestosDataSetTableAdapter" GeneratorDataComponentClassName="PresupuestosDataSetTableAdapter" Name="PresupuestosDataSet" UserDataComponentName="PresupuestosDataSetTableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="ConnectionString ()" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="ConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="true">
-                    <CommandText>SELECT     "public".v_impresion_presupuestos.*
-FROM        "public".v_impresion_presupuestos</CommandText>
+                    <CommandText>SELECT        "public".v_impresion_presupuestos.*
+FROM            "public".v_impresion_presupuestos</CommandText>
                     <Parameters />
                   </DbCommand>
                 </SelectCommand>
@@ -47,6 +47,7 @@ FROM        "public".v_impresion_presupuestos</CommandText>
               <Mapping SourceColumn="condicion" DataSetColumn="condicion" />
               <Mapping SourceColumn="total_prespuesto" DataSetColumn="total_prespuesto" />
               <Mapping SourceColumn="monto_total" DataSetColumn="monto_total" />
+              <Mapping SourceColumn="obra" DataSetColumn="obra" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -193,6 +194,13 @@ FROM        "public".v_impresion_presupuestos</CommandText>
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="4095" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="obra" msprop:Generator_ColumnVarNameInTable="columnobra" msprop:Generator_ColumnPropNameInRow="obra" msprop:Generator_ColumnPropNameInTable="obraColumn" msprop:Generator_UserColumnName="obra" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="128" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
