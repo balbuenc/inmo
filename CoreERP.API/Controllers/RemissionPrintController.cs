@@ -88,5 +88,55 @@ namespace CoreERP.API.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        [Route("DownloadSpecialRemission/{id}")]
+        public async Task<FileStreamResult> DownloadSpecialRemission(int id)
+        {
+            string mimeType = "";
+            int extension = 1;
+            var path = $"C:\\Users\\cbalbuena\\source\\repos\\Lugaro\\ReportDesign\\RemisionEspecial.rdlc";
+
+            DataTable _dt;
+            LocalReport localReport = new LocalReport(path);
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44342/");
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format  
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+                HttpResponseMessage Res = await client.GetAsync($"api/budgetDetail/BudgetPDF/{id}");
+
+                ////Checking the response is successful or not which is sent using HttpClient  
+                //if (Res.IsSuccessStatusCode)
+                //{
+                //Storing the response details recieved from web api   
+                var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+
+                //Deserializing the response recieved from web api and storing into the Employee list  
+                _dt = (DataTable)JsonConvert.DeserializeObject(EmpResponse, (typeof(DataTable)));
+
+                //}
+
+            }
+
+            try
+            {
+                var result = localReport.Execute(RenderType.Pdf, extension, null, mimeType);
+
+                MemoryStream m = new MemoryStream(result.MainStream);
+                var r = new FileStreamResult(m, "application/pdf");
+                return r;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
     }
 }

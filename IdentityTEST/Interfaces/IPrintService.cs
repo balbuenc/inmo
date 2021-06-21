@@ -12,6 +12,8 @@ namespace CoreERP.UI.Interfaces
         Task<byte[]> GetInvoicePDF(int id);
         Task<byte[]> GetRemissionPDF(int id);
 
+        Task<byte[]> GetSpecialRemissionPDF(int id);
+
 
     }
 }

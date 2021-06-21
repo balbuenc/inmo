@@ -53,5 +53,7 @@ namespace CoreERP.Model
 
         public string monto_total { get; set; }
 
+        public string obra { get; set; }
+
     }
 }

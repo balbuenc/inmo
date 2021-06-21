@@ -90,7 +90,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Remision.rdlc" />
-    <EmbeddedResource Include="PresupuestoEspecial.rdlc" />
+    <EmbeddedResource Include="RemisionEspecial.rdlc" />
     <None Include="PresupuestosDataSet.xsc">
       <DependentUpon>PresupuestosDataSet.xsd</DependentUpon>
     </None>
