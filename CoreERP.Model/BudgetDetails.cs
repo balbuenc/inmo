@@ -55,5 +55,7 @@ namespace CoreERP.Model
 
         public string obra { get; set; }
 
+        public string motivo { get; set; }
+
     }
 }

@@ -48,6 +48,7 @@ FROM            "public".v_impresion_presupuestos</CommandText>
               <Mapping SourceColumn="total_prespuesto" DataSetColumn="total_prespuesto" />
               <Mapping SourceColumn="monto_total" DataSetColumn="monto_total" />
               <Mapping SourceColumn="obra" DataSetColumn="obra" />
+              <Mapping SourceColumn="motivo" DataSetColumn="motivo" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -201,6 +202,13 @@ FROM            "public".v_impresion_presupuestos</CommandText>
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="128" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="motivo" msprop:Generator_ColumnVarNameInTable="columnmotivo" msprop:Generator_ColumnPropNameInRow="motivo" msprop:Generator_ColumnPropNameInTable="motivoColumn" msprop:Generator_UserColumnName="motivo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>

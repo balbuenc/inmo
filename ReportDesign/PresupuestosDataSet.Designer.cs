@@ -335,6 +335,8 @@ namespace ReportDesign {
             
             private global::System.Data.DataColumn columnobra;
             
+            private global::System.Data.DataColumn columnmotivo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public PresupuestosDataSetDataTable() {
@@ -594,6 +596,14 @@ namespace ReportDesign {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn motivoColumn {
+                get {
+                    return this.columnmotivo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -657,7 +667,8 @@ namespace ReportDesign {
                         string condicion, 
                         decimal total_prespuesto, 
                         string monto_total, 
-                        string obra) {
+                        string obra, 
+                        string motivo) {
                 PresupuestosDataSetRow rowPresupuestosDataSetRow = ((PresupuestosDataSetRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id_presupuesto,
@@ -687,7 +698,8 @@ namespace ReportDesign {
                         condicion,
                         total_prespuesto,
                         monto_total,
-                        obra};
+                        obra,
+                        motivo};
                 rowPresupuestosDataSetRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPresupuestosDataSetRow);
                 return rowPresupuestosDataSetRow;
@@ -738,6 +750,7 @@ namespace ReportDesign {
                 this.columntotal_prespuesto = base.Columns["total_prespuesto"];
                 this.columnmonto_total = base.Columns["monto_total"];
                 this.columnobra = base.Columns["obra"];
+                this.columnmotivo = base.Columns["motivo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -799,6 +812,8 @@ namespace ReportDesign {
                 base.Columns.Add(this.columnmonto_total);
                 this.columnobra = new global::System.Data.DataColumn("obra", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnobra);
+                this.columnmotivo = new global::System.Data.DataColumn("motivo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmotivo);
                 this.columnestado.MaxLength = 64;
                 this.columnforma_pago.MaxLength = 64;
                 this.columnplazo_entrega.MaxLength = 128;
@@ -818,6 +833,7 @@ namespace ReportDesign {
                 this.columncondicion.MaxLength = 128;
                 this.columnmonto_total.MaxLength = 4095;
                 this.columnobra.MaxLength = 128;
+                this.columnmotivo.MaxLength = 255;
                 this.ExtendedProperties.Add("Generator_TablePropName", "_PresupuestosDataSet");
                 this.ExtendedProperties.Add("Generator_UserTableName", "PresupuestosDataSet");
             }
@@ -1412,6 +1428,22 @@ namespace ReportDesign {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string motivo {
+                get {
+                    try {
+                        return ((string)(this[this.tablePresupuestosDataSet.motivoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'motivo\' in table \'PresupuestosDataSet\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePresupuestosDataSet.motivoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool Isid_presupuestoNull() {
                 return this.IsNull(this.tablePresupuestosDataSet.id_presupuestoColumn);
             }
@@ -1745,6 +1777,18 @@ namespace ReportDesign {
             public void SetobraNull() {
                 this[this.tablePresupuestosDataSet.obraColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsmotivoNull() {
+                return this.IsNull(this.tablePresupuestosDataSet.motivoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetmotivoNull() {
+                this[this.tablePresupuestosDataSet.motivoColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -1934,6 +1978,7 @@ namespace ReportDesign.PresupuestosDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("total_prespuesto", "total_prespuesto");
             tableMapping.ColumnMappings.Add("monto_total", "monto_total");
             tableMapping.ColumnMappings.Add("obra", "obra");
+            tableMapping.ColumnMappings.Add("motivo", "motivo");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
