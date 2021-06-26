@@ -33,5 +33,6 @@ namespace CoreERP.Model
         public String condicion { get; set; }
 
         public string obra { get; set; }
+        public string motivo { get; set; }
     }
 }

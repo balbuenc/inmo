@@ -122,8 +122,18 @@
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <SfTextBox @bind-Value="@(budg.obra)" Enabled="true" Placeholder="Obra" FloatLabelType="FloatLabelType.Always" ></SfTextBox>
+                                        <div class="form-group col-md-6">
+                                            <SfTextBox @bind-Value="@(budg.obra)" Enabled="true" Placeholder="Obra" FloatLabelType="FloatLabelType.Always"></SfTextBox>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <SfDropDownList DataSource="@LocalMotivo"
+                                                            TItem="Motivo"
+                                                            TValue="string"
+                                                            @bind-Value="@(budg.motivo)"
+                                                            Placeholder="Motivo"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
+                                            </SfDropDownList>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -191,6 +201,18 @@
     private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
 
     public string UserName;
+
+    public class Motivo
+    {
+        public string ID { get; set; }
+        public string Text { get; set; }
+    }
+
+    List<Motivo> LocalMotivo = new List<Motivo> {
+    new Motivo() { ID= "MONTAJE", Text= "MONTAJE" },
+    new Motivo() { ID= "MUESTRA", Text= "MUESTRA" },
+    new Motivo() { ID= "VENTA", Text= "VENTA" },
+  };
 
     protected override async Task OnInitializedAsync()
     {

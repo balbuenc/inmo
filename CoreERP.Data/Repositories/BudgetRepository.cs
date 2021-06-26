@@ -37,7 +37,7 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Budget>> GetAllBudgets()
         {
             var db = dbConnection();
-            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones, p.contacto, p.direccion_entrega, cv.condicion, p.id_condicion_venta, p.obra
+            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones, p.contacto, p.direccion_entrega, cv.condicion, p.id_condicion_venta, p.obra, p.motivo
                         from presupuestos p
                         left outer join funcionarios f2 on f2.id_funcionario = p.id_funcionario
                         left outer join clientes c2 on c2.id_cliente = p.id_cliente
@@ -51,7 +51,7 @@ namespace CoreERP.Data.Repositories
         public async Task<Budget> GetBudgetDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones, p.contacto, p.direccion_entrega, cv.condicion, p.id_condicion_venta,p.id_funcionario, p.obra
+            var sql = @"select p.id_presupuesto, p.nro_presupuesto , p.fecha, p.estado, p.id_cliente, p.id_moneda, p.cotizacion, f2.usuario as vendedor, c2.razon_social as cliente, m2.moneda, p.forma_pago, p.plazo_entrega, p.observaciones, p.contacto, p.direccion_entrega, cv.condicion, p.id_condicion_venta,p.id_funcionario, p.obra, p.motivo
                         from presupuestos p
                         left outer join funcionarios f2 on f2.id_funcionario = p.id_funcionario
                         left outer join clientes c2 on c2.id_cliente = p.id_cliente
@@ -79,7 +79,7 @@ namespace CoreERP.Data.Repositories
 
                 budget.cotizacion = resulCotizacion.cotizacion;
 
-                var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado, nro_presupuesto,id_moneda,cotizacion,plazo_entrega,forma_pago,observaciones,contacto,direccion_entrega,id_condicion_venta,obra) VALUES(@id_cliente, @id_funcionario, @fecha, @estado, @nro_presupuesto,@id_moneda,@cotizacion,@plazo_entrega,@forma_pago,@observaciones,@contacto,@direccion_entrega,@id_condicion_venta,@obra);";
+                var sql = @"INSERT INTO public.presupuestos (id_cliente, id_funcionario, fecha, estado, nro_presupuesto,id_moneda,cotizacion,plazo_entrega,forma_pago,observaciones,contacto,direccion_entrega,id_condicion_venta,obra,motivo) VALUES(@id_cliente, @id_funcionario, @fecha, @estado, @nro_presupuesto,@id_moneda,@cotizacion,@plazo_entrega,@forma_pago,@observaciones,@contacto,@direccion_entrega,@id_condicion_venta,@obra,@motivo);";
 
 
                 budget.estado = "Generado";
@@ -99,7 +99,8 @@ namespace CoreERP.Data.Repositories
                     budget.contacto,
                     budget.direccion_entrega,
                     budget.id_condicion_venta,
-                    budget.obra
+                    budget.obra,
+                    budget.motivo
                 }
                 );
 
@@ -118,7 +119,7 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"UPDATE public.presupuestos
-                        SET id_cliente=@id_cliente, id_funcionario=@id_funcionario, fecha=@fecha, estado=@estado, nro_presupuesto=@nro_presupuesto, id_moneda=@id_moneda,plazo_entrega=@plazo_entrega,forma_pago=@forma_pago,observaciones=@observaciones,contacto=@contacto,direccion_entrega=@direccion_entrega,id_condicion_venta=@id_condicion_venta,obra=@obra
+                        SET id_cliente=@id_cliente, id_funcionario=@id_funcionario, fecha=@fecha, estado=@estado, nro_presupuesto=@nro_presupuesto, id_moneda=@id_moneda,plazo_entrega=@plazo_entrega,forma_pago=@forma_pago,observaciones=@observaciones,contacto=@contacto,direccion_entrega=@direccion_entrega,id_condicion_venta=@id_condicion_venta,obra=@obra,motivo=@motivo
                         WHERE id_presupuesto=@id_presupuesto;
                         ";
 
@@ -137,7 +138,8 @@ namespace CoreERP.Data.Repositories
                     budget.contacto,
                     budget.direccion_entrega,
                     budget.id_condicion_venta,
-                    budget.obra
+                    budget.obra,
+                    budget.motivo
                 }
                 );
 
