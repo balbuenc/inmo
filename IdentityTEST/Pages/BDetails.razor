@@ -198,7 +198,7 @@
                         </GridColumn>
                         <GridColumn Field=@nameof(BudgetDetails.codigo) HeaderText="Código" EditType="EditType.DropDownEdit" Width="60">
                             <EditTemplate>
-                                <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products" AllowFiltering="true">
+                                <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as BudgetDetails).id_producto)" Placeholder="Código de producto" DataSource="@products" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                     <DropDownListFieldSettings Text="codigo" Value="id_producto"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </EditTemplate>
@@ -210,7 +210,7 @@
                         </GridColumn>
                         <GridColumn Field=@nameof(BudgetDetails.descuento) HeaderText="Descuento" Format="@format" EditType="EditType.DropDownEdit" Width="50">
                             <EditTemplate>
-                                <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts" AllowFiltering="true">
+                                <SfDropDownList TValue="Int32" TItem="Discount" @bind-Value="@((context as BudgetDetails).id_descuento)" Placeholder="Descuento" DataSource="@discounts" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                     <DropDownListFieldSettings Text="descuento" Value="id_descuento"></DropDownListFieldSettings>
                                 </SfDropDownList>
                             </EditTemplate>
@@ -247,7 +247,7 @@
     [Parameter]
     public bool IsPrintable { get; set; } = false;
 
-
+    SfAutoComplete<string, Product> autoObj { get; set; }
 
 
     public string Messsage { get; set; }

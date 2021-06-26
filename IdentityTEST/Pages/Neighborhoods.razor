@@ -40,7 +40,7 @@
                             <GridColumn Field=@nameof(Neighborhood.id_barrio) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Neighborhood.ciudad) HeaderText="Neighborhood" Width="30">
                                 <EditTemplate>
-                                    <SfDropDownList TValue="Int32" TItem="City" @bind-Value="@((context as Neighborhood).id_ciudad)" Placeholder="Selecccione Ciudad" DataSource="@cities" AllowFiltering="true">
+                                    <SfDropDownList TValue="Int32" TItem="City" @bind-Value="@((context as Neighborhood).id_ciudad)" Placeholder="Selecccione Ciudad" DataSource="@cities" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                         <DropDownListFieldSettings Text="ciudad" Value="id_ciudad"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </EditTemplate>

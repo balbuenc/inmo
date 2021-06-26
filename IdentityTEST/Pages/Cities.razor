@@ -35,7 +35,7 @@
                             <GridColumn Field=@nameof(City.id_ciudad) HeaderText="ID" TextAlign="TextAlign.Center" Width="20" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(City.pais) HeaderText="Pais" Width="80">
                                 <EditTemplate>
-                                    <SfDropDownList TValue="Int32" TItem="Country" @bind-Value="@((context as City).id_pais)" Placeholder="Selecccione Pais" DataSource="@countries" AllowFiltering="true">
+                                    <SfDropDownList TValue="Int32" TItem="Country" @bind-Value="@((context as City).id_pais)" Placeholder="Selecccione Pais" DataSource="@countries" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                         <DropDownListFieldSettings Text="pais" Value="id_pais"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </EditTemplate>

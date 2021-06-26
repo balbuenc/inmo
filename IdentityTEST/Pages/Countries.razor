@@ -40,7 +40,7 @@
                             <GridColumn Field=@nameof(Country.pais) HeaderText="Pais" Width="50"></GridColumn>
                             <GridColumn Field=@nameof(Country.moneda) HeaderText="Moneda" Width="30" EditType="EditType.DropDownEdit">
                                 <EditTemplate>
-                                    <SfDropDownList TValue="Int32" TItem="Currency" @bind-Value="@((context as Country).id_moneda)" Placeholder="Moneda" FloatLabelType="FloatLabelType.Always" DataSource="@currencies" AllowFiltering="true">
+                                    <SfDropDownList TValue="Int32" TItem="Currency" @bind-Value="@((context as Country).id_moneda)" Placeholder="Moneda" FloatLabelType="FloatLabelType.Always" DataSource="@currencies" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                         <DropDownListFieldSettings Text="moneda" Value="id_moneda"></DropDownListFieldSettings>
                                     </SfDropDownList>
                                 </EditTemplate>

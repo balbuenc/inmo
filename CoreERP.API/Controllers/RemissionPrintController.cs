@@ -120,6 +120,8 @@ namespace CoreERP.API.Controllers
                 //Deserializing the response recieved from web api and storing into the Employee list  
                 _dt = (DataTable)JsonConvert.DeserializeObject(EmpResponse, (typeof(DataTable)));
 
+
+                localReport.AddDataSource("PresupuestosDataSet", _dt);
                 //}
 
             }
