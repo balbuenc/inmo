@@ -43,7 +43,7 @@ namespace CoreERP.Data.Repositories
                         left outer join clientes c2 on c2.id_cliente = p.id_cliente
                         left outer join monedas m2 on m2.id_moneda = p.id_moneda 
                         left outer join condicion_venta cv on cv.id_condicion_venta  = p.id_condicion_venta 
-                        order by p.nro_presupuesto asc";
+                        order by p.id_presupuesto desc";
 
             return await db.QueryAsync<Budget>(sql, new { });
         }

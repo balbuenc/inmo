@@ -9,6 +9,7 @@
 @inject IDiscountService DiscountService
 @inject IBudgetService BudgetService
 @inject IPrintService PrintService
+@inject IStockService StockService 
 
 
 @using Microsoft.AspNetCore.Http
@@ -373,9 +374,27 @@
     {
         header.estado = "Facturado";
         await BudgetService.SaveBudget(header);
-        await PrintInvoice();
+        //await PrintInvoice();
+
+        await ModifyStock();
+
         Navigate();
     }
+
+    protected async Task ModifyStock()
+    {
+        Stock s;
+        for (int i = 0; i < GridData.Count(); i++)
+        {
+            BudgetDetails item = GridData.ElementAt(i);
+            s = await StockService.GetStockDetails(item.id_producto);
+
+            s.cantidad = s.cantidad - 1;
+            await StockService.SaveStock(s);
+
+        }
+    }
+
 
     protected async Task Remission()
     {

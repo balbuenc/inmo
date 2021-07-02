@@ -52,7 +52,8 @@ namespace CoreERP.Data.Repositories
                         from public.productos p 
                         left outer join public.stock s on p.id_producto = s.id_producto 
                         left outer join public.depositos d on d.id_deposito = s.id_deposito
-                        where s.id_stock = @Id";
+                        where s.id_producto = @Id
+                        order by s.id_deposito asc";
 
             return await db.QueryFirstOrDefaultAsync<Stock>(sql, new { Id = id });
         }
