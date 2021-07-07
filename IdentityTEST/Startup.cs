@@ -137,6 +137,15 @@ namespace CoreERP.UI
                 printService => { printService.BaseAddress = new Uri(printAPIurl); }
                 );
 
+            services.AddHttpClient<IPurchaseService, PurchaseService>(
+                purchaseService => { purchaseService.BaseAddress = new Uri(apiurl); }
+                );
+
+            services.AddHttpClient<IPurchaseDetailsService, PurchaseDetailsService>(
+              purchaseDetailsService => { purchaseDetailsService.BaseAddress = new Uri(apiurl); }
+              );
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

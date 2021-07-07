@@ -1,0 +1,505 @@
+﻿@page "/PurchaseDetails/{PurchaseID}"
+
+@using Model
+@using Interfaces
+@using CoreERP.UI.Tools
+
+@inject IPurchaseDetailsService PurchaseDetailsService
+@inject IProductService ProductService
+@inject IPurchaseService PurchaseService
+@inject IPrintService PrintService
+@inject IStockService StockService
+
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@inject NavigationManager NavigationManager
+
+
+@attribute [Authorize]
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using System.Collections.ObjectModel
+
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Buttons
+
+
+@using  System.IO;
+@using System.Text;
+
+@inject IJSRuntime Js
+
+
+<style>
+    .e-custom {
+        border-radius: 10px;
+        height: 30px;
+        width: 180px;
+    }
+
+        .e-custom, .e-custom:hover, .e-custom:focus, .e-custom:active {
+            background-color: #ff6e40;
+            color: #fff;
+        }
+
+    .e-require {
+        border-radius: 10px;
+        height: 30px;
+        width: 180px;
+        background-color: lawngreen
+    }
+
+        .e-require, .e-require:hover {
+            color: white;
+            background-color: red;
+        }
+
+    .e-approve, .e-approve:hover, .e-approve:focus, .e-approve:active {
+        border-radius: 10px;
+        height: 30px;
+        width: 180px;
+        background-color: seagreen;
+        color: white
+    }
+</style>
+
+<div class="container-fluid">
+    <p>@Messsage</p>
+    <span class="error">@ErrorDetails</span>
+
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                <div class="jumbotron py-4" style="width: 100%;">
+                    <div class="d-flex align-items-stretch flex-column flex-md-row">
+                        <img src="@imagePath" style="object-fit: contain;" width="154">
+                        <div class="ml-4 d-sm-none d-md-block"></div>
+                        <div class="mt-2 d-sm-block d-md-none"></div>
+                        <div class="flex-fill align-self-md-center">
+                            <h1 class="h5">
+                                <b>
+                                    @Proveedor
+                                </b>
+                            </h1>
+                            <h2 class="h6 text-truncate"><b>Usuario:</b> @Usuario</h2>
+                        </div>
+                    </div>
+
+                    <hr class="my-2">
+                    <table class="table table-sm table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p class="m-0"><b>Nro.:</b> @NroOrden</p>
+                                </td>
+                                <td>
+                                    <p class="m-0"><b>Estado:</b> @Estado</p>
+                                </td>
+                                <td>
+                                    <p class="m-0"><b>Fecha:</b> @Fecha</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="m-0"><b>Moneda:</b> @Moneda</p>
+                                </td>
+                                
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <small class="mb-0">@Titulo</small>
+                    @if (!this.IsPrintable)
+                    {
+                        <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print">Imprimir presupuesto</SfButton>
+                    }
+                    @if (Estado == "Generado")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="RequireAutorization">Solicitar autorización</SfButton>
+                    }
+                    @if (Estado == "Pendiente")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Autorization">Aprobar presupuesto</SfButton>
+                    }
+                    @if (Estado == "Aprobado")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Invoice">Facturar</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
+                    }
+                    @if (Estado == "Facturado")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="Remission">Generar remisión</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
+                    }
+                    @if (Estado == "Remitido")
+                    {
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintRemission">Imprimir remisión</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="alert alert-light" role="banner"><b>Detalles de la compra</b></div>
+            </div>
+            <div class="row">
+                <SfGrid ID="Grid" @ref="Grid" Width="100%" DataSource="@GridData" Toolbar="@ToolbarItems" AllowTextWrap="true">
+                    <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="PurchaseDetails"></GridEvents>
+                    <GridPageSettings PageSize="@PageSize"></GridPageSettings>
+                    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
+                    </GridEditSettings>
+                    @*<GridAggregates>
+                        <GridAggregate>
+                            <GridAggregateColumns>
+                                <GridAggregateColumn Field=@nameof(PurchaseDetails.monto) Type="AggregateType.Sum" Format="@format">
+                                    <FooterTemplate Context="con">
+                                        @{
+                                            var aggregate = (con as AggregateTemplateContext);
+                                            <div class="row">
+                                                <div class="col-12 text-right">
+                                                    <b>@aggregate.Sum </b>
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </FooterTemplate>
+                                </GridAggregateColumn>
+                            </GridAggregateColumns>
+                        </GridAggregate>
+                    </GridAggregates>*@
+                    <GridColumns>
+                        <GridColumn Field=@nameof(PurchaseDetails.id_compra_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as PurchaseDetails).id_compra_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                        @*<GridColumn HeaderText="Imagen" TextAlign="TextAlign.Center" Width="120">
+                            <Template>
+                                @{
+                                    var det = (context as PurchaseDetails);
+                                    <div class="image">
+                                        <img src="@($"/Images/{det.codigo}.jpg")" alt="@det.codigo" width="100px" />
+                                    </div>
+                                }
+                            </Template>
+                            <EditTemplate>
+
+                            </EditTemplate>
+                        </GridColumn>*@
+                        <GridColumn Field=@nameof(PurchaseDetails.codigo) HeaderText="Código" EditType="EditType.DropDownEdit" Width="60">
+                            <EditTemplate>
+                                <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as PurchaseDetails).id_producto)" Placeholder="Código de producto" DataSource="@products" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
+                                    <DropDownListFieldSettings Text="codigo" Value="id_producto"></DropDownListFieldSettings>
+                                </SfDropDownList>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(PurchaseDetails) HeaderText="Producto" Width="200" AllowGrouping="false">
+                            <EditTemplate>
+                                <SfTextBox @bind-Value="@((context as PurchaseDetails).producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                       
+                        <GridColumn Field=@nameof(PurchaseDetails.cantidad) HeaderText="Cant." Format="@format" TextAlign="TextAlign.Right" Width="50">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as PurchaseDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                        <GridColumn Field=@nameof(PurchaseDetails.monto) HeaderText="Precio" Format="@format" TextAlign="TextAlign.Right" Width="50">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as PurchaseDetails).monto)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
+                        
+                    </GridColumns>
+                </SfGrid>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public string PurchaseID { get; set; }
+
+    [Parameter]
+    public bool IsPrintable { get; set; } = false;
+
+    SfAutoComplete<string, Product> autoObj { get; set; }
+
+
+    public string Messsage { get; set; }
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
+    public int PageSize = 100;
+    public string format;
+
+    private SystemTools erpTools;
+    private String mainURL;
+    private String mainLogo;
+    private string imagePath;
+
+    public string ErrorDetails = "";
+    public string Titulo = "";
+    public string Proveedor = "";
+    public string Fecha = "";
+    public string NroOrden = "";
+    public string Moneda = "";
+
+    public string Estado = "";
+    public string Usuario = "";
+
+
+    public IEnumerable<PurchaseDetails> GridData { get; set; }
+    public IEnumerable<Product> products { get; set; }
+
+    public Purchase header { get; set; }
+
+    SfGrid<PurchaseDetails> Grid { get; set; }
+
+    protected async Task Print()
+    {
+        try
+        {
+            byte[] r;
+            r = await PurchaseDetailsService.GetPurchasePDF(Convert.ToInt32(PurchaseID));
+
+            String filename;
+            filename = String.Concat("OrdenCompra", PurchaseID, ".pdf");
+
+            await Js.SaveAs(filename, r.ToArray());
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    protected async Task PrintInvoice()
+    {
+        try
+        {
+            byte[] r;
+            r = await PrintService.GetInvoicePDF(Convert.ToInt32(PurchaseID));
+
+            String filename;
+            filename = String.Concat("Factura", PurchaseID, ".pdf");
+
+            await Js.SaveAs(filename, r.ToArray());
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    protected async Task PrintRemission()
+    {
+        try
+        {
+            byte[] r;
+            r = await PrintService.GetRemissionPDF(Convert.ToInt32(PurchaseID));
+
+            String filename;
+            filename = String.Concat("Remision", PurchaseID, ".pdf");
+
+            await Js.SaveAs(filename, r.ToArray());
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+
+    protected async Task PrintSpecialRemission()
+    {
+        try
+        {
+            byte[] r;
+            r = await PrintService.GetSpecialRemissionPDF(Convert.ToInt32(PurchaseID));
+
+            String filename;
+            filename = String.Concat("RemisionEspecial", PurchaseID, ".pdf");
+
+            await Js.SaveAs(filename, r.ToArray());
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+    protected async Task RequireAutorization()
+    {
+        header.estado = "Pendiente";
+        await PurchaseService.SavePurchase(header);
+        Navigate();
+
+    }
+
+    protected async Task Autorization()
+    {
+        header.estado = "Aprobado";
+        await PurchaseService.SavePurchase(header);
+        Navigate();
+    }
+
+    protected async Task Invoice()
+    {
+        header.estado = "Facturado";
+        await PurchaseService.SavePurchase(header);
+        //await PrintInvoice();
+
+        await ModifyStock();
+
+        Navigate();
+    }
+
+    protected async Task ModifyStock()
+    {
+        Stock s;
+        for (int i = 0; i < GridData.Count(); i++)
+        {
+            PurchaseDetails item = GridData.ElementAt(i);
+            s = await StockService.GetStockDetails(item.id_producto);
+
+            s.cantidad = s.cantidad - 1;
+            await StockService.SaveStock(s);
+
+        }
+    }
+
+
+    protected async Task Remission()
+    {
+        header.estado = "Remitido";
+        await PurchaseService.SavePurchase(header);
+
+        Navigate();
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            int id = Int32.Parse(PurchaseID);
+            GridData = await PurchaseDetailsService.GetPurchaseDetails(id);
+            header = await PurchaseService.GetPurchaseDetails(id);
+
+            //Load header data
+            Titulo = "Detalle de compra ID. " + PurchaseID;
+            Proveedor = header.proveedor;
+            Fecha = header.fecha.ToShortDateString();
+            NroOrden = header.nro_orden_compra;
+            Moneda = header.moneda;
+            
+            Estado = header.estado;
+            Usuario = header.funcionario;
+
+            //Verify if prinatable layout
+            if (IsPrintable)
+            {
+                ToolbarItems = null;
+            }
+
+            //Set the Number format by the Currency
+            if (Moneda == "Dolar")
+            {
+                format = "N2";
+            }
+            else
+            {
+                format = "N0";
+            }
+
+            erpTools = new SystemTools();
+
+            //Get System configuration
+            mainURL = await erpTools.GetSystemParam("BaseURL");
+            mainLogo = await erpTools.GetSystemParam("MainLogo");
+
+            imagePath = mainURL + mainLogo;
+
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener detalles del presupuesto: " + ex.Message;
+        }
+    }
+
+
+
+    private async Task OnBeginHandler(ActionEventArgs<PurchaseDetails> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            ((PurchaseDetails)Args.Data).id_compra = Int32.Parse(PurchaseID);
+            await SavePurchaseDetail((PurchaseDetails)Args.Data);
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            await DeletePurchaseDetail(((PurchaseDetails)Args.Data).id_compra_detalle);
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Add || Args.RequestType == Syncfusion.Blazor.Grids.Action.BeginEdit)
+        {
+            products = await ProductService.GetProductsDefinitions();
+            
+        }
+
+        return;
+    }
+
+
+
+
+
+    private async Task ActionCompletedHandler(ActionEventArgs<PurchaseDetails> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save || Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            int id = Int32.Parse(PurchaseID);
+            GridData = await PurchaseDetailsService.GetPurchaseDetails(id);
+            Grid.Refresh();
+        }
+
+    }
+
+
+    protected async Task SavePurchaseDetail(PurchaseDetails purchaseDetails)
+    {
+        await PurchaseDetailsService.SavePurchaseDetails(purchaseDetails);
+    }
+
+    protected async Task DeletePurchaseDetail(int id)
+    {
+        await PurchaseDetailsService.DeletePurchaseDetails(id);
+    }
+
+    public async Task ExcelExport()
+    {
+        ExcelExportProperties ExportProperties = new ExcelExportProperties();
+        ExportProperties.IncludeHiddenColumn = true;
+        await this.Grid.ExcelExport(ExportProperties);
+    }
+
+    private void Navigate()
+    {
+        NavigationManager.NavigateTo($"/Purchases");
+    }
+
+}

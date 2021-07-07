@@ -16,5 +16,23 @@ namespace CoreERP.Model
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Importe debe tener un valor.")]
         public decimal importe { get; set; }
         public int id_moneda { get; set; }
+
+        public int id_deposito { get; set; }
+        public string estado { get; set; }
+
+        public int id_condicion_venta { get; set; }
+
+        public string nro_orden_compra { get; set; }
+
+        public DateTime fecha { get; set; }
+
+        public int id_funcionario { get; set; }
+
+
+        public string proveedor { get; set; }
+        public string moneda { get; set; }
+        public string deposito { get; set; }
+        public string condicion { get; set; }
+        public string funcionario { get; set; }
     }
 }
