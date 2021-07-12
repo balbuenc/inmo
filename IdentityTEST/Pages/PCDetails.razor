@@ -156,7 +156,7 @@
                     <GridPageSettings PageSize="@PageSize"></GridPageSettings>
                     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
                     </GridEditSettings>
-                    @*<GridAggregates>
+                    <GridAggregates>
                         <GridAggregate>
                             <GridAggregateColumns>
                                 <GridAggregateColumn Field=@nameof(PurchaseDetails.monto) Type="AggregateType.Sum" Format="@format">
@@ -174,14 +174,14 @@
                                 </GridAggregateColumn>
                             </GridAggregateColumns>
                         </GridAggregate>
-                    </GridAggregates>*@
+                    </GridAggregates>
                     <GridColumns>
                         <GridColumn Field=@nameof(PurchaseDetails.id_compra_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as PurchaseDetails).id_compra_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        @*<GridColumn HeaderText="Imagen" TextAlign="TextAlign.Center" Width="120">
+                        <GridColumn HeaderText="Imagen" TextAlign="TextAlign.Center" Width="120">
                             <Template>
                                 @{
                                     var det = (context as PurchaseDetails);
@@ -193,7 +193,7 @@
                             <EditTemplate>
 
                             </EditTemplate>
-                        </GridColumn>*@
+                        </GridColumn>
                         <GridColumn Field=@nameof(PurchaseDetails.codigo) HeaderText="Código" EditType="EditType.DropDownEdit" Width="60">
                             <EditTemplate>
                                 <SfDropDownList TValue="Int32" TItem="Product" @bind-Value="@((context as PurchaseDetails).id_producto)" Placeholder="Código de producto" DataSource="@products" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
@@ -201,7 +201,7 @@
                                 </SfDropDownList>
                             </EditTemplate>
                         </GridColumn>
-                        <GridColumn Field=@nameof(PurchaseDetails) HeaderText="Producto" Width="200" AllowGrouping="false">
+                        <GridColumn Field=@nameof(PurchaseDetails.producto) HeaderText="Producto" Width="200" AllowGrouping="false">
                             <EditTemplate>
                                 <SfTextBox @bind-Value="@((context as PurchaseDetails).producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                             </EditTemplate>

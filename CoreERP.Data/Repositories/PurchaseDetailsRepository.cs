@@ -63,14 +63,14 @@ namespace CoreERP.Data.Repositories
             Discount discount;
             Product product;
             Currency currency;
-            Budget budget;
+            Purchase purchase;
 
             try
             {
                 var db = dbConnection();
 
-                var sql_presupuesto = "select id_moneda from presupuestos p2  where id_presupuesto =@id_presupuesto";
-                budget = await db.QueryFirstOrDefaultAsync<Budget>(sql_presupuesto, new
+                var sql_presupuesto = "select id_moneda from compras c  where id_compra =@id_compra";
+                purchase = await db.QueryFirstOrDefaultAsync<Purchase>(sql_presupuesto, new
                 {
                     purchaseDetail.id_compra
                 });
@@ -102,7 +102,7 @@ namespace CoreERP.Data.Repositories
                 }
                 );
 
-                if (product.id_moneda != budget.id_moneda)
+                if (product.id_moneda != purchase.id_moneda)
                 {
                     purchaseDetail.monto = purchaseDetail.monto * currency.cotizacion;
                 }
