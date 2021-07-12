@@ -134,19 +134,19 @@
                     @if (Estado == "Aprobado")
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Invoice">Facturar</SfButton>
-                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="SpecialRemission">Remisión especial</SfButton>
                     }
                     @if (Estado == "Facturado")
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="Remission">Generar remisión</SfButton>
-                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Imprimir remisión especial</SfButton>
                     }
                     @if (Estado == "Remitido")
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintRemission">Imprimir remisión</SfButton>
-                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Imprimir remisión especial</SfButton>
                     }
                 </div>
             </div>
@@ -381,6 +381,21 @@
         Navigate();
     }
 
+    protected async Task SpecialRemission()
+    {
+        header.estado = "Remitido";
+        await BudgetService.SaveBudget(header);
+        //await PrintInvoice();
+
+        if(header.motivo == "VENTA" || header.motivo == "MUESTRA")
+        {
+            await ModifyStock();
+        }
+
+
+        Navigate();
+    }
+
     protected async Task ModifyStock()
     {
         Stock s;
@@ -389,7 +404,7 @@
             BudgetDetails item = GridData.ElementAt(i);
             s = await StockService.GetStockDetails(item.id_producto);
 
-            s.cantidad = s.cantidad - 1;
+            s.cantidad = s.cantidad - item.cantidad;
             await StockService.SaveStock(s);
 
         }
