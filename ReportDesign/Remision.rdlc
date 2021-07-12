@@ -146,13 +146,13 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1.5cm</Width>
+                      <Width>2cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.5cm</Width>
+                      <Width>1cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>16cm</Width>
+                      <Width>15.55021cm</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -279,7 +279,7 @@
                 <KeepTogether>true</KeepTogether>
                 <DataSetName>VentasDS</DataSetName>
                 <Height>0.58562cm</Height>
-                <Width>19cm</Width>
+                <Width>18.55021cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -335,7 +335,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>5cm</Top>
+              <Top>4.6cm</Top>
               <Left>3.5cm</Left>
               <Height>0.4cm</Height>
               <Width>1.85738cm</Width>
@@ -367,7 +367,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.15889cm</Top>
+              <Top>5.3cm</Top>
               <Left>4cm</Left>
               <Height>0.4cm</Height>
               <Width>11.46776cm</Width>
@@ -400,8 +400,8 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>6.7cm</Top>
-              <Left>12.5cm</Left>
+              <Top>5.77056cm</Top>
+              <Left>12.46472cm</Left>
               <Height>0.4cm</Height>
               <Width>2.96776cm</Width>
               <ZIndex>2</ZIndex>
@@ -431,7 +431,7 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>6.7cm</Top>
+              <Top>5.8cm</Top>
               <Left>2.17354cm</Left>
               <Height>0.4cm</Height>
               <Width>10.15007cm</Width>
@@ -465,7 +465,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>11.5cm</Top>
+              <Top>11cm</Top>
               <Left>2cm</Left>
               <Height>0.4cm</Height>
               <Width>1cm</Width>
@@ -499,7 +499,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>7.5cm</Top>
+              <Top>6.5cm</Top>
               <Left>3.5cm</Left>
               <Height>0.4cm</Height>
               <Width>1cm</Width>
@@ -533,7 +533,7 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>7.5cm</Top>
+              <Top>6.5cm</Top>
               <Left>15cm</Left>
               <Height>0.4cm</Height>
               <Width>1cm</Width>
@@ -557,9 +557,9 @@
         </PageHeader>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
-        <LeftMargin>0cm</LeftMargin>
+        <LeftMargin>0.4cm</LeftMargin>
         <RightMargin>0cm</RightMargin>
-        <TopMargin>0cm</TopMargin>
+        <TopMargin>0.4cm</TopMargin>
         <BottomMargin>0cm</BottomMargin>
         <ColumnSpacing>1.27cm</ColumnSpacing>
         <Style />
