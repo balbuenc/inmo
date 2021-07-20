@@ -26,19 +26,24 @@ namespace CoreERP.Model
 
         public string codigo { get; set; }
 
-        public int factura { get; set; }
+        public string factura { get; set; }
         public DateTime fecha  { get; set; }
 
         public string estado { get; set; }
-        public int imagen { get; set; }
+        public string imagen { get; set; }
+
+        public decimal total { get; set; }
 
         public string proveedor { get; set; }
 
         public string vendedor { get; set; }
 
         public string moneda { get; set; }
-        public decimal total_compra { get; set; }
-        public decimal monto_total { get; set; }
+
         
+        public string monto_total { get; set; }
+        public decimal total_compra { get; set; }
+
+
     }
 }

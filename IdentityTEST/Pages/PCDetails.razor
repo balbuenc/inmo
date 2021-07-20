@@ -118,22 +118,22 @@
                     <small class="mb-0">@Titulo</small>
                     @if (!this.IsPrintable)
                     {
-                        <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print">Imprimir presupuesto</SfButton>
+                        <SfButton CssClass="e-custom" IconPosition="IconPosition.Right" OnClick="Print">Imprimir OC</SfButton>
                     }
-                    @if (Estado == "Generado")
+                    @if (Estado == "Pendiente")
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="RequireAutorization">Solicitar autorización</SfButton>
                     }
                     @if (Estado == "Pendiente")
                     {
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Autorization">Aprobar presupuesto</SfButton>
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Autorization">Aprobar OC</SfButton>
                     }
                     @if (Estado == "Aprobado")
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Invoice">Facturar</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
                     }
-                    @if (Estado == "Facturado")
+                    @*@if (Estado == "Facturado")
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="Remission">Generar remisión</SfButton>
@@ -144,7 +144,7 @@
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintRemission">Imprimir remisión</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Remisión especial</SfButton>
-                    }
+                    }*@
                 </div>
             </div>
             <div class="row">
@@ -159,7 +159,7 @@
                     <GridAggregates>
                         <GridAggregate>
                             <GridAggregateColumns>
-                                <GridAggregateColumn Field=@nameof(PurchaseDetails.monto) Type="AggregateType.Sum" Format="@format">
+                                <GridAggregateColumn Field=@nameof(PurchaseDetails.total) Type="AggregateType.Sum" Format="@format">
                                     <FooterTemplate Context="con">
                                         @{
                                             var aggregate = (con as AggregateTemplateContext);
@@ -206,7 +206,7 @@
                                 <SfTextBox @bind-Value="@((context as PurchaseDetails).producto)" Enabled="false" Placeholder="Producto" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                             </EditTemplate>
                         </GridColumn>
-                       
+
                         <GridColumn Field=@nameof(PurchaseDetails.cantidad) HeaderText="Cant." Format="@format" TextAlign="TextAlign.Right" Width="50">
                             <EditTemplate>
                                 <SfNumericTextBox @bind-Value="@((context as PurchaseDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
@@ -217,7 +217,11 @@
                                 <SfNumericTextBox @bind-Value="@((context as PurchaseDetails).monto)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                             </EditTemplate>
                         </GridColumn>
-                        
+                        <GridColumn Field=@nameof(PurchaseDetails.total) HeaderText="Total" Format="@format" TextAlign="TextAlign.Right" Width="50">
+                            <EditTemplate>
+                                <SfNumericTextBox @bind-Value="@((context as PurchaseDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                            </EditTemplate>
+                        </GridColumn>
                     </GridColumns>
                 </SfGrid>
             </div>
