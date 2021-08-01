@@ -145,6 +145,10 @@ namespace CoreERP.UI
               purchaseDetailsService => { purchaseDetailsService.BaseAddress = new Uri(apiurl); }
               );
 
+            services.AddHttpClient<IQuotaService, QuotaService>(
+                quotaDetailsService => { quotaDetailsService.BaseAddress = new Uri(apiurl); }
+           );
+
 
         }
 
@@ -178,8 +182,8 @@ namespace CoreERP.UI
 
             app.UseEndpoints(endpoints =>
             {
-            //endpoints.MapControllers();
-            endpoints.MapBlazorHub();
+                //endpoints.MapControllers();
+                endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
         }
