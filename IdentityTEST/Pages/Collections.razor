@@ -7,6 +7,7 @@
 @using System.Collections.ObjectModel
 @using Syncfusion.Blazor.Inputs
 @using System.IO
+@using Syncfusion.Blazor.Buttons
 
 
 <div class="container-fluid">
@@ -27,7 +28,8 @@
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" AllowSorting="true" DataSource="@GridData">
+                    <SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" AllowSorting="true" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true">
 
                         <GridEvents OnActionBegin="OnBeginHandler" TValue="Collection"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
@@ -56,7 +58,7 @@
                             <Template>
                                 @{
                                     var colle = (context as Collection);
-                             
+
                                 }
                                 <div>
                                     <div class="form-row">
@@ -72,7 +74,7 @@
                                     </div>
 
                                     <div class="form-row">
-                                       
+
                                         <div class="form-group col-md-6">
                                             <SfTextBox @bind-Value="@(colle.medio_pago)" Enabled="false" Placeholder="Medio" FloatLabelType="FloatLabelType.Always"></SfTextBox>
                                         </div>
@@ -126,7 +128,8 @@
 @code {
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
+    //public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
+    public string[] ToolbarItems = new string[] { "Edit", "Update", "Cancel", "Search" };
 
     public IEnumerable<Collection> GridData { get; set; }
 
@@ -168,6 +171,30 @@
     {
         await CollectionService.DeleteCollection(id);
         Grid.Refresh();
+    }
+
+    public async Task ExcelExport()
+    {
+        ExcelExportProperties ExportProperties = new ExcelExportProperties();
+        ExportProperties.IncludeHiddenColumn = true;
+
+
+        ExcelTheme Theme = new ExcelTheme();
+        ExcelStyle ThemeStyle = new ExcelStyle()
+        {
+            FontName = "Segoe UI",
+            FontColor = "#666666",
+            FontSize = 9
+        };
+        Theme.Header = ThemeStyle;
+        Theme.Record = ThemeStyle;
+        Theme.Caption = ThemeStyle;
+
+        ExportProperties.Theme = Theme;
+
+     
+
+        await this.Grid.ExcelExport(ExportProperties);
     }
 
 
