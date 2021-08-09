@@ -34,15 +34,15 @@ namespace CoreERP.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateQuota([FromBody] Quota cuota)
+        public async Task<IActionResult> CreateQuota([FromBody] Sale sale)
         {
-            if (cuota == null)
+            if (sale == null)
                 return BadRequest();
 
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var created = await _QuotaRepository.InsertQuota(cuota);
+            var created = await _QuotaRepository.GenerateSalesQuote(sale);
 
             return Created("created", created);
 

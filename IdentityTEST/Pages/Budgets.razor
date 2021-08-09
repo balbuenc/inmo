@@ -70,7 +70,7 @@
                                             <SfNumericTextBox @bind-Value="@(budg.id_presupuesto)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(budg.nro_presupuesto)" Enabled="true" Placeholder="Nro. presupuesto" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                            <SfTextBox @bind-Value="@(budg.nro_presupuesto)" Enabled="true" Placeholder="Nro. factura" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                         <div class="form-group col-md-3">
                                             <SfDropDownList DataSource="@currencies"
@@ -158,7 +158,7 @@
                                 </Template>
                             </GridColumn>
                             <GridColumn Field=@nameof(Budget.id_presupuesto) HeaderText="ID" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="Nro." Visible="false" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Budget.nro_presupuesto) HeaderText="# factura" Visible="true" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Budget.vendedor) HeaderText="Vendedor" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Budget.cliente) HeaderText="Cliente" Width="60"></GridColumn>
                             <GridColumn Field=@nameof(Budget.moneda) HeaderText="Moneda" Width="15"></GridColumn>

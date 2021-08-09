@@ -149,6 +149,17 @@ namespace CoreERP.UI
                 quotaDetailsService => { quotaDetailsService.BaseAddress = new Uri(apiurl); }
            );
 
+            services.AddHttpClient<ISaleService, SaleService>(
+                saleDetailsService => { saleDetailsService.BaseAddress = new Uri(apiurl); }
+           );
+
+            services.AddHttpClient<IPaymentMethodService, PaymentMethodService>(
+                paymentMethodService => { paymentMethodService.BaseAddress = new Uri(apiurl); }
+           );
+
+            services.AddHttpClient<ICollectionService, CollectionService>(
+               collectionService => { collectionService.BaseAddress = new Uri(apiurl); }
+          );
 
         }
 

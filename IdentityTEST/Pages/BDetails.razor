@@ -9,7 +9,9 @@
 @inject IDiscountService DiscountService
 @inject IBudgetService BudgetService
 @inject IPrintService PrintService
-@inject IStockService StockService 
+@inject IStockService StockService
+@inject IQuotaService QuotaService
+@inject ISaleService SaleService
 
 
 @using Microsoft.AspNetCore.Http
@@ -29,6 +31,7 @@
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Navigations
 @using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Popups
 
 
 @using  System.IO;
@@ -67,6 +70,32 @@
         width: 180px;
         background-color: seagreen;
         color: white
+    }
+
+    .head, .item {
+        display: table;
+        width: 100%;
+        margin: auto;
+    }
+
+    .head {
+        height: 40px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .name, .city {
+        display: table-cell;
+        vertical-align: middle;
+        width: 50%;
+    }
+
+    .head .name {
+        text-indent: 16px;
+    }
+
+    .head .city {
+        text-indent: 10px;
     }
 </style>
 
@@ -133,7 +162,7 @@
                     }
                     @if (Estado == "Aprobado")
                     {
-                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="Invoice">Facturar</SfButton>
+                        <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="CheckInvoiceNumber">Facturar</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="SpecialRemission">Remisión especial</SfButton>
                     }
                     @if (Estado == "Facturado")
@@ -146,7 +175,7 @@
                     {
                         <SfButton CssClass="e-require" IconPosition="IconPosition.Right" OnClick="PrintInvoice">Imprimir factura</SfButton>
                         <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintRemission">Imprimir remisión</SfButton>
-                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Imprimir remisión especial</SfButton>
+                        <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PrintSpecialRemission">Imprimir remisión esp.</SfButton>
                     }
                 </div>
             </div>
@@ -236,6 +265,29 @@
             </div>
         </div>
     </div>
+
+    <SfDialog Width="510px" IsModal="true" @bind-Visible="@IsVisible">
+        <DialogEvents OnOverlayClick="@OnOverlayclick">
+        </DialogEvents>
+        <DialogTemplates>
+            <Content>
+                <div class="row">
+                    <div class="col-12">
+                        <h5>La venta no puede generarse sin un nro. de factura válido. </h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <SfTextBox Placeholder="Nro. Factura" FloatLabelType="@FloatLabelType.Auto" @bind-Value="@NroPresupuesto"></SfTextBox>
+                    </div>
+                </div>
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton Content="OK" IsPrimary="true" OnClick="@OnConfirmation" />
+            <DialogButton Content="Cancel" IsPrimary="true" OnClick="@OnOverlayclick" />
+        </DialogButtons>
+    </SfDialog>
 </div>
 
 
@@ -278,6 +330,25 @@
     public Budget header { get; set; }
 
     SfGrid<BudgetDetails> Grid { get; set; }
+
+    private bool IsVisible { get; set; } = false;
+
+    private void OpenDialog()
+    {
+        this.IsVisible = true;
+    }
+
+    private void OnOverlayclick(MouseEventArgs arg)
+    {
+        this.IsVisible = false;
+    }
+
+    private async void OnConfirmation()
+    {
+        header.nro_presupuesto = NroPresupuesto;
+        await BudgetService.SaveBudget(header);
+        CheckInvoiceNumber();
+    }
 
     protected async Task Print()
     {
@@ -355,6 +426,7 @@
             throw ex;
         }
     }
+
     protected async Task RequireAutorization()
     {
         header.estado = "Pendiente";
@@ -370,15 +442,48 @@
         Navigate();
     }
 
+    protected async void CheckInvoiceNumber()
+    {
+        if (header.nro_presupuesto == null || header.nro_presupuesto == "")
+        {
+
+            OpenDialog();
+            return;
+        }
+        else
+        {
+            await Invoice();
+        }
+
+    }
+
+
+
     protected async Task Invoice()
     {
-        header.estado = "Facturado";
-        await BudgetService.SaveBudget(header);
-        //await PrintInvoice();
+        try
+        {
+            //create Sale
+            Sale s;
+            s = await SaleService.SaveSale(header);
 
-        await ModifyStock();
+            await QuotaService.SaveQuota(s);
 
-        Navigate();
+            //await PrintInvoice();
+
+            await ModifyStock();
+
+            //Save Budget header
+            header.estado = "Facturado";
+            await BudgetService.SaveBudget(header);
+
+
+            Navigate();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
     protected async Task SpecialRemission()
@@ -387,7 +492,7 @@
         await BudgetService.SaveBudget(header);
         //await PrintInvoice();
 
-        if(header.motivo == "VENTA" || header.motivo == "MUESTRA")
+        if (header.motivo == "VENTA" || header.motivo == "MUESTRA")
         {
             await ModifyStock();
         }
@@ -433,7 +538,7 @@
             Titulo = "Detalle de prespuesto ID. " + BudgetID;
             Cliente = header.cliente;
             Fecha = header.fecha.ToShortDateString();
-            NroPresupuesto = header.nro_presupuesto.ToString();
+            NroPresupuesto = header.nro_presupuesto;
             Moneda = header.moneda;
             Cotizacion = header.cotizacion.ToString();
             Estado = header.estado;

@@ -2,17 +2,13 @@
 @using Model
 @using Interfaces
 @inject IQuotaService QuotaService
-@inject ICurrencyService CurrencyService
-@inject IVendorService VendorService
-@inject IStoreService StoreService
-@inject IInvoiceTypeService InvoiceTypeService
+@inject IPaymentMethodService PaymentMethodService
 @inject IEmployeeService EmployeeService
-
+@inject ICollectionService CollectionService 
 
 @using Microsoft.AspNetCore.Http
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
 
 @attribute [Authorize]
 @using Syncfusion.Blazor
@@ -88,13 +84,30 @@
                                 @{
                                     var quo = (context as Quota);
                                 }
-                                <span>Detalle de compra: @(quo.id_cuota)</span>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <h1 class="display-4">@(quo.cliente.ToUpper())</h1>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <b>Cuota N° @(quo.cuota_str)</b>
+                                        </div>
+
+                                    </div>
+                                </div>
+
                             </HeaderTemplate>
-                            <Template>
+                            <Template >
                                 @{
                                     var quo = (context as Quota);
                                     if (quo.fecha_pago == t)
                                         quo.fecha_pago = hoy;
+
+                                    actQuote = quo;
+
                                 }
                                 <div>
                                     <div class="form-row">
@@ -102,17 +115,10 @@
                                             <SfNumericTextBox @bind-Value="@(quo.id_cuota)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(quo.cuota)" Enabled="false" Placeholder="Nro. Cuota" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                            <SfTextBox @bind-Value="@(quo.cuota_str)" Enabled="false" Placeholder="Nro. Cuota" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <SfDropDownList DataSource="@currencies"
-                                                            TItem="Currency"
-                                                            TValue="Int32"
-                                                            @bind-Value="@(quo.id_moneda)"
-                                                            Placeholder="Moneda"
-                                                            FloatLabelType="FloatLabelType.Always" AllowFiltering="true" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
-                                                <DropDownListFieldSettings Value="id_moneda" Text="moneda"></DropDownListFieldSettings>
-                                            </SfDropDownList>
+                                            <SfTextBox @bind-Value="@(quo.moneda)" Enabled="false" Placeholder="Moneda" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -120,13 +126,13 @@
                                             <SfDatePicker TValue="DateTime" @bind-Value="@(quo.vencimiento)" Format="dd/MM/yyyy" Enabled="true" Placeholder="Vencimiento" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <SfDatePicker TValue="DateTime?" @bind-Value="@(quo.fecha_pago)" Format="dd/MM/yyyy" Enabled="true" Placeholder="Fecha pago" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
+                                            <SfDatePicker TValue="DateTime?" @bind-Value="@(quo.fecha_pago)" Format="dd/MM/yyyy" Enabled="false" Placeholder="Fecha pago" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
                                         </div>
 
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(quo.monto_capital)" Enabled="true" Placeholder="Capital" Format="N0" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                            <SfNumericTextBox @bind-Value="@(quo.monto_capital)" Enabled="false" Placeholder="Capital" Format="N0" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(quo.monto_interes)" Enabled="false" Placeholder="Interes" Format="N0" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
@@ -139,7 +145,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(quo.total)" Enabled="false" Placeholder="TOTAL" Format="N0" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
@@ -147,39 +153,55 @@
                                         <div class="form-group col-md-3">
                                             <SfTextBox @bind-Value="@(quo.estado)" Enabled="false" Placeholder="Estado" FloatLabelType="FloatLabelType.Always"></SfTextBox>
                                         </div>
+
+                                    </div>
+                                    <div class="form-row">
                                         <div class="form-group col-md-3">
-                                            @if (quo.estado == "Pendiente")
+                                            @if (quo.estado == "PENDIENTE")
                                             {
-                                                <SfButton CssClass="e-require" IconPosition="IconPosition.Right">Pagar</SfButton>
+                                                <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PayQuote">Pagar</SfButton>
+                                            }
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            @if (quo.estado == "PENDIENTE")
+                                            {
+                                                <SfDropDownList DataSource="@paymentMethods"
+                                                                TItem="PaymentMethod"
+                                                                TValue="Int32"
+                                                               @bind-Index="@(quo.id_metodo_pago)" 
+                                                                Placeholder="Medio de pago"
+                                                                FloatLabelType="FloatLabelType.Always" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
+                                                    <DropDownListFieldSettings Value="id_medio_pago" Text="medio"></DropDownListFieldSettings>
+                                                </SfDropDownList>
                                             }
                                         </div>
                                     </div>
-
-
                                 </div>
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
-                            <GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
-                                <Template>
-                                    @{
-                                        var Bud = (context as Quota);
-                                        <div><a href="#" @onclick="@(() => Navigate(Bud))">Ver</a></div>
-                                    }
-                                </Template>
-                            </GridColumn>
+                            @*<GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
+                                    <Template>
+                                        @{
+                                            var Bud = (context as Quota);
+                                            <div><a href="#" @onclick="@(() => Navigate(Bud))">Ver</a></div>
+                                        }
+                                    </Template>
+                                </GridColumn>*@
                             <GridColumn Field=@nameof(Quota.id_cuota) HeaderText="ID" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.cuota) HeaderText="Nro. cuota" Visible="false" Width="10"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.fecha_pago) HeaderText="Fech. pago" Format="dd/MM/yyyy" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.cliente) HeaderText="Cliente" Visible="true" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.ruc) HeaderText="RUC" Visible="true" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.cuota_str) HeaderText="#" Visible="true" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.fecha_pago) HeaderText="Fech. pago" Format="dd/MM/yyyy" Width="10"></GridColumn>
 
                             <GridColumn Field=@nameof(Quota.moneda) HeaderText="Moneda" Width="15"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.monto_capital) HeaderText="Capital" Width="20" Format="N0"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.monto_interes) HeaderText="Int." Width="10" Format="N0"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.mora) HeaderText="Mora" Width="10"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.multa) HeaderText="Multa" Width="15" Format="N0"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.total) HeaderText="Total" Width="20" Format="N0"></GridColumn>
-                            <GridColumn Field=@nameof(Quota.estado) HeaderText="Estado" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.monto_capital) HeaderText="Capital" Width="15" Format="N0"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.monto_interes) HeaderText="Int." Visible="false" Width="15" Format="N0"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.mora) HeaderText="Mora" Visible="false" Width="10"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.multa) HeaderText="Multa" Visible="false" Width="15" Format="N0"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.total) HeaderText="Total" Visible="true" Width="15" Format="N0"></GridColumn>
+                            <GridColumn Field=@nameof(Quota.estado) HeaderText="Estado" Visible="true" Width="20"></GridColumn>
 
 
                         </GridColumns>
@@ -201,11 +223,9 @@
     public string ErrorDetails = "";
 
     public IEnumerable<Quota> GridData { get; set; }
-    public IEnumerable<Vendor> vendors { get; set; }
-    public IEnumerable<Currency> currencies { get; set; }
-    public IEnumerable<InvoiceType> invoiceTypes { get; set; }
+    public IEnumerable<PaymentMethod> paymentMethods { get; set; }
     public IEnumerable<Employee> employees { get; set; }
-    public IEnumerable<Store> stores { get; set; }
+
 
 
     public DateTime hoy = DateTime.Today;
@@ -217,18 +237,17 @@
 
     public string UserName;
 
-
+    public Quota actQuote { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             GridData = await QuotaService.GetAllQuotas();
-            vendors = await VendorService.GetAllVendors();
-            currencies = await CurrencyService.GetAllCurrencies();
-            invoiceTypes = await InvoiceTypeService.GetAllInvoiceTypes();
+
             employees = await EmployeeService.GetAllEmployees();
-            stores = await StoreService.GetAllStores();
+            paymentMethods = await PaymentMethodService.GetAllPaymentMethods();
+
 
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
@@ -242,6 +261,29 @@
         }
     }
 
+    protected async void PayQuote()
+    {
+        Collection coll = new Collection();
+
+        coll.id_cuota = actQuote.id_cuota;
+        coll.id_medio_pago = actQuote.id_metodo_pago;
+        coll.fecha = DateTime.Now;
+        coll.monto_cobrado = actQuote.total;
+        coll.id_funcionario = GetEmployeeID(UserName);
+
+        actQuote.estado = "CANCELADA";
+        actQuote.fecha_pago = coll.fecha;
+
+        //Actualizo la CUOTA a CANCELADA
+        await QuotaService.UpdateQuota(actQuote);
+
+        //Creo el cobro 
+        await CollectionService.SaveCollection(coll);
+
+        Navigate();
+
+
+    }
 
 
     private async Task OnBeginHandler(ActionEventArgs<Quota> Args)
@@ -250,9 +292,10 @@
         {
             if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
             {
-                await SaveBudget((Quota)Args.Data);
+                await UpdateQuota((Quota)Args.Data);
             }
-            else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+            else
+            if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
             {
                 await DeleteBudget(((Quota)Args.Data).id_cuota);
             }
@@ -281,12 +324,27 @@
     }
 
 
-    protected async Task SaveBudget(Quota quota)
+    protected async Task UpdateQuota(Quota quota)
     {
         try
         {
             //cuota.id_funcionario = GetEmployeeID(UserName);
-            await QuotaService.SaveQuota(quota);
+            await QuotaService.UpdateQuota(quota);
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al actualizar  cuota: " + ex.Message;
+            throw ex;
+        }
+    }
+
+
+    protected async Task SaveBudget(Sale sale)
+    {
+        try
+        {
+            //cuota.id_funcionario = GetEmployeeID(UserName);
+            await QuotaService.SaveQuota(sale);
         }
         catch (Exception ex)
         {
@@ -328,6 +386,10 @@
         NavigationManager.NavigateTo($"/QuotaDetails/{quota.id_cuota}");
     }
 
+    private void Navigate()
+    {
+        NavigationManager.NavigateTo($"/Collection");
+    }
 
 }
 

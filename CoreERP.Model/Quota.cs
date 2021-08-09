@@ -8,7 +8,7 @@ namespace CoreERP.Model
     public class Quota
     {
         public int id_cuota { get; set; }
-        public int id_credito { get; set; }
+        public int? id_credito { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Cuota debe tener un valor.")]
         public int cuota { get; set; }
@@ -25,7 +25,7 @@ namespace CoreERP.Model
         public decimal multa { get; set; }
         public decimal mora { get; set; }
 
-        public int id_venta { get; set; }
+        public int? id_venta { get; set; }
 
         public int id_moneda { get; set; }
 
@@ -34,5 +34,13 @@ namespace CoreERP.Model
         public string estado { get; set; }
 
         public decimal total  { get; set; }
+
+        public string  cliente { get; set; }
+
+        public string ruc { get; set; }
+
+        public string cuota_str { get; set; }
+
+        public int? id_metodo_pago { get; set; } 
     }
 }

@@ -40,16 +40,25 @@ namespace CoreERP.UI.Services
               );
         }
 
-        public async Task SaveQuota(Quota quota)
+        public async Task SaveQuota(Sale sale)
+        {
+            var clientJson = new StringContent(JsonSerializer.Serialize(sale),
+              Encoding.UTF8, "application/json");
+
+         
+            await _httpClient.PostAsync("api/quota", clientJson);
+
+        }
+
+        public async Task UpdateQuota(Quota quota)
         {
             var clientJson = new StringContent(JsonSerializer.Serialize(quota),
               Encoding.UTF8, "application/json");
 
-            if (quota.id_cuota== 0)
-                await _httpClient.PostAsync("api/quota", clientJson);
-            else
-                await _httpClient.PutAsync("api/quota", clientJson);
+
+            await _httpClient.PutAsync("api/quota", clientJson);
+
         }
-    
-}
+
+    }
 }

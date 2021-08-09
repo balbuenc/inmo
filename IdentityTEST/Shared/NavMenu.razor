@@ -4,8 +4,9 @@
      CollapseMode="BarCollapseMode.Small"
      Breakpoint="Breakpoint.Desktop"
      NavigationBreakpoint="Breakpoint.Tablet"
-     ThemeContrast="ThemeContrast.Light"
-     @bind-Visible="siderVisible">
+     ThemeContrast="ThemeContrast.Light">
+
+    <BarToggler Mode="BarTogglerMode.Popout" />
     <BarBrand>
         <BarItem>
             <BarLink To="/">
@@ -14,6 +15,7 @@
             </BarLink>
         </BarItem>
     </BarBrand>
+
     <BarMenu>
         <BarStart>
             <BarItem>
@@ -99,6 +101,8 @@
                     </BarDropdownToggle>
                     <BarDropdownMenu>
                         <BarDropdownItem To="/Quotas">Cuotas</BarDropdownItem>
+                        <BarDropdownItem To="/PaymentMethod">Medios de pago</BarDropdownItem>
+                        <BarDropdownItem To="/Collection">Cobranzas</BarDropdownItem>
                     </BarDropdownMenu>
                 </BarDropdown>
             </BarItem>
@@ -112,8 +116,6 @@
                     <BarDropdownMenu>
                         <BarDropdownItem To="/ClientType/">Tipos de cliente</BarDropdownItem>
                         <BarDropdownItem To="/Cliente/">Cientes</BarDropdownItem>
-
-
                     </BarDropdownMenu>
                 </BarDropdown>
             </BarItem>

@@ -12,7 +12,9 @@ namespace CoreERP.UI.Interfaces
 
         Task<Quota> GetQuotaDetails(int id);
 
-        Task SaveQuota(Quota cuota);
+        Task SaveQuota(Sale sale);
+
+        Task UpdateQuota(Quota quota);
 
 
         Task DeleteQuota(int id);
