@@ -4,7 +4,7 @@
 @inject IQuotaService QuotaService
 @inject IPaymentMethodService PaymentMethodService
 @inject IEmployeeService EmployeeService
-@inject ICollectionService CollectionService 
+@inject ICollectionService CollectionService
 
 @using Microsoft.AspNetCore.Http
 
@@ -90,7 +90,7 @@
                                             <h1 class="display-4">@(quo.cliente.ToUpper())</h1>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="row">
                                         <div class="col-10">
                                             <b>Cuota N° @(quo.cuota_str)</b>
@@ -100,7 +100,7 @@
                                 </div>
 
                             </HeaderTemplate>
-                            <Template >
+                            <Template>
                                 @{
                                     var quo = (context as Quota);
                                     if (quo.fecha_pago == t)
@@ -108,6 +108,8 @@
 
                                     actQuote = quo;
 
+                                   
+                                 
                                 }
                                 <div>
                                     <div class="form-row">
@@ -155,39 +157,32 @@
                                         </div>
 
                                     </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-3">
-                                            @if (quo.estado == "PENDIENTE")
-                                            {
-                                                <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PayQuote">Pagar</SfButton>
-                                            }
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            @if (quo.estado == "PENDIENTE")
-                                            {
+                                    @if (quo.estado == "PENDIENTE")
+                                    {
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
                                                 <SfDropDownList DataSource="@paymentMethods"
                                                                 TItem="PaymentMethod"
-                                                                TValue="Int32"
-                                                               @bind-Index="@(quo.id_metodo_pago)" 
+                                                                TValue="Int32?"
+                                                                @bind-Value="@(quo.id_metodo_pago)"  
                                                                 Placeholder="Medio de pago"
                                                                 FloatLabelType="FloatLabelType.Always" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains">
                                                     <DropDownListFieldSettings Value="id_medio_pago" Text="medio"></DropDownListFieldSettings>
                                                 </SfDropDownList>
-                                            }
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+
+                                                <SfButton CssClass="e-approve" IconPosition="IconPosition.Right" OnClick="PayQuote">Pagar</SfButton>
+
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
-                            @*<GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
-                                    <Template>
-                                        @{
-                                            var Bud = (context as Quota);
-                                            <div><a href="#" @onclick="@(() => Navigate(Bud))">Ver</a></div>
-                                        }
-                                    </Template>
-                                </GridColumn>*@
                             <GridColumn Field=@nameof(Quota.id_cuota) HeaderText="ID" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Quota.cliente) HeaderText="Cliente" Visible="true" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Quota.ruc) HeaderText="RUC" Visible="true" Width="10"></GridColumn>
@@ -277,7 +272,7 @@
         //Actualizo la CUOTA a CANCELADA
         await QuotaService.UpdateQuota(actQuote);
 
-        //Creo el cobro 
+        //Creo el cobro
         await CollectionService.SaveCollection(coll);
 
         Navigate();

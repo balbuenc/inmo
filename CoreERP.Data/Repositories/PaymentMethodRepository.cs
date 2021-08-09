@@ -46,7 +46,7 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = "select * from medios_pago order by medio asc";
+                var sql = "select * from medios_pago order by id_medio_pago asc";
 
                 var result = await db.QueryAsync<PaymentMethod>(sql, new { });
 
