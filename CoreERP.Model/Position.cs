@@ -8,6 +8,8 @@ namespace CoreERP.Model
     public class Position
     {
         public int id_cargo { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Area debe tener un valor.")]
         public int id_area { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El campo Cargo debe tener un valor.")]

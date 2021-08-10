@@ -36,7 +36,10 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<Employee>> GetAllEmployees()
         {
             var db = dbConnection();
-            var sql = "select * from funcionarios order by apellidos, nombres asc";
+            var sql = @"select f.*, c.cargo 
+                        from funcionarios f
+                        left outer join cargos c on f.id_cargo = c.id_cargo
+                        order by f.apellidos, f.nombres asc";
 
             return await db.QueryAsync<Employee>(sql, new { });
         }
@@ -55,15 +58,16 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @"INSERT INTO public.funcionarios
-                        (usuario, nombres, apellidos, id_cargo)
-                        VALUES(@usuario, @nombres, @apellidos, @id_cargo);";
+                        (usuario, nombres, apellidos, id_cargo,correo)
+                        VALUES(@usuario, @nombres, @apellidos, @id_cargo, @correo);";
 
             var result = await db.ExecuteAsync(sql, new
             {
                 employee.usuario,
                 employee.nombres,
                 employee.apellidos,
-                employee.id_cargo
+                employee.id_cargo,
+                employee.correo
             }
             );
 
@@ -75,7 +79,7 @@ namespace CoreERP.Data.Repositories
             var db = dbConnection();
 
             var sql = @"UPDATE public.funcionarios
-                        SET usuario=@usuario, nombres=@nombres, apellidos=@apellidos, id_cargo=@id_cargo
+                        SET usuario=@usuario, nombres=@nombres, apellidos=@apellidos, id_cargo=@id_cargo, correo=@correo
                         WHERE id_funcionario=@id_funcionario;";
 
             var result = await db.ExecuteAsync(sql, new
@@ -84,7 +88,8 @@ namespace CoreERP.Data.Repositories
                 employee.usuario,
                 employee.nombres,
                 employee.apellidos,
-                employee.id_cargo
+                employee.id_cargo,
+                employee.correo
             }
             );
 

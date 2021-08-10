@@ -14,5 +14,9 @@ namespace CoreERP.Model
         public String nombres { get; set; }
         public String apellidos { get; set; }
         public int id_cargo { get; set; }
+
+        public string correo { get; set; }
+
+        public string cargo { get; set; }
     }
 }
