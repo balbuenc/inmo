@@ -181,3 +181,9 @@ app {
         display: block;
     }
 }
+
+.alert, .alert-title {
+    background-color: #3385ff;
+    color:white;
+    font:bold 16px
+}

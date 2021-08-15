@@ -161,6 +161,10 @@ namespace CoreERP.UI
                collectionService => { collectionService.BaseAddress = new Uri(apiurl); }
           );
 
+            services.AddHttpClient<IAccountTypeService, AccountTypeService>(
+             accountTypeService => { accountTypeService.BaseAddress = new Uri(apiurl); }
+        );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

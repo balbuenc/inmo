@@ -14,7 +14,7 @@
 
     <div class="col-lg-12" style="padding:1px; height:50px">
         <div class="content-wrapper">
-            <div class="alert alert-primary" role="banner"><b>Areas</b></div>
+            <div class="alert alert-title" role="banner" ><b>Areas</b></div>
         </div>
     </div>
 
@@ -42,22 +42,22 @@
                             <Template>
                                 @{
                                     var are = (context as Area);
-                                
+
                                 }
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(are.id_area)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
-                                        
-                                       
+
+
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-10">
                                             <SfTextBox @bind-Value="@(are.area)" Enabled="true" Placeholder="Area" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
-                               
+
                                 </div>
                             </Template>
 
