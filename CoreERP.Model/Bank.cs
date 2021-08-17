@@ -15,5 +15,6 @@ namespace CoreERP.Model
         public string nro_telefono { get; set; }
         public string oficial { get; set; }
         public string email { get; set; }
+        public string ciudad { get; set; }
     }
 }
