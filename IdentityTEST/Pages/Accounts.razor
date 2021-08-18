@@ -112,13 +112,9 @@
                             <GridColumn Field=@nameof(Account.tipo_cuenta) HeaderText="Tipo" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Account.denominacion) HeaderText="Denominación" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Account.nro_cuenta) HeaderText="Nro. cuenta" Width="20"></GridColumn>
-                            <GridColumn HeaderText="Navigation" Width="120">
+                            <GridColumn HeaderText="Acciones" Width="120">
                                 <GridCommandColumns>
-                                    <GridCommandColumn Type="CommandButtonType.None" Title="abc"
-                                                       ButtonOption="@(new CommandButtonOptions()
-                                                           {
-                                                               IconCss = "remove-image-icon-icon-image", Content="customcommand"
-                                                           })" />
+                                    <GridCommandColumn Type="CommandButtonType.None" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-", CssClass="e-flat" })"></GridCommandColumn>
                                 </GridCommandColumns>
                             </GridColumn>
                         </GridColumns>
