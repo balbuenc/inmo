@@ -178,8 +178,8 @@ namespace CoreERP.UI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzQ3MDkwQDMxMzgyZTMzMmUzMEdDejEyQ1Z6Z0FUYk1JSG9WSk1GNFp5MWQ2bVNveUh6SWVwb0lCR01aMkU9"); // Synfusion (v18.3.0.*)
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDg4NzE3QDMxMzkyZTMyMmUzMFA1VHpFanZxK2ZGR1AzOTJlSjNlM2lQOGxNMlNvSGI3Q2hVTlowSHpHL009");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzQ3MDkwQDMxMzgyZTMzMmUzMEdDejEyQ1Z6Z0FUYk1JSG9WSk1GNFp5MWQ2bVNveUh6SWVwb0lCR01aMkU9"); // Synfusion (v18.3.0.*)
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDg4NzE3QDMxMzkyZTMyMmUzMFA1VHpFanZxK2ZGR1AzOTJlSjNlM2lQOGxNMlNvSGI3Q2hVTlowSHpHL009");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
