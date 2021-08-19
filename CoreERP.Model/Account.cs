@@ -21,5 +21,8 @@ namespace CoreERP.Model
 
         public string tipo_cuenta { get; set; }
         public string banco { get; set; }
+
+        public int id_moneda { get; set; }
+        public string moneda { get; set; }
     }
 }

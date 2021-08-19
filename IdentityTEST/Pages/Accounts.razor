@@ -5,6 +5,7 @@
 @inject IAccountService AccountService
 @inject IBankService BankService
 @inject IAccountTypeService AccountTypeService  
+@inject ICurrencyService CurrencyService
 
 @inject NavigationManager NavigationManager
 
@@ -30,7 +31,7 @@
 
     <div class="col-lg-12" style="padding:1px; height:50px">
         <div class="content-wrapper">
-            <div class="alert alert-primary" role="banner"><b>Cuentas</b></div>
+            <div class="alert alert-title" role="banner"><b>Cuentas</b></div>
         </div>
     </div>
 
@@ -80,15 +81,15 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
                                             <SfDropDownList DataSource="@banks"
-                                                             TItem="Bank"
-                                                             TValue="Int32"
-                                                             @bind-Value="@(cuenta.id_banco)"
-                                                             Placeholder="Banco"
-                                                             FloatLabelType="FloatLabelType.Always">
+                                                            TItem="Bank"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(cuenta.id_banco)"
+                                                            Placeholder="Banco"
+                                                            FloatLabelType="FloatLabelType.Always">
                                                 <DropDownListFieldSettings Value="id_banco" Text="banco"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
-                                        <div class="form-group col-md-9">
+                                        <div class="form-group col-md-3">
                                             <SfDropDownList DataSource="@accountTypes"
                                                             TItem="AccountType"
                                                             TValue="Int32"
@@ -96,6 +97,16 @@
                                                             Placeholder="Tipo cuenta"
                                                             FloatLabelType="FloatLabelType.Always">
                                                 <DropDownListFieldSettings Value="id_tipo_cuenta" Text="tipo_cuenta"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <SfDropDownList DataSource="@currencies"
+                                                            TItem="Currency"
+                                                            TValue="Int32"
+                                                            @bind-Value="@(cuenta.id_moneda)"
+                                                            Placeholder="Moneda"
+                                                            FloatLabelType="FloatLabelType.Always">
+                                                <DropDownListFieldSettings Value="id_moneda" Text="moneda"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
                                     </div>
@@ -108,13 +119,14 @@
                         <GridColumns>
                             <GridColumn Field=@nameof(Account.id_cuenta) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
 
-                            <GridColumn Field=@nameof(Account.banco) HeaderText="Banco" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Account.banco) HeaderText="Banco" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Account.tipo_cuenta) HeaderText="Tipo" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Account.denominacion) HeaderText="Denominación" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Account.nro_cuenta) HeaderText="Nro. cuenta" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Account.denominacion) HeaderText="Denominación" Width="50"></GridColumn>
+                            <GridColumn Field=@nameof(Account.nro_cuenta) HeaderText="Nro. cuenta" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Account.moneda) HeaderText="Moneda" Width="20"></GridColumn>
                             <GridColumn HeaderText="Acciones" Width="120">
                                 <GridCommandColumns>
-                                    <GridCommandColumn Type="CommandButtonType.None" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-", CssClass="e-flat" })"></GridCommandColumn>
+                                    <GridCommandColumn Type="CommandButtonType.None" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-add", CssClass="e-flat" })"></GridCommandColumn>
                                 </GridCommandColumns>
                             </GridColumn>
                         </GridColumns>
@@ -173,6 +185,7 @@
     public IEnumerable<Account> GridData { get; set; }
     public IEnumerable<Bank> banks { get; set; }
     public IEnumerable<AccountType> accountTypes { get; set; }
+    public IEnumerable<Currency> currencies { get; set; }
 
     public bool EditDialogVisibility { get; set; } = false;
     public bool DeleteRecordConfirmVisibility { get; set; } = false;
@@ -216,6 +229,7 @@
             GridData = await AccountService.GetAllAccounts();
             banks = await BankService.GetAllBanks();
             accountTypes = await AccountTypeService.GetAllAccountTypes();
+            currencies = await CurrencyService.GetAllCurrencies();
 
         }
         catch (Exception ex)

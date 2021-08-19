@@ -46,11 +46,12 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = @"select c.id_cuenta , c.id_tipo_cuenta , c.denominacion , c.id_banco , c.nro_cuenta , b.banco , tc.tipo_cuenta 
-                            from cuentas c 
-                            left outer join bancos b on b.id_banco = c.id_banco 
-                            left outer join tipos_cuenta tc on tc.id_tipo_cuenta = c.id_tipo_cuenta 
-                            order by c.denominacion ";
+                var sql = @"select c.id_cuenta , c.id_tipo_cuenta , c.denominacion , c.id_banco , c.nro_cuenta , b.banco , tc.tipo_cuenta , c.id_moneda , m.moneda 
+                                from cuentas c 
+                                left outer join bancos b on b.id_banco = c.id_banco 
+                                left outer join tipos_cuenta tc on tc.id_tipo_cuenta = c.id_tipo_cuenta 
+                                left outer join monedas m on m.id_moneda = c.id_moneda 
+                                order by c.denominacion  ";
 
                 var result = await db.QueryAsync<Account>(sql, new { });
 
@@ -85,15 +86,16 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"INSERT INTO public.cuentas
-                            (id_tipo_cuenta, denominacion, id_banco, nro_cuenta)
-                            VALUES(@id_tipo_cuenta, @denominacion, @id_banco, @nro_cuenta);";
+                            (id_tipo_cuenta, denominacion, id_banco, nro_cuenta,id_moneda)
+                            VALUES(@id_tipo_cuenta, @denominacion, @id_banco, @nro_cuenta, @id_moneda);";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
                     account.id_tipo_cuenta,
                     account.denominacion,
                     account.id_banco,
-                    account.nro_cuenta
+                    account.nro_cuenta,
+                    account.id_moneda
                 }
                 );
 
@@ -112,7 +114,7 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"UPDATE public.cuentas
-                            SET id_tipo_cuenta=@id_tipo_cuenta, denominacion=@denominacion, id_banco=@id_banco, nro_cuenta=@nro_cuenta
+                            SET id_tipo_cuenta=@id_tipo_cuenta, denominacion=@denominacion, id_banco=@id_banco, nro_cuenta=@nro_cuenta, id_moneda=@id_moneda
                             WHERE id_cuenta=@id_cuenta;";
 
                 var result = await db.ExecuteAsync(sql, new
@@ -121,7 +123,8 @@ namespace CoreERP.Data.Repositories
                     account.id_tipo_cuenta,
                     account.id_banco,
                     account.denominacion,
-                    account.nro_cuenta
+                    account.nro_cuenta,
+                    account.id_moneda
                 }
                 );
 
