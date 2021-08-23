@@ -1,11 +1,9 @@
-﻿@page "/Account"
+﻿@page "/AccDetails/{AccountID}"
 @using Model
 @using Interfaces
 
-@inject IAccountService AccountService
-@inject IBankService BankService
-@inject IAccountTypeService AccountTypeService  
-@inject ICurrencyService CurrencyService
+@inject IAccountDetailsService AccountDetailsService
+@inject IEmployeeService EmployeeService
 
 @inject NavigationManager NavigationManager
 
@@ -22,7 +20,7 @@
 @using Syncfusion.Blazor.Notifications
 @using Syncfusion.Blazor.Buttons
 
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 <div class="container-fluid">
@@ -31,7 +29,7 @@
 
     <div class="col-lg-12" style="padding:1px; height:50px">
         <div class="content-wrapper">
-            <div class="alert alert-title" role="banner"><b>Cuentas</b></div>
+            <div class="alert alert-primary" role="banner"><b>Detalle de cuenta</b></div>
         </div>
     </div>
 
@@ -41,102 +39,67 @@
             <div class="row">
                 @if (GridData == null)
                 {
-                    <div class="alert alert-title" role="alert"><p><em>Cargando datos...</em></p></div>
+                    <div class="alert alert-warning" role="alert"><p><em>Cargando datos...</em></p></div>
                 }
                 else
                 {
                     <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES">
 
-                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Account"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="AccountDetails"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
 
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
                             <HeaderTemplate>
                                 @{
-                                    var cuenta = (context as Account);
+                                    var detal = (context as AccountDetails);
                                 }
-                                <span>Detalle de la cuenta: @(cuenta.denominacion)</span>
+                                <span>Detalle cuenta Nro.: @(detal.nro_cuenta)</span>
                             </HeaderTemplate>
                             <Template>
                                 @{
-                                    var cuenta = (context as Account);
+                                    var detal = (context as AccountDetails);
                                 }
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
-
-                                            <SfNumericTextBox @bind-Value="@(cuenta.id_cuenta)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                            <SfNumericTextBox @bind-Value="@(detal.id_cuenta_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
-
+                                        <div class="form-group col-md-4">
+                                            <SfDatePicker @bind-Value="@(detal.fecha)" Enabled="true" Placeholder="Fecha" FloatLabelType="FloatLabelType.Always"> </SfDatePicker>
+                                        </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <SfTextBox @bind-Value="@(cuenta.nro_cuenta)" Enabled="true" Placeholder="Nro. de cuenta" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <SfTextBox @bind-Value="@(cuenta.denominacion)" Enabled="true" Placeholder="Denominación" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                        <div class="form-group col-md-4">
+                                            <SfTextBox @bind-Value="@(detal.nro_cuenta)" Enabled="false" Placeholder="#Cuenta" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
                                     </div>
-
                                     <div class="form-row">
-                                        <div class="form-group col-md-3">
-                                            <SfDropDownList DataSource="@banks"
-                                                            TItem="Bank"
-                                                            TValue="Int32"
-                                                            @bind-Value="@(cuenta.id_banco)"
-                                                            Placeholder="Banco"
+                                        <div class="form-group col-md-5">
+                                            <SfDropDownList DataSource="@LocalTipo"
+                                                            TItem="Tipo"
+                                                            TValue="string"
+                                                            @bind-Value="@(detal.tipo)"
+                                                            Placeholder="Tipo"
                                                             FloatLabelType="FloatLabelType.Always">
-                                                <DropDownListFieldSettings Value="id_banco" Text="banco"></DropDownListFieldSettings>
+                                                <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
                                             </SfDropDownList>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <SfDropDownList DataSource="@accountTypes"
-                                                            TItem="AccountType"
-                                                            TValue="Int32"
-                                                            @bind-Value="@(cuenta.id_tipo_cuenta)"
-                                                            Placeholder="Tipo cuenta"
-                                                            FloatLabelType="FloatLabelType.Always">
-                                                <DropDownListFieldSettings Value="id_tipo_cuenta" Text="tipo_cuenta"></DropDownListFieldSettings>
-                                            </SfDropDownList>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <SfDropDownList DataSource="@currencies"
-                                                            TItem="Currency"
-                                                            TValue="Int32"
-                                                            @bind-Value="@(cuenta.id_moneda)"
-                                                            Placeholder="Moneda"
-                                                            FloatLabelType="FloatLabelType.Always">
-                                                <DropDownListFieldSettings Value="id_moneda" Text="moneda"></DropDownListFieldSettings>
-                                            </SfDropDownList>
+                                        <div class="form-group col-md-5">
+                                            <SfNumericTextBox @bind-Value="@(detal.monto)" Enabled="true" Placeholder="Monto" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
                                     </div>
-
-
-
                                 </div>
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
-                            <GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
-                                <Template>
-                                    @{
-                                        var Acc = (context as Account);
-                                        <div><a href="#" @onclick="@(() => Navigate(Acc))">Ver</a></div>
-                                    }
-                                </Template>
-                            </GridColumn>
-                            <GridColumn Field=@nameof(Account.id_cuenta) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(AccountDetails.id_cuenta_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
 
-                            <GridColumn Field=@nameof(Account.banco) HeaderText="Banco" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Account.tipo_cuenta) HeaderText="Tipo" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Account.denominacion) HeaderText="Denominación" Width="50"></GridColumn>
-                            <GridColumn Field=@nameof(Account.nro_cuenta) HeaderText="Nro. cuenta" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Account.moneda) HeaderText="Moneda" Width="20"></GridColumn>
-                            @*<GridColumn HeaderText="Acciones" Width="120">
-                                <GridCommandColumns>
-                                    <GridCommandColumn Type="CommandButtonType.None" ButtonOption="@(new CommandButtonOptions() {IconCss="e-icons e-add", CssClass="e-flat" })"></GridCommandColumn>
-                                </GridCommandColumns>
-                            </GridColumn>*@
+                            <GridColumn Field=@nameof(AccountDetails.fecha) HeaderText="Fecha" Width="30" Format="dd/MM/yyyy"></GridColumn>
+                            <GridColumn Field=@nameof(AccountDetails.nro_cuenta) HeaderText="#Cuenta" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(AccountDetails.tipo) HeaderText="Tipo" Width="40"></GridColumn>
+                            <GridColumn Field=@nameof(AccountDetails.monto) HeaderText="Monto" Width="40" Format="N0"></GridColumn>
+                            <GridColumn Field=@nameof(AccountDetails.usuario) HeaderText="Usuario" Visible="false" Width="30"></GridColumn>
+
                         </GridColumns>
                     </SfGrid>
                 }
@@ -186,14 +149,16 @@
 
 @code {
 
+
+    [Parameter]
+    public string AccountID { get; set; }
+
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
     public string ErrorDetails = "";
 
-    public IEnumerable<Account> GridData { get; set; }
-    public IEnumerable<Bank> banks { get; set; }
-    public IEnumerable<AccountType> accountTypes { get; set; }
-    public IEnumerable<Currency> currencies { get; set; }
+    public IEnumerable<AccountDetails> GridData { get; set; }
+    public IEnumerable<Employee> employees { get; set; }
 
     public bool EditDialogVisibility { get; set; } = false;
     public bool DeleteRecordConfirmVisibility { get; set; } = false;
@@ -224,8 +189,19 @@
         new ToastOption { Title = "Information !", Content = "Please read the comments carefully.", CssClass = "e-toast-info" }
     };
 
+    public class Tipo
+    {
+        public string ID { get; set; }
+        public string Text { get; set; }
+    }
 
-    SfGrid<Account> Grid { get; set; }
+    List<Tipo> LocalTipo = new List<Tipo> {
+    new Tipo() { ID= "Crédito", Text= "Crédito" },
+    new Tipo() { ID= "Débito", Text= "Débito" },
+  };
+
+
+    SfGrid<AccountDetails> Grid { get; set; }
 
     private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
 
@@ -235,30 +211,35 @@
     {
         try
         {
-            GridData = await AccountService.GetAllAccounts();
-            banks = await BankService.GetAllBanks();
-            accountTypes = await AccountTypeService.GetAllAccountTypes();
-            currencies = await CurrencyService.GetAllCurrencies();
+            int id = Int32.Parse(AccountID);
+            GridData = await AccountDetailsService.GetAllAccountDetails(id);
+            employees = await EmployeeService.GetAllEmployees();
+
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            string[] subs = user.Identity.Name.Split("@");
+            UserName = subs[0];
 
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener tipos de cuenta: " + ex.Message;
+            Messsage = "Error al obtener detalle de la cuenta: " + ex.Message;
         }
     }
 
 
 
-    private async Task OnBeginHandler(ActionEventArgs<Account> Args)
+    private async Task OnBeginHandler(ActionEventArgs<AccountDetails> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
-            await SaveAccount((Account)Args.Data);
+            await SaveAccountDetails((AccountDetails)Args.Data);
 
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            ID = ((Account)Args.Data).id_tipo_cuenta;
+            ID = ((AccountDetails)Args.Data).id_cuenta_detalle;
 
             // Open Delete confirmation dialog
             this.DeleteRecordConfirmVisibility = true;
@@ -268,12 +249,12 @@
         return;
     }
 
-    private async Task OnCompleteHandler(ActionEventArgs<Account> Args)
+    private async Task OnCompleteHandler(ActionEventArgs<AccountDetails> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
             await ShowToast(1);
-            GridData = await AccountService.GetAllAccounts();
+            GridData = await AccountDetailsService.GetAllAccountDetails(Int32.Parse(AccountID));
             Grid.Refresh();
 
         }
@@ -286,32 +267,33 @@
         return;
     }
 
-    protected async Task SaveAccount(Account accountType)
+    protected async Task SaveAccountDetails(AccountDetails accountDetail)
     {
-        await AccountService.SaveAccount(accountType);
+        accountDetail.id_cuenta = Int32.Parse(AccountID);
+        accountDetail.id_funcionario = GetEmployeeID(UserName);
+
+
+        await AccountDetailsService.SaveAccountDetail(accountDetail);
         Grid.Refresh();
 
     }
 
-    protected async Task DeleteAccount(int id)
+    protected async Task DeleteAccountDetails(int id)
     {
-        await AccountService.DeleteAccount(id);
+        await AccountDetailsService.DeleteAccountDetail(id);
         await ShowToast(0);
         Grid.Refresh();
 
     }
 
-    protected void ReloadPage()
-    {
-        NavigationManager.NavigateTo("/Accounts", true);
-    }
+   
 
     public async void ConfirmDeleteYes()
     {
         // The user selected Yes to delete the
         // seleted Help Desk Ticket
         // Delete the record
-        await DeleteAccount(ID);
+        await DeleteAccountDetails(ID);
 
         // Close the dialog
         this.DeleteRecordConfirmVisibility = false;
@@ -327,6 +309,21 @@
         // to give the user a chance
         // to confim they want to delete the record
         this.DeleteRecordConfirmVisibility = false;
+    }
+
+    public Int32 GetEmployeeID(string username)
+    {
+        int id;
+        try
+        {
+            id = employees.First(c => c.usuario == username).id_funcionario;
+            return id;
+        }
+        catch (Exception ex)
+        {
+            Messsage = "Error al obtener ID de usuario : " + ex.Message;
+            return 1;
+        }
     }
 
     private async Task ShowToast(int ix)
@@ -346,11 +343,6 @@
     {
 
         await this.ToastObj.Hide("All");
-    }
-
-    private void Navigate(Account acc)
-    {
-        NavigationManager.NavigateTo($"/AccDetails/{acc.id_cuenta}");
     }
 }
 

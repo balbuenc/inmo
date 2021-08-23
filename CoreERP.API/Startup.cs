@@ -61,6 +61,7 @@ namespace CoreERP.API
             services.AddScoped<IAccountTypeRepository, AccountTypeRepository>();
             services.AddScoped<IBankRepository, BankRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAccountDetailRepository, AccountDetailRepository>();
 
             services.AddControllers();
 
