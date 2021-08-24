@@ -57,5 +57,7 @@ namespace CoreERP.Model
 
         public string motivo { get; set; }
 
+        public decimal precio_venta { get; set; }
+
     }
 }

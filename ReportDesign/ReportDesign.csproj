@@ -70,6 +70,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="PresupuestosDataSet.cs">
+      <DependentUpon>PresupuestosDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="PresupuestosDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

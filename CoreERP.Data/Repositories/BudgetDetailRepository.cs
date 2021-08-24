@@ -48,7 +48,7 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"select pd.id_presupuesto_detalle, pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, d.porcentaje , pd.total
+            var sql = @"select pd.id_presupuesto_detalle, pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, d.porcentaje , pd.total, pd.total / pd.cantidad as precio_venta
                         from presupuesto_detalles pd
                         inner join productos p on p.id_producto = pd.id_producto
                         left outer join descuentos d on d.id_descuento = pd.id_descuento 
@@ -61,7 +61,7 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<BudgetDetails>> GetBudgetPDFDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"SELECT id_presupuesto, nro_presupuesto, fecha, estado, forma_pago, plazo_entrega, observaciones, codigo, producto, cantidad, precio, total, descuento, imagen, cliente, direccion, telefono, moneda, vendedor, porcentaje, cotizacion, ruc, contacto, direccion_entrega, condicion, monto_total, obra, motivo
+            var sql = @"SELECT id_presupuesto, nro_presupuesto, fecha, estado, forma_pago, plazo_entrega, observaciones, codigo, producto, cantidad, precio, total, descuento, imagen, cliente, direccion, telefono, moneda, vendedor, porcentaje, cotizacion, ruc, contacto, direccion_entrega, condicion, monto_total, obra, motivo, precio_venta
                         FROM public.v_impresion_presupuestos
                         where id_presupuesto = @Id";
 
