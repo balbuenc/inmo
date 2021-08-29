@@ -16,6 +16,7 @@ namespace CoreERP.Model
         public decimal cantidad { get; set; }
         public decimal costo { get; set; }
         public decimal precio { get; set; }
+        public decimal precio_unitario { get; set; }
 
         public decimal total { get; set; }
 

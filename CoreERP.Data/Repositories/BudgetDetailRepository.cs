@@ -48,11 +48,12 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"select pd.id_presupuesto_detalle, pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, d.porcentaje , pd.total
+            var sql = @"select pd.id_presupuesto_detalle, pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, pd.porcentaje , pd.total pd_precio_unitario
                         from presupuesto_detalles pd
                         inner join productos p on p.id_producto = pd.id_producto
                         left outer join descuentos d on d.id_descuento = pd.id_descuento 
-                        where pd.id_presupuesto = @Id";
+                        where pd.id_presupuesto = @Id
+                        order by 1 desc";
 
 
             return await db.QueryAsync<BudgetDetails>(sql, new { Id = id });
@@ -98,6 +99,7 @@ namespace CoreERP.Data.Repositories
 
                 budgetDetail.precio = product.precio;
                 budgetDetail.costo = product.costo;
+               
 
 
                 var sql_descuento = "select porcentaje from descuentos d where d.id_descuento = @id_descuento";
@@ -118,13 +120,18 @@ namespace CoreERP.Data.Repositories
                 if(product.id_moneda != budget.id_moneda)
                 {
                     budgetDetail.precio = budgetDetail.precio * currency.cotizacion;
+                    budgetDetail.precio_unitario = product.precio * currency.cotizacion;
+                }
+                else
+                {
+                    budgetDetail.precio_unitario = product.precio;
                 }
 
                 budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100))) * budgetDetail.cantidad;
 
                 var sql = @"INSERT INTO public.presupuesto_detalles
-                        (id_presupuesto, id_producto, id_descuento, cantidad, costo, precio,total)
-                        VALUES(@id_presupuesto, @id_producto, @id_descuento, @cantidad, @costo, @precio, @total);";
+                        (id_presupuesto, id_producto, id_descuento, cantidad, costo, precio,total,porcentaje,precio_unitario)
+                        VALUES(@id_presupuesto, @id_producto, @id_descuento, @cantidad, @costo, @precio, @total,@porcentaje,@precio_unitario);";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
@@ -134,7 +141,9 @@ namespace CoreERP.Data.Repositories
                     budgetDetail.cantidad,
                     budgetDetail.costo,
                     budgetDetail.precio,
-                    budgetDetail.total
+                    budgetDetail.total,
+                    budgetDetail.porcentaje,
+                    budgetDetail.precio_unitario
                 }
                 );
 
@@ -153,6 +162,7 @@ namespace CoreERP.Data.Repositories
 
             try
             {
+                
                 var db = dbConnection();
 
                 var sql_producto = "select costo, precio from productos d where d.id_producto = @id_producto";
@@ -164,6 +174,7 @@ namespace CoreERP.Data.Repositories
 
                 budgetDetail.precio = product.precio;
                 budgetDetail.costo = product.costo;
+               
 
 
                 var sql_descuento = "select porcentaje from descuentos d where d.id_descuento = @id_descuento";
@@ -174,10 +185,21 @@ namespace CoreERP.Data.Repositories
                 }
                 );
 
-                budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100))) * budgetDetail.cantidad;
+                if( budgetDetail.id_descuento == 1)
+                {
+                    budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (budgetDetail.porcentaje / 100))) * budgetDetail.cantidad;
+                    budgetDetail.precio_unitario = (budgetDetail.precio - (budgetDetail.precio * (budgetDetail.porcentaje / 100)));
+                }
+                else
+                {
+                    budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100))) * budgetDetail.cantidad;
+                    budgetDetail.precio_unitario = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100)));
+                }
+
+                
 
                 var sql = @"UPDATE public.presupuesto_detalles
-                        SET id_descuento=@id_descuento, cantidad=@cantidad, costo=@costo, precio=@precio, id_producto=@id_producto, total=@total 
+                        SET id_descuento=@id_descuento, cantidad=@cantidad, costo=@costo, precio=@precio, id_producto=@id_producto, total=@total, porcentaje=@porcentaje, precio_unitario =@precio_unitario 
                         WHERE id_presupuesto_detalle=@id_presupuesto_detalle;";
 
                 var result = await db.ExecuteAsync(sql, new
@@ -189,7 +211,9 @@ namespace CoreERP.Data.Repositories
                     budgetDetail.costo,
                     budgetDetail.precio,
                     budgetDetail.total,
-                    budgetDetail.id_presupuesto_detalle
+                    budgetDetail.id_presupuesto_detalle,
+                    budgetDetail.porcentaje,
+                    budgetDetail.precio_unitario
                 }
                 );
 
