@@ -62,7 +62,7 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<BudgetDetails>> GetBudgetPDFDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"SELECT id_presupuesto, nro_presupuesto, fecha, estado, forma_pago, plazo_entrega, observaciones, codigo, producto, cantidad, precio, total, descuento, imagen, cliente, direccion, telefono, moneda, vendedor, porcentaje, cotizacion, ruc, contacto, direccion_entrega, condicion, monto_total, obra, motivo, precio_venta
+            var sql = @"SELECT id_presupuesto, nro_presupuesto, fecha, estado, forma_pago, plazo_entrega, observaciones, codigo, producto, cantidad, precio, total, descuento, imagen, cliente, direccion, telefono, moneda, vendedor, porcentaje, cotizacion, ruc, contacto, direccion_entrega, condicion, monto_total, obra, motivo, precio_unitario
                         FROM public.v_impresion_presupuestos
                         where id_presupuesto = @Id";
 
@@ -76,7 +76,8 @@ namespace CoreERP.Data.Repositories
         {
             Discount discount;
             Product product;
-            Currency currency;
+            Currency currency_product;
+            Currency currency_budget;
             Budget budget;
 
             try
@@ -88,8 +89,8 @@ namespace CoreERP.Data.Repositories
                 {
                     budgetDetail.id_presupuesto
                 });
-                
-                                 
+
+
                 var sql_producto = "select costo, precio, id_moneda from productos d where d.id_producto = @id_producto";
                 product = await db.QueryFirstOrDefaultAsync<Product>(sql_producto, new
                 {
@@ -99,7 +100,7 @@ namespace CoreERP.Data.Repositories
 
                 budgetDetail.precio = product.precio;
                 budgetDetail.costo = product.costo;
-               
+
 
 
                 var sql_descuento = "select porcentaje from descuentos d where d.id_descuento = @id_descuento";
@@ -110,17 +111,33 @@ namespace CoreERP.Data.Repositories
                 }
                 );
 
+                //Obtengo las cotizacciones del tipo de moneda para el Producto
                 var sql_moneda = "select cotizacion from  monedas m where m.id_moneda =@id_moneda";
-                currency = await db.QueryFirstOrDefaultAsync<Currency>(sql_moneda, new
+                currency_product = await db.QueryFirstOrDefaultAsync<Currency>(sql_moneda, new
                 {
                     product.id_moneda
                 }
-                ); 
+                );
 
-                if(product.id_moneda != budget.id_moneda)
+                //Obtengo las cotizacciones del tipo de moneda para el Presupuesto
+                currency_budget = await db.QueryFirstOrDefaultAsync<Currency>(sql_moneda, new
                 {
-                    budgetDetail.precio = budgetDetail.precio * currency.cotizacion;
-                    budgetDetail.precio_unitario = product.precio * currency.cotizacion;
+                    budget.id_moneda
+                }
+                );
+
+                if (product.id_moneda != budget.id_moneda)
+                {
+                    if (budget.id_moneda == 1)
+                    {
+                        budgetDetail.precio = budgetDetail.precio * currency_product.cotizacion;
+                        budgetDetail.precio_unitario = product.precio * currency_product.cotizacion;
+                    }
+                    else
+                    {
+                        budgetDetail.precio = budgetDetail.precio / currency_budget.cotizacion;
+                        budgetDetail.precio_unitario = product.precio / currency_budget.cotizacion;
+                    }
                 }
                 else
                 {
@@ -164,7 +181,7 @@ namespace CoreERP.Data.Repositories
 
             try
             {
-                
+
                 var db = dbConnection();
 
                 var sql_producto = "select costo, precio from productos d where d.id_producto = @id_producto";
@@ -176,7 +193,7 @@ namespace CoreERP.Data.Repositories
 
                 budgetDetail.precio = product.precio;
                 budgetDetail.costo = product.costo;
-               
+
 
 
                 var sql_descuento = "select porcentaje from descuentos d where d.id_descuento = @id_descuento";
@@ -187,7 +204,7 @@ namespace CoreERP.Data.Repositories
                 }
                 );
 
-                if( budgetDetail.id_descuento == 1)
+                if (budgetDetail.id_descuento == 1)
                 {
                     budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (budgetDetail.porcentaje / 100))) * budgetDetail.cantidad;
                     budgetDetail.precio_unitario = (budgetDetail.precio - (budgetDetail.precio * (budgetDetail.porcentaje / 100)));
@@ -198,7 +215,7 @@ namespace CoreERP.Data.Repositories
                     budgetDetail.precio_unitario = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100)));
                 }
 
-                
+
 
                 var sql = @"UPDATE public.presupuesto_detalles
                         SET id_descuento=@id_descuento, cantidad=@cantidad, costo=@costo, precio=@precio, id_producto=@id_producto, total=@total, porcentaje=@porcentaje, precio_unitario =@precio_unitario 

@@ -421,6 +421,44 @@
         this.IsSearchVisible = false;
     }
 
+    private async void OnItemAdded()
+    {
+        List<Product> addedItems = itemSearch.products;
+        BudgetDetails b = new BudgetDetails();
+        Product product;
+
+
+        //Inserto los productos seleccionados
+        foreach (Product p in addedItems)
+        {
+            //Obtengo el detalle del producto a ser insertado
+            product = await ProductService.GetProductDetails(p.id_producto);
+
+            //Configuro el detalle del presupuesto
+            b.id_presupuesto = header.id_presupuesto;
+            b.id_descuento = 1;
+            b.cantidad = 1;
+            b.total = product.precio;
+
+            b.id_producto = product.id_producto;
+            b.precio = product.precio;
+
+
+            await BudgetDetailsService.SaveBudgetDetails(b);
+
+
+        }
+
+        //Cierro el dialogo de busqueda
+        IsSearchVisible = false;
+
+        int id = Int32.Parse(BudgetID);
+        GridData = await BudgetDetailsService.GetBudgetDetails(id);
+
+        Grid.Refresh();
+
+    }
+
     private async void OnConfirmation()
     {
         header.nro_presupuesto = NroPresupuesto;
