@@ -128,15 +128,15 @@ namespace CoreERP.Data.Repositories
 
                 if (product.id_moneda != budget.id_moneda)
                 {
-                    if (budget.id_moneda == 1)
+                    if (budget.id_moneda != 1)
                     {
                         budgetDetail.precio = budgetDetail.precio * currency_product.cotizacion;
                         budgetDetail.precio_unitario = product.precio * currency_product.cotizacion;
                     }
                     else
                     {
-                        budgetDetail.precio = budgetDetail.precio / currency_budget.cotizacion;
-                        budgetDetail.precio_unitario = product.precio / currency_budget.cotizacion;
+                        budgetDetail.precio = budgetDetail.precio / currency_product.cotizacion;
+                        budgetDetail.precio_unitario = product.precio / currency_product.cotizacion;
                     }
                 }
                 else
@@ -177,22 +177,22 @@ namespace CoreERP.Data.Repositories
         public async Task<bool> UpdateBudgetDetail(BudgetDetails budgetDetail)
         {
             Discount discount;
-            Product product;
+            //Product product;
 
             try
             {
 
                 var db = dbConnection();
 
-                var sql_producto = "select costo, precio from productos d where d.id_producto = @id_producto";
-                product = await db.QueryFirstOrDefaultAsync<Product>(sql_producto, new
-                {
-                    budgetDetail.id_producto
-                }
-                );
+                //var sql_producto = "select costo, precio from productos d where d.id_producto = @id_producto";
+                //product = await db.QueryFirstOrDefaultAsync<Product>(sql_producto, new
+                //{
+                //    budgetDetail.id_producto
+                //}
+                //);
 
-                budgetDetail.precio = product.precio;
-                budgetDetail.costo = product.costo;
+                //budgetDetail.precio = product.precio;
+                //budgetDetail.costo = product.costo;
 
 
 
