@@ -62,11 +62,18 @@
             <div class="row">
                 <div class="col-12">
                     <SfGrid ID="Selected" @ref="SelectedGrid" AllowSorting="true" DataSource="@products">
-
+                         <GridEditSettings AllowAdding="true"  AllowDeleting="true" ></GridEditSettings>
                         <GridColumns>
                             <GridColumn Field=@nameof(Product.id_producto) HeaderText="ID" Visible="false" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
                             <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="10"></GridColumn>
                             <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="30"></GridColumn>
+                            <GridColumn HeaderText="Acciones" Width="100">
+                                <GridCommandColumns>
+                                    
+                                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                                    
+                                </GridCommandColumns>
+                            </GridColumn>
                         </GridColumns>
                     </SfGrid>
                 </div>
@@ -88,8 +95,8 @@
     public List<Product> products = new List<Product>();
 
 
-    SfGrid<Product> Grid { get; set; }
-    SfGrid<Product> SelectedGrid { get; set; }
+    public SfGrid<Product> Grid { get; set; }
+    public SfGrid<Product> SelectedGrid { get; set; }
 
 
     protected override async Task OnInitializedAsync()

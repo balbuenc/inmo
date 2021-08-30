@@ -247,10 +247,10 @@
                         </GridAggregates>
                         <GridColumns>
                             <GridColumn Field=@nameof(BudgetDetails.id_presupuesto_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="20" IsPrimaryKey="true">
-                                    <EditTemplate>
-                                        <SfNumericTextBox @bind-Value="@((context as BudgetDetails).id_presupuesto_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                    </EditTemplate>
-                                </GridColumn>
+                                <EditTemplate>
+                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).id_presupuesto_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                </EditTemplate>
+                            </GridColumn>
                             <GridColumn HeaderText="Imagen" TextAlign="TextAlign.Center" Width="80">
                                 <Template>
                                     @{
@@ -277,29 +277,36 @@
 
                             <GridColumn Field=@nameof(BudgetDetails.cantidad) HeaderText="Cant." Format="@format" TextAlign="TextAlign.Right" Width="60">
                                 <EditTemplate>
-                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).cantidad)" Enabled="true" Placeholder="Cantidad" FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                </EditTemplate>
+                            </GridColumn> <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="@format" TextAlign="TextAlign.Right" Width="80">
+                                <EditTemplate>
+                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                 </EditTemplate>
                             </GridColumn>
-                            <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="P. Unitario" Format="@format" TextAlign="TextAlign.Right" Width="80">
+                            <GridColumn Field=@nameof(BudgetDetails.porcentaje) HeaderText="% Desc." Format="@format" EditType="EditType.DropDownEdit" Width="60">
+                                <EditTemplate>
+                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).porcentaje)" Enabled="true" Placeholder="% Desc." FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                </EditTemplate>
+                            </GridColumn>
+                            <GridColumn Field=@nameof(BudgetDetails.precio_unitario) HeaderText="P. Unitario" Format="@format" TextAlign="TextAlign.Right" Width="80">
                                 <EditTemplate>
                                     <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio_unitario)" Enabled="false" Placeholder="P. Unitario" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                 </EditTemplate>
                             </GridColumn>
 
-                            <GridColumn Field=@nameof(BudgetDetails.porcentaje) HeaderText="% Desc." Format="@format" EditType="EditType.DropDownEdit" Width="60">
-                                <EditTemplate>
-                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).porcentaje)" Enabled="true" Placeholder="% Desc." FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                </EditTemplate>
-                            </GridColumn>
-                            <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="@format" TextAlign="TextAlign.Right" Width="80">
-                                <EditTemplate>
-                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                </EditTemplate>
-                            </GridColumn>
                             <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="@format" TextAlign="TextAlign.Right" Width="80">
                                 <EditTemplate>
                                     <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                 </EditTemplate>
+                            </GridColumn>
+                            <GridColumn HeaderText="Acciones" Width="100">
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-edit", CssClass = "e-flat" })"></GridCommandColumn>
+                                    <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-delete", CssClass = "e-flat" })"></GridCommandColumn>
+                                    <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-update", CssClass = "e-flat" })"></GridCommandColumn>
+                                    <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions() { IconCss = "e-icons e-cancel-icon", CssClass = "e-flat" })"></GridCommandColumn>
+                                </GridCommandColumns>
                             </GridColumn>
                         </GridColumns>
                     </SfGrid>
@@ -343,11 +350,13 @@
                 <ItemSearchComponent @ref="@itemSearch"></ItemSearchComponent>
             </Content>
             <FooterTemplate>
-                <SfButton CssClass="e-primary e-flat" @onclick="@OnItemAdded">
-                    <span class='e-btn-icon e-icons e-ok-icon e-icon-left'></span>Yes
+                <SfButton CssClass="e-success e-flat" @onclick="@OnItemAdded">
+                    <span class="e-btn-icon e-icons e-ok-icon e-icon-left"></span>
+                    Agregar
                 </SfButton>
                 <SfButton CssClass="e-flat" @onclick="@OnOverlayclick">
-                    <span class='e-btn-icon e-icons e-close-icon e-icon-left'></span>No
+                    <span class="e-btn-icon e-icons e-close-icon e-icon-left"></span>
+                    Cancelar
                 </SfButton>
             </FooterTemplate>
         </DialogTemplates>
@@ -369,7 +378,7 @@
 
 
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Edit", "Delete", "Update", "Cancel", "Search" };
+    public string[] ToolbarItems = new string[] { "Search" };
     public int PageSize = 100;
     public string format;
 
@@ -478,8 +487,9 @@
 
     protected void ShowSearchDialog()
     {
+        itemSearch.products.Clear();
+        itemSearch.SelectedGrid.Refresh();
         IsSearchVisible = true;
-
     }
 
     protected async Task PrintInvoice()

@@ -48,7 +48,7 @@ namespace CoreERP.Data.Repositories
         public async Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"select pd.id_presupuesto_detalle, pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, pd.porcentaje , pd.total pd_precio_unitario
+            var sql = @"select pd.id_presupuesto_detalle, pd.id_presupuesto, pd.id_producto, pd.id_descuento, pd.cantidad, pd.costo, pd.precio, p.codigo, p.producto , d.descuento, pd.porcentaje , pd.total , pd.precio_unitario
                         from presupuesto_detalles pd
                         inner join productos p on p.id_producto = pd.id_producto
                         left outer join descuentos d on d.id_descuento = pd.id_descuento 
@@ -127,6 +127,8 @@ namespace CoreERP.Data.Repositories
                     budgetDetail.precio_unitario = product.precio;
                 }
 
+
+                budgetDetail.precio_unitario = (budgetDetail.precio - (budgetDetail.precio * (budgetDetail.porcentaje / 100)));
                 budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100))) * budgetDetail.cantidad;
 
                 var sql = @"INSERT INTO public.presupuesto_detalles
