@@ -46,7 +46,7 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = @"SELECT cd.id_cuenta_detalle, cd.id_cuenta, cd.fecha, cd.id_funcionario, cd.tipo, cd.monto, c.nro_cuenta , f.usuario 
+                var sql = @"SELECT cd.id_cuenta_detalle, cd.id_cuenta, cd.fecha, cd.id_funcionario, cd.tipo, cd.monto, c.nro_cuenta , f.usuario , cd.nro_comprobante , cd.concepto , cd.beneficiario , cd.detalle
                             FROM public.cuentas_detalles cd
                             left outer join cuentas c on c.id_cuenta = cd.id_cuenta 
                             left outer join funcionarios f on f.id_funcionario = cd.id_funcionario 
@@ -68,7 +68,7 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = @"SELECT cd.id_cuenta_detalle, cd.id_cuenta, cd.fecha, cd.id_funcionario, cd.tipo, cd.monto, c.nro_cuenta , f.usuario 
+                var sql = @"SELECT cd.id_cuenta_detalle, cd.id_cuenta, cd.fecha, cd.id_funcionario, cd.tipo, cd.monto, c.nro_cuenta , f.usuario , cd.nro_comprobante , cd.concepto , cd.beneficiario , cd.detalle
                             FROM public.cuentas_detalles cd
                             left outer join cuentas c on c.id_cuenta = cd.id_cuenta
                             left outer join funcionarios f on f.id_funcionario = cd.id_funcionario
@@ -91,8 +91,8 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"INSERT INTO public.cuentas_detalles
-                            (id_cuenta, fecha, id_funcionario, tipo, monto) 
-                            VALUES(@id_cuenta, @fecha, @id_funcionario, @tipo, @monto);";
+                            (id_cuenta, fecha, id_funcionario, tipo, monto, nro_comprobante , concepto , beneficiario , detalle) 
+                            VALUES(@id_cuenta, @fecha, @id_funcionario, @tipo, @monto, @nro_comprobante , @concepto , @beneficiario , @detalle);";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
@@ -100,7 +100,11 @@ namespace CoreERP.Data.Repositories
                     accountDetail.fecha,
                     accountDetail.id_funcionario,
                     accountDetail.tipo,
-                    accountDetail.monto
+                    accountDetail.monto,
+                    accountDetail.nro_comprobante,
+                    accountDetail.concepto,
+                    accountDetail.beneficiario,
+                    accountDetail.detalle
                 }
                 );
 
@@ -119,7 +123,7 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"UPDATE public.cuentas_detalles
-                            SET id_cuenta=@id_cuenta, fecha=@fecha, id_funcionario=@id_funcionario, tipo=@tipo, monto=@monto
+                            SET id_cuenta=@id_cuenta, fecha=@fecha, id_funcionario=@id_funcionario, tipo=@tipo, monto=@monto, nro_comprobante=@nro_comprobante , concepto =@concepto , beneficiario=@beneficiario ,detalle= @detalle
                             WHERE id_cuenta_detalle=@id_cuenta_detalle;";
 
                 var result = await db.ExecuteAsync(sql, new
@@ -129,7 +133,11 @@ namespace CoreERP.Data.Repositories
                     accountDetail.id_funcionario,
                     accountDetail.fecha,
                     accountDetail.tipo,
-                    accountDetail.monto
+                    accountDetail.monto,
+                    accountDetail.nro_comprobante,
+                    accountDetail.concepto,
+                    accountDetail.beneficiario,
+                    accountDetail.detalle
                 }
                 );
 

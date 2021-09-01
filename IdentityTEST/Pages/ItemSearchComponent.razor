@@ -34,15 +34,15 @@
                     else
                     {
                         <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" DataSource="@GridData" AllowFiltering="true">
-                            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar" Mode="FilterBarMode.Immediate"></GridFilterSettings>
+                            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar" Mode="FilterBarMode.OnEnter"></GridFilterSettings>
                             <GridEvents CommandClicked="OnCommandClicked" TValue="Product"></GridEvents>
                             <GridPageSettings PageSize="5"></GridPageSettings>
 
 
                             <GridColumns>
                                 <GridColumn Field=@nameof(Product.id_producto) HeaderText="ID" Visible="false" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true"></GridColumn>
-                                <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="30"></GridColumn>
-                                <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="100"></GridColumn>
+                                <GridColumn Field=@nameof(Product.codigo) HeaderText="Código" Width="30" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })"></GridColumn>
+                                <GridColumn Field=@nameof(Product.producto) HeaderText="Producto" Width="100" FilterSettings="@(new FilterSettings{ Operator = Operator.Contains })"></GridColumn>
 
                                 <GridColumn HeaderText="Manage Records" Width="10">
                                     <GridCommandColumns>

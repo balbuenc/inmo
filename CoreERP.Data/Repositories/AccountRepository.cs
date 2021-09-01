@@ -68,7 +68,7 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = "select * from tipos_cuenta  where id_cuenta = @Id";
+                var sql = "select * from cuentas  where id_cuenta = @Id";
 
 
                 return await db.QueryFirstOrDefaultAsync<Account>(sql, new { Id = id });
