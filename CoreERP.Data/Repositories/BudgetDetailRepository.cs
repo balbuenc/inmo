@@ -128,12 +128,12 @@ namespace CoreERP.Data.Repositories
 
                 if (product.id_moneda != budget.id_moneda)
                 {
-                    if (budget.id_moneda != 1)
+                    if (budget.id_moneda == 1)
                     {
                         budgetDetail.precio = budgetDetail.precio * currency_product.cotizacion;
                         budgetDetail.precio_unitario = product.precio * currency_product.cotizacion;
                     }
-                    else
+                    else 
                     {
                         budgetDetail.precio = budgetDetail.precio / currency_product.cotizacion;
                         budgetDetail.precio_unitario = product.precio / currency_product.cotizacion;
