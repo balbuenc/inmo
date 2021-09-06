@@ -122,7 +122,7 @@
 
 
 <div class="container-fluid">
-    <p>@Messsage</p>
+    <p>@Message</p>
     <span class="error">@ErrorDetails</span>
 
     <div class="col-md-12 control-section">
@@ -415,6 +415,24 @@
         </DialogTemplates>
 
     </SfDialog>
+
+    <SfDialog Width="400px" Height="200px" IsModal="true" @bind-Visible="@IsMessageVisible" ShowCloseIcon="true">
+        <DialogEvents OnOverlayClick="@OnOverlayclick">
+        </DialogEvents>
+
+        <DialogTemplates>
+            <Header>
+                <h1><b>Mensaje del sistema.</b></h1>
+            </Header>
+            <Content>
+                <div class="col-12">
+                    <b>@Message</b>
+                </div>
+            </Content>
+            
+        </DialogTemplates>
+
+    </SfDialog>
 </div>
 
 
@@ -427,10 +445,13 @@
     public bool IsPrintable { get; set; } = false;
 
     public bool IsSearchVisible { get; set; } = false;
+    public bool IsMessageVisible { get; set; } = false;
+
+
 
     public bool isChecked = true;
 
-    public string Messsage { get; set; }
+    public string Message { get; set; }
     public string[] ToolbarItems = new string[] { "Search" };
     public int PageSize = 100;
     public string format;
@@ -751,7 +772,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener detalles del presupuesto: " + ex.Message;
+            Message = "Error al obtener detalles del presupuesto: " + ex.Message;
         }
     }
 
@@ -783,6 +804,17 @@
         {
             //Loop Budget Detail Item
             Product product;
+            DiscountLimit limit;
+
+            limit = (DiscountLimit)Args.Data;
+
+            if (limit.limite < limit.limite_actual)
+            {
+                Message = "El monto ingresado supera el límite definido para la marca. No serán aplicados cambios al prespuesto!";
+                IsMessageVisible = true;
+                return;
+            }
+
 
             for (int i = 0; i < GridData.Count(); i++)
             {

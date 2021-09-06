@@ -87,7 +87,7 @@
 
 @code {
     //public IEnumerable<Product> clients { get; set; }
-    public string Messsage { get; set; }
+    public string Message { get; set; }
 
     public string ErrorDetails = "";
 
@@ -107,7 +107,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener productos: " + ex.Message;
+            Message = "Error al obtener productos: " + ex.Message;
         }
     }
 

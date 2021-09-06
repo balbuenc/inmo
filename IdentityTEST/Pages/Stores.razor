@@ -30,7 +30,7 @@
     </div>
 
 
-    <p>@Messsage</p>
+    <p>@Message</p>
     <span class="error">@ErrorDetails</span>
 
 
@@ -107,7 +107,7 @@
 
 @code {
     //public IEnumerable<Store> clients { get; set; }
-    public string Messsage { get; set; }
+    public string Message { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
     public string ErrorDetails = "";
 
@@ -128,7 +128,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener Depósitos: " + ex.Message;
+            Message = "Error al obtener Depósitos: " + ex.Message;
         }
     }
 

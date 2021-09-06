@@ -20,7 +20,7 @@
 
 
 <div class="container-fluid">
-    <p>@Messsage</p>
+    <p>@Message</p>
     <span class="error">@ErrorDetails</span>
     
     <div class="col-lg-12" style="padding:1px; height:50px">
@@ -122,7 +122,7 @@
 
 @code {
     //public IEnumerable<Stock> clients { get; set; }
-    public string Messsage { get; set; }
+    public string Message { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel",  "Search" };
     public string ErrorDetails = "";
 
@@ -147,7 +147,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener Stock: " + ex.Message;
+            Message = "Error al obtener Stock: " + ex.Message;
         }
     }
 

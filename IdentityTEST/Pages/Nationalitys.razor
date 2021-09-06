@@ -9,7 +9,7 @@
 
 
 <div class="container-fluid">
-    <p>@Messsage</p>
+    <p>@Message</p>
    
 
     <div class="col-lg-12" style="padding:1px; height:50px">
@@ -52,7 +52,7 @@
 
 @code {
 
-    public string Messsage { get; set; }
+    public string Message { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
 
     public IEnumerable<Nationality> GridData { get; set; }
@@ -67,7 +67,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener nacionalidades: " + ex.Message;
+            Message = "Error al obtener nacionalidades: " + ex.Message;
         }
     }
 

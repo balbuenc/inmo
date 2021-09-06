@@ -25,7 +25,7 @@
 
 
 <div class="container-fluid">
-    <p>@Messsage</p>
+    <p>@Message</p>
     <span class="error">@ErrorDetails</span>
 
     <div class="col-lg-12" style="padding:1px; height:50px">
@@ -175,7 +175,7 @@
     [Parameter]
     public string AccountID { get; set; }
 
-    public string Messsage { get; set; }
+    public string Message { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "ExcelExport", "Search", "ColumnChooser" };
     public string ErrorDetails = "";
 
@@ -253,7 +253,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener detalle de la cuenta: " + ex.Message;
+            Message = "Error al obtener detalle de la cuenta: " + ex.Message;
         }
     }
 
@@ -359,7 +359,7 @@
         }
         catch (Exception ex)
         {
-            Messsage = "Error al obtener ID de usuario : " + ex.Message;
+            Message = "Error al obtener ID de usuario : " + ex.Message;
             return 1;
         }
     }
