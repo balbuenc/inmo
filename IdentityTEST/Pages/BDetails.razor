@@ -12,6 +12,7 @@
 @inject IStockService StockService
 @inject IQuotaService QuotaService
 @inject ISaleService SaleService
+@inject IDiscountLimitService DiscountLimitService
 
 
 @using Microsoft.AspNetCore.Http
@@ -111,13 +112,12 @@
         content: '\e825';
     }
 
-    .e-grid .e-headercelldiv, 
-    .e-grid .e-rowcell, 
-    .e-grid .e-summarycell, 
+    .e-grid .e-headercelldiv,
+    .e-grid .e-rowcell,
+    .e-grid .e-summarycell,
     .e-grid .e-row .e-input-group .e-input.e-field {
         font-size: 10px;
     }
- 
 </style>
 
 
@@ -129,7 +129,7 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="jumbotron py-1" >
+                    <div class="jumbotron py-1">
                         <div class="d-flex align-items-stretch flex-column flex-md-row">
                             <img src="@imagePath" style="object-fit: contain;" width="154">
                             <div class="ml-4 d-sm-none d-md-block"></div>
@@ -174,8 +174,38 @@
 
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <h2>Descuentos</h2>
+                <div class="col-md-4">
+
+                    <div class="row">
+                        <SfGrid ID="discountLimits" AllowSorting="true" DataSource="@discountLimits">
+                            <GridEditSettings AllowAdding="true" AllowEditing="true" Mode="EditMode.Normal"></GridEditSettings>
+                            <GridEvents OnActionBegin="OnDiscountLimitsBeginHandler" TValue="DiscountLimit"></GridEvents>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(DiscountLimit.id_limite_descuento) HeaderText="ID" Visible="false" TextAlign="TextAlign.Center" Width="10" IsPrimaryKey="true">
+                                    <EditTemplate>
+                                        <SfNumericTextBox @bind-Value="@((context as DiscountLimit).id_limite_descuento)" Enabled="false" Placeholder="Límite actual" FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                    </EditTemplate>
+                                </GridColumn>
+                                <GridColumn Field=@nameof(DiscountLimit.marca) HeaderText="Marca" Width="10">
+                                    <EditTemplate>
+                                        <SfTextBox @bind-Value="@((context as DiscountLimit).marca)" Enabled="false" Placeholder="Marca" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                    </EditTemplate>
+                                </GridColumn>
+                                <GridColumn Field=@nameof(DiscountLimit.limite) HeaderText="Límite" Width="10">
+                                    <EditTemplate>
+                                        <SfNumericTextBox @bind-Value="@((context as DiscountLimit).limite)" Enabled="false" Placeholder="Límite" FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                    </EditTemplate>
+                                </GridColumn>
+                                <GridColumn Field=@nameof(DiscountLimit.limite_actual) HeaderText="%Desc." Width="10">
+                                    <EditTemplate>
+                                        <SfNumericTextBox @bind-Value="@((context as DiscountLimit).limite_actual)" Enabled="true" Placeholder="Límite actual" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    </EditTemplate>
+                                </GridColumn>
+
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+
                 </div>
             </div>
             <div class="row" style="padding:2px 2px 2px 2px">
@@ -238,29 +268,38 @@
                                                         <b>@aggregate.Sum </b>
                                                     </div>
 
-                                            </div>
-                                        }
-                                    </FooterTemplate>
-                                </GridAggregateColumn>
-                            </GridAggregateColumns>
-                        </GridAggregate>
-                    </GridAggregates>
-                    <GridColumns>
-                        <GridColumn Field=@nameof(BudgetDetails.id_presupuesto_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true">
-                            <EditTemplate>
-                                <SfNumericTextBox @bind-Value="@((context as BudgetDetails).id_presupuesto_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                            </EditTemplate>
-                        </GridColumn>
-                        <GridColumn HeaderText="Imagen" TextAlign="TextAlign.Center" Width="120">
-                            <Template>
-                                @{
-                                    var det = (context as BudgetDetails);
-                                    <div class="image">
-                                        <img src="@($"/Images/{det.codigo}.jpg")" alt="@det.codigo" width="100px" />
-                                    </div>
-                                }
-                            </Template>
-                            <EditTemplate>
+                                                </div>
+                                            }
+                                        </FooterTemplate>
+                                    </GridAggregateColumn>
+                                </GridAggregateColumns>
+                            </GridAggregate>
+                        </GridAggregates>
+                        <SfToolbar>
+                            <ToolbarItems>
+                                <ToolbarItem Type="ItemType.Input">
+                                    <Template>
+                                        <SfCheckBox Label="Modificar P. UNIT." @bind-Checked="isChecked"></SfCheckBox>
+                                    </Template>
+                                </ToolbarItem>
+                            </ToolbarItems>
+                        </SfToolbar>
+                        <GridColumns>
+                            <GridColumn Field=@nameof(BudgetDetails.id_presupuesto_detalle) HeaderText="ID" TextAlign="TextAlign.Center" Width="30" IsPrimaryKey="true">
+                                <EditTemplate>
+                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).id_presupuesto_detalle)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                </EditTemplate>
+                            </GridColumn>
+                            <GridColumn HeaderText="Imagen" TextAlign="TextAlign.Center" Width="120">
+                                <Template>
+                                    @{
+                                        var det = (context as BudgetDetails);
+                                        <div class="image">
+                                            <img src="@($"/Images/{det.codigo}.jpg")" alt="@det.codigo" width="100px" />
+                                        </div>
+                                    }
+                                </Template>
+                                <EditTemplate>
 
                                 </EditTemplate>
                             </GridColumn>
@@ -281,23 +320,37 @@
                                 </EditTemplate>
                             </GridColumn> <GridColumn Field=@nameof(BudgetDetails.precio) HeaderText="Precio" Format="@format" TextAlign="TextAlign.Right" Width="80">
                                 <EditTemplate>
-                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio)" Enabled="false" Placeholder="Precio" FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
                                 </EditTemplate>
                             </GridColumn>
                             <GridColumn Field=@nameof(BudgetDetails.porcentaje) HeaderText="% Desc." Format="@format" EditType="EditType.DropDownEdit" Width="60">
                                 <EditTemplate>
-                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).porcentaje)" Enabled="true" Placeholder="% Desc." FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                    @if (isChecked)
+                                    {
+                                        <SfNumericTextBox @bind-Value="@((context as BudgetDetails).porcentaje)" Enabled="false" Placeholder="% Desc." FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                    }
+                                    else
+                                    {
+                                        <SfNumericTextBox @bind-Value="@((context as BudgetDetails).porcentaje)" Enabled="true" Placeholder="% Desc." FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                    }
                                 </EditTemplate>
                             </GridColumn>
                             <GridColumn Field=@nameof(BudgetDetails.precio_unitario) HeaderText="P. Unitario" Format="@format" TextAlign="TextAlign.Right" Width="80">
                                 <EditTemplate>
-                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio_unitario)" Enabled="false" Placeholder="P. Unitario" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    @if (isChecked)
+                                    {
+                                        <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio_unitario)" Enabled="true" Placeholder="P. Unitario" FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                    }
+                                    else
+                                    {
+                                        <SfNumericTextBox @bind-Value="@((context as BudgetDetails).precio_unitario)" Enabled="false" Placeholder="P. Unitario" FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
+                                    }
                                 </EditTemplate>
                             </GridColumn>
 
                             <GridColumn Field=@nameof(BudgetDetails.total) HeaderText="Total" Format="@format" TextAlign="TextAlign.Right" Width="80">
                                 <EditTemplate>
-                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    <SfNumericTextBox @bind-Value="@((context as BudgetDetails).total)" Enabled="false" Placeholder="Total" FloatLabelType="FloatLabelType.Always" ShowSpinButton="false"> </SfNumericTextBox>
                                 </EditTemplate>
                             </GridColumn>
                             <GridColumn HeaderText="Acciones" Width="100">
@@ -375,7 +428,7 @@
 
     public bool IsSearchVisible { get; set; } = false;
 
-
+    public bool isChecked = true;
 
     public string Messsage { get; set; }
     public string[] ToolbarItems = new string[] { "Search" };
@@ -402,6 +455,8 @@
 
 
     public IEnumerable<Discount> discounts { get; set; }
+    public List<DiscountLimit> discountLimits = new List<DiscountLimit>();
+
     public Budget header { get; set; }
 
     SfGrid<BudgetDetails> Grid { get; set; }
@@ -657,6 +712,8 @@
             GridData = await BudgetDetailsService.GetBudgetDetails(id);
             header = await BudgetService.GetBudgetDetails(id);
 
+            discountLimits = (await DiscountLimitService.GetAllDiscountLimits()).ToList();
+
             //Load header data
             Titulo = "Detalle de prespuesto ID. " + BudgetID;
             Cliente = header.cliente;
@@ -720,17 +777,48 @@
         return;
     }
 
+    private async Task OnDiscountLimitsBeginHandler(ActionEventArgs<DiscountLimit> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            //Loop Budget Detail Item
+            Product product;
+
+            for (int i = 0; i < GridData.Count(); i++)
+            {
+                BudgetDetails item = GridData.ElementAt(i);
+
+                product = await ProductService.GetProductDetails(item.id_producto);
+                if (product.id_marca == ((DiscountLimit)Args.Data).id_marca)
+                {
+                    item.precio_unitario = item.precio - (item.precio * (((DiscountLimit)Args.Data).limite_actual / 100));
+                    item.porcentaje = ((DiscountLimit)Args.Data).limite_actual;
+                }
+
+                await SaveBudgetDetail(item);
+
+            }
+
+            await ReloadBudgetDetails();
+        }
 
 
+        return;
+    }
+
+    private async Task ReloadBudgetDetails()
+    {
+        int id = Int32.Parse(BudgetID);
+        GridData = await BudgetDetailsService.GetBudgetDetails(id);
+        Grid.Refresh();
+    }
 
 
     private async Task ActionCompletedHandler(ActionEventArgs<BudgetDetails> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save || Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            int id = Int32.Parse(BudgetID);
-            GridData = await BudgetDetailsService.GetBudgetDetails(id);
-            Grid.Refresh();
+            await ReloadBudgetDetails();
         }
 
     }
@@ -738,7 +826,14 @@
 
     protected async Task SaveBudgetDetail(BudgetDetails budgetDetails)
     {
-        await BudgetDetailsService.SaveBudgetDetails(budgetDetails);
+        if (budgetDetails.id_presupuesto_detalle != 0 && isChecked)
+        {
+            await BudgetDetailsService.SaveBudgetDetails(budgetDetails, isChecked);
+        }
+        else
+        {
+            await BudgetDetailsService.SaveBudgetDetails(budgetDetails);
+        }
     }
 
     protected async Task DeleteBudgetDetail(int id)

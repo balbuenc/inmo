@@ -262,7 +262,7 @@
         if (args.Item.Id == "Grid_excelexport") //Id is combination of Grid's ID and itemname
         {
             ExcelExportProperties ExcelProperties = new ExcelExportProperties();
-            ExcelProperties.FileName = "new.xlsx";
+            ExcelProperties.FileName = AccountDenomination + ".xlsx";
             await this.Grid.ExcelExport(ExcelProperties);
         }
     }

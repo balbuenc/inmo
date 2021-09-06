@@ -38,7 +38,7 @@ namespace CoreERP.UI.Services
 
         public async Task<IEnumerable<BudgetDetails>> GetBudgetDetails(int id)
         {
-            return await JsonSerializer.DeserializeAsync< IEnumerable<BudgetDetails>>(
+            return await JsonSerializer.DeserializeAsync<IEnumerable<BudgetDetails>>(
              await _httpClient.GetStreamAsync($"api/budgetDetail/{id}"),
              new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
              );
@@ -47,9 +47,9 @@ namespace CoreERP.UI.Services
         public async Task<byte[]> GetBudgetPDF(int id)
         {
 
-            var response =  await _httpClient.GetByteArrayAsync($"api/Report/DownloadReport/{id}");
+            var response = await _httpClient.GetByteArrayAsync($"api/Report/DownloadReport/{id}");
             return response;
-            
+
         }
 
         public async Task<byte[]> GetInvoicePDF(int id)
@@ -70,6 +70,14 @@ namespace CoreERP.UI.Services
                 await _httpClient.PostAsync("api/BudgetDetail", clientJson);
             else
                 await _httpClient.PutAsync("api/BudgetDetail", clientJson);
+        }
+
+        public async Task SaveBudgetDetails(BudgetDetails budgetDetails, bool isChecked)
+        {
+            var clientJson = new StringContent(JsonSerializer.Serialize(budgetDetails),
+               Encoding.UTF8, "application/json");
+
+            await _httpClient.PutAsync("api/BudgetDetail/UpdateUnitaryPriceBudgetDetail", clientJson);
         }
     }
 }

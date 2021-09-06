@@ -49,7 +49,7 @@
                 {
                     @*<SfButton OnClick="ExcelExport" Content="Excel Export"></SfButton>*@
                     <SfGrid TValue="Budget" ID="Grid" @ref="Grid" AllowPaging="true" Toolbar="@ToolbarItems" DataSource="@GridData" AllowExcelExport="true" ShowColumnChooser="true" AllowTextWrap="true">
-                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="ActionCompletedHandler" TValue="Budget" OnToolbarClick="ToolbarClickHandler"></GridEvents>
                         <GridPageSettings PageSize="30"></GridPageSettings>
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
                             <HeaderTemplate>
@@ -185,7 +185,7 @@
 @code {
     //public IEnumerable<Budget> clients { get; set; }
     public string Messsage { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search", "ColumnChooser" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "ExcelExport", "Search", "ColumnChooser" };
     public string ErrorDetails = "";
 
     public IEnumerable<Budget> GridData { get; set; }
@@ -292,11 +292,15 @@
         await BudgetService.DeleteBudget(id);
     }
 
-    public async Task ExcelExport()
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
-        ExcelExportProperties ExportProperties = new ExcelExportProperties();
-        ExportProperties.IncludeHiddenColumn = true;
-        await this.Grid.ExcelExport(ExportProperties);
+        if (args.Item.Id == "Grid_excelexport") //Id is combination of Grid's ID and itemname
+        {
+            ExcelExportProperties ExcelProperties = new ExcelExportProperties();
+            ExcelProperties.FileName = "Presupuestos.xlsx";
+            await this.Grid.ExcelExport(ExcelProperties);
+        }
+
     }
 
     public Int32 GetEmployeeID(string username)

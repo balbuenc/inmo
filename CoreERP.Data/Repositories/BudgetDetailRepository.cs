@@ -243,5 +243,76 @@ namespace CoreERP.Data.Repositories
                 return false;
             }
         }
+
+
+        public async Task<bool> UpdateUnitaryPriceBudgetDetail(BudgetDetails budgetDetail)
+        {
+            Discount discount;
+            //Product product;
+
+            try
+            {
+
+                var db = dbConnection();
+
+                //var sql_producto = "select costo, precio from productos d where d.id_producto = @id_producto";
+                //product = await db.QueryFirstOrDefaultAsync<Product>(sql_producto, new
+                //{
+                //    budgetDetail.id_producto
+                //}
+                //);
+
+                //budgetDetail.precio = product.precio;
+                //budgetDetail.costo = product.costo;
+
+
+
+                var sql_descuento = "select porcentaje from descuentos d where d.id_descuento = @id_descuento";
+                discount = await db.QueryFirstOrDefaultAsync<Discount>(sql_descuento, new
+                {
+                    budgetDetail.id_descuento
+
+                }
+                );
+
+                if (budgetDetail.id_descuento == 1)
+                {
+                    budgetDetail.total = budgetDetail.precio_unitario * budgetDetail.cantidad;
+                    budgetDetail.porcentaje = 100 -( (budgetDetail.precio_unitario * 100) / budgetDetail.precio);
+                }
+                else
+                {
+                    budgetDetail.total = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100))) * budgetDetail.cantidad;
+                    budgetDetail.precio_unitario = (budgetDetail.precio - (budgetDetail.precio * (discount.porcentaje / 100)));
+                }
+
+
+
+                var sql = @"UPDATE public.presupuesto_detalles
+                        SET id_descuento=@id_descuento, cantidad=@cantidad, costo=@costo, precio=@precio, id_producto=@id_producto, total=@total, porcentaje=@porcentaje, precio_unitario =@precio_unitario 
+                        WHERE id_presupuesto_detalle=@id_presupuesto_detalle;";
+
+                var result = await db.ExecuteAsync(sql, new
+                {
+                    budgetDetail.id_presupuesto,
+                    budgetDetail.id_producto,
+                    budgetDetail.id_descuento,
+                    budgetDetail.cantidad,
+                    budgetDetail.costo,
+                    budgetDetail.precio,
+                    budgetDetail.total,
+                    budgetDetail.id_presupuesto_detalle,
+                    budgetDetail.porcentaje,
+                    budgetDetail.precio_unitario
+                }
+                );
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

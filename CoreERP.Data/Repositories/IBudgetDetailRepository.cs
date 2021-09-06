@@ -18,6 +18,8 @@ namespace CoreERP.Data.Repositories
 
         Task<bool> UpdateBudgetDetail(BudgetDetails budgetDetail);
 
+        Task<bool> UpdateUnitaryPriceBudgetDetail(BudgetDetails budgetDetail);
+
         Task<bool> DeleteBudgetDetail(int id);
     }
 }

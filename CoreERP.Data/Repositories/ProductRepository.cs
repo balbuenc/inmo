@@ -91,7 +91,7 @@ namespace CoreERP.Data.Repositories
         public async Task<Product> GetProductDetails(int id)
         {
             var db = dbConnection();
-            var sql = @"select *, o.origen, m.marca, pro.proveedor 
+            var sql = @"select p.*, o.origen, m.marca, pro.proveedor 
                         from productos p
                         left outer join origenes o on o.id_origen = p.id_origen
                         left outer join marcas m on m.id_marca = p.id_marca

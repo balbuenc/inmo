@@ -47,12 +47,12 @@ namespace CoreERP.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAccount([FromBody] Account accountType)
+        public async Task<IActionResult> UpdateAccount([FromBody] Account account)
         {
-            if (accountType == null)
+            if (account == null)
                 return BadRequest();
 
-            if (accountType.denominacion.Trim() == string.Empty)
+            if (account.denominacion.Trim() == string.Empty)
             {
                 ModelState.AddModelError("Account", "Account name shouldn't be empty");
             }
@@ -60,7 +60,7 @@ namespace CoreERP.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _AccountRepository.UpdateAccount(accountType);
+            await _AccountRepository.UpdateAccount(account);
 
             return NoContent(); //success
         }

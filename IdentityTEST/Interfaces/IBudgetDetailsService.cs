@@ -18,6 +18,8 @@ namespace CoreERP.UI.Interfaces
         Task<byte[]> GetInvoicePDF(int id);
 
         Task SaveBudgetDetails(BudgetDetails budget);
+        Task SaveBudgetDetails(BudgetDetails budget, bool isChecked);
+
 
 
         Task DeleteBudgetDetails(int id);

@@ -134,49 +134,55 @@ namespace CoreERP.UI
             invoiceType => { invoiceType.BaseAddress = new Uri(apiurl); });
 
             services.AddHttpClient<IPrintService, PrintService>(
-                printService => { printService.BaseAddress = new Uri(printAPIurl); }
-                );
+            printService => { printService.BaseAddress = new Uri(printAPIurl); }
+            );
 
             services.AddHttpClient<IPurchaseService, PurchaseService>(
-                purchaseService => { purchaseService.BaseAddress = new Uri(apiurl); }
-                );
+            purchaseService => { purchaseService.BaseAddress = new Uri(apiurl); }
+            );
 
             services.AddHttpClient<IPurchaseDetailsService, PurchaseDetailsService>(
-              purchaseDetailsService => { purchaseDetailsService.BaseAddress = new Uri(apiurl); }
-              );
+            purchaseDetailsService => { purchaseDetailsService.BaseAddress = new Uri(apiurl); }
+            );
 
             services.AddHttpClient<IQuotaService, QuotaService>(
-                quotaDetailsService => { quotaDetailsService.BaseAddress = new Uri(apiurl); }
-           );
+            quotaDetailsService => { quotaDetailsService.BaseAddress = new Uri(apiurl); }
+            );
 
             services.AddHttpClient<ISaleService, SaleService>(
                 saleDetailsService => { saleDetailsService.BaseAddress = new Uri(apiurl); }
-           );
+            );
 
             services.AddHttpClient<IPaymentMethodService, PaymentMethodService>(
                 paymentMethodService => { paymentMethodService.BaseAddress = new Uri(apiurl); }
-           );
+            );
 
             services.AddHttpClient<ICollectionService, CollectionService>(
-               collectionService => { collectionService.BaseAddress = new Uri(apiurl); }
-          );
+                collectionService => { collectionService.BaseAddress = new Uri(apiurl); }
+            );
 
             services.AddHttpClient<IAccountTypeService, AccountTypeService>(
-             accountTypeService => { accountTypeService.BaseAddress = new Uri(apiurl); }
-        );
+                accountTypeService => { accountTypeService.BaseAddress = new Uri(apiurl); }
+            );
 
             services.AddHttpClient<IBankService, BankService>(
-           bankService => { bankService.BaseAddress = new Uri(apiurl); }
-      );
+            bankService => { bankService.BaseAddress = new Uri(apiurl); }
+            );
 
             services.AddHttpClient<IAccountService, AccountService>(
-         accountService => { accountService.BaseAddress = new Uri(apiurl); }
+            accountService => { accountService.BaseAddress = new Uri(apiurl); }
             );
 
 
             services.AddHttpClient<IAccountDetailsService, AccountDetailsService>(
-        accountDetailsService => { accountDetailsService.BaseAddress = new Uri(apiurl); }
-           );
+            accountDetailsService => { accountDetailsService.BaseAddress = new Uri(apiurl); }
+            );
+
+            services.AddHttpClient<IDiscountLimitService, DiscountLimitService>(
+            dicsountLimitService => { dicsountLimitService.BaseAddress = new Uri(apiurl); }
+            );
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

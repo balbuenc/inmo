@@ -74,6 +74,26 @@ namespace CoreERP.API.Controllers
             return NoContent(); //success
         }
 
+        [HttpPut]
+        [Route("UpdateUnitaryPriceBudgetDetail")]
+        public async Task<IActionResult> UpdateUnitaryPriceBudgetDetail([FromBody] BudgetDetails budgetDetails)
+        {
+            if (budgetDetails == null)
+                return BadRequest();
+
+            if (budgetDetails.precio.ToString() == null)
+            {
+                ModelState.AddModelError("BudgetDetail", "BudgetDetail price shouldn't be empty");
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _BudgetDetailRepository.UpdateUnitaryPriceBudgetDetail(budgetDetails);
+
+            return NoContent(); //success
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBudgetDetail(int id)
         {
