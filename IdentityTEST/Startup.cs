@@ -182,6 +182,10 @@ namespace CoreERP.UI
             dicsountLimitService => { dicsountLimitService.BaseAddress = new Uri(apiurl); }
             );
 
+            services.AddHttpClient<IFractionService, FractionService>(
+            fractionService => { fractionService.BaseAddress = new Uri(apiurl); }
+            );
+
 
         }
 

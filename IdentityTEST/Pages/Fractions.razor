@@ -1,0 +1,312 @@
+﻿@page "/Fractions"
+@using Model
+@using Interfaces
+
+@inject IFractionService FractionService
+@inject IBankService BankService
+@inject ICurrencyService CurrencyService
+
+@inject NavigationManager NavigationManager
+
+@attribute [Authorize]
+
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using System.Collections.ObjectModel
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Buttons
+
+
+
+
+<div class="container-fluid">
+    <p>@Message</p>
+    <span class="error">@ErrorDetails</span>
+
+    <div class="col-lg-12" style="padding:1px; height:50px">
+        <div class="content-wrapper">
+            <div class="alert alert-title" role="banner"><b>Fracciones</b></div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                @if (GridData == null)
+                {
+                    <div class="alert alert-title" role="alert"><p><em>Cargando datos...</em></p></div>
+                }
+                else
+                {
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES">
+
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Fraction"></GridEvents>
+                        <GridPageSettings PageSize="20"></GridPageSettings>
+
+                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
+                            <HeaderTemplate>
+                                @{
+                                    var frac = (context as Fraction);
+                                }
+                                <span>Detalle de la frac: @(frac.fraccion)</span>
+                            </HeaderTemplate>
+                            <Template>
+                                @{
+                                    var frac = (context as Fraction);
+                                }
+                                <div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+
+                                            <SfNumericTextBox @bind-Value="@(frac.id)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <SfNumericTextBox @bind-Value="@(frac.fraccion)" Enabled="true" Placeholder="Fraccion" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <SfNumericTextBox @bind-Value="@(frac.factor_descuento)" Enabled="true" Placeholder="Comision" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                        </div>
+                                    </div>
+
+                          
+
+                                </div>
+                            </Template>
+                        </GridEditSettings>
+                        <GridColumns>
+                            <GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
+                                <Template>
+                                    @{
+                                        var Acc = (context as Fraction);
+                                        <div><a href="#" @onclick="@(() => Navigate(Acc))">Ver</a></div>
+                                    }
+                                </Template>
+                            </GridColumn>
+                            <GridColumn Field=@nameof(Fraction.id) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+
+                            <GridColumn Field=@nameof(Fraction.fraccion) HeaderText="Fraccion" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Fraction.factor_descuento) HeaderText="Descuento" Width="20"></GridColumn>
+                           
+                        </GridColumns>
+                    </SfGrid>
+                }
+
+            </div>
+            <SfDialog Target="#target"
+                      Width="300px"
+                      Height="130px"
+                      IsModal="true"
+                      ShowCloseIcon="false"
+                      @bind-Visible="DeleteRecordConfirmVisibility">
+                <DialogTemplates>
+                    <Header> Eliminar el registro? </Header>
+                    <Content>
+                        <div class="button-container">
+                            <button type="submit"
+                                    class="e-btn e-normal e-primary"
+                                    @onclick="ConfirmDeleteYes">
+                                Yes
+                            </button>
+                            <button type="submit"
+                                    class="e-btn e-normal"
+                                    @onclick="ConfirmDeleteNo">
+                                No
+                            </button>
+                        </div>
+                    </Content>
+                </DialogTemplates>
+            </SfDialog>
+            <SfToast @ref="ToastObj" Title="@ToastTitle" Content="@ToastContent" CssClass="@ToastCssClass">
+                <ToastPosition X="Right" Y="Bottom"></ToastPosition>
+            </SfToast>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    #toast_default .e-meeting::before {
+        content: "\e705";
+        font-size: 17px;
+    }
+</style>
+
+@code {
+
+    public string Message { get; set; }
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
+    public string ErrorDetails = "";
+
+    public IEnumerable<Fraction> GridData { get; set; }
+    public IEnumerable<Bank> banks { get; set; }
+    public IEnumerable<Currency> currencies { get; set; }
+
+    public bool EditDialogVisibility { get; set; } = false;
+    public bool DeleteRecordConfirmVisibility { get; set; } = false;
+
+    public Int32 ID = 0;
+
+    public string UserName;
+
+    SfToast ToastObj;
+
+    private int ToastFlag = 0;
+    private string ToastTitle = "";
+    private string ToastContent = "";
+    private string ToastCssClass = "";
+
+
+    private class ToastOption
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string CssClass { get; set; }
+    }
+
+    private ToastOption[] Toasts = new ToastOption[] {
+        new ToastOption { Title = "Warning !", Content = "El registro se eliminó con éxito.", CssClass = "e-toast-warning" },
+        new ToastOption { Title = "Success !", Content = "El registro se modificó con éxito.", CssClass = "e-toast-success" },
+        new ToastOption { Title = "Error !", Content = "A problem has been occurred while submitting your data.", CssClass = "e-toast-danger" },
+        new ToastOption { Title = "Information !", Content = "Please read the comments carefully.", CssClass = "e-toast-info" }
+    };
+
+
+    SfGrid<Fraction> Grid { get; set; }
+
+    private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            GridData = await FractionService.GetAllFractions();
+
+        }
+        catch (Exception ex)
+        {
+            Message = "Error al obtener tipos de frac: " + ex.Message;
+        }
+    }
+
+
+
+    private async Task OnBeginHandler(ActionEventArgs<Fraction> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await SaveFraction((Fraction)Args.Data);
+
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            ID = ((Fraction)Args.Data).id;
+
+            // Open Delete confirmation dialog
+            this.DeleteRecordConfirmVisibility = true;
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    private async Task OnCompleteHandler(ActionEventArgs<Fraction> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await ShowToast(1);
+            GridData = await FractionService.GetAllFractions();
+            Grid.Refresh();
+
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    protected async Task SaveFraction(Fraction accountType)
+    {
+        await FractionService.SaveFraction(accountType);
+        Grid.Refresh();
+
+    }
+
+    protected async Task DeleteFraction(int id)
+    {
+        await FractionService.DeleteFraction(id);
+        await ShowToast(0);
+        Grid.Refresh();
+
+    }
+
+    protected void ReloadPage()
+    {
+        NavigationManager.NavigateTo("/Fractions", true);
+    }
+
+    public async void ConfirmDeleteYes()
+    {
+        // The user selected Yes to delete the
+        // seleted Help Desk Ticket
+        // Delete the record
+        await DeleteFraction(ID);
+
+        // Close the dialog
+        this.DeleteRecordConfirmVisibility = false;
+
+        // Refresh the SfGrid
+        // so the deleted record will not show
+        Grid.Refresh();
+    }
+
+    public void ConfirmDeleteNo()
+    {
+        // Open the dialog
+        // to give the user a chance
+        // to confim they want to delete the record
+        this.DeleteRecordConfirmVisibility = false;
+    }
+
+    private async Task ShowToast(int ix)
+    {
+        this.ToastTitle = this.Toasts[ix].Title;
+        this.ToastContent = this.Toasts[ix].Content;
+        this.ToastCssClass = this.Toasts[ix].CssClass;
+        await Task.Delay(200);
+
+        await this.ToastObj.Show();
+
+    }
+
+
+
+    private async Task HideToast()
+    {
+
+        await this.ToastObj.Hide("All");
+    }
+
+    private void Navigate(Fraction acc)
+    {
+        NavigationManager.NavigateTo($"/AccDetails/{acc.id}");
+    }
+}
+
+
