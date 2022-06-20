@@ -25,11 +25,11 @@
                         Administración
                     </BarDropdownToggle>
                     <BarDropdownMenu>
-                        <BarDropdownItem To="/Bank">Bancos</BarDropdownItem>
-                        <BarDropdownItem To="/AccountType">Tipos de cuenta</BarDropdownItem>
-                        <BarDropdownItem To="/Account">Cuentas</BarDropdownItem>
-                        <BarDropdownItem To="/DiscountLimit">Límite desc.</BarDropdownItem>
-                        @*<BarDropdownItem To="/Configurations">Configuraciones</BarDropdownItem>*@
+                        @*<BarDropdownItem To="/Bank">Bancos</BarDropdownItem>*@
+                        @*<BarDropdownItem To="/AccountType">Tipos de cuenta</BarDropdownItem>*@
+                        @*<BarDropdownItem To="/Account">Cuentas</BarDropdownItem>*@
+                        @*<BarDropdownItem To="/DiscountLimit">Límite desc.</BarDropdownItem>*@
+                        <BarDropdownItem To="/Configurations">Configuraciones</BarDropdownItem>
                     </BarDropdownMenu>
 
                 </BarDropdown>
@@ -67,7 +67,7 @@
 
                 </BarDropdown>
             </BarItem>
-            <BarItem>
+            @*<BarItem>
                 <BarDropdown>
                     <BarDropdownToggle>
                         <BarIcon IconName="IconName.List" />
@@ -82,9 +82,9 @@
                         <BarDropdownItem To="/Stock">Stock</BarDropdownItem>
                     </BarDropdownMenu>
                 </BarDropdown>
-            </BarItem>
+            </BarItem>*@
 
-            <BarItem>
+            @*<BarItem>
                 <BarDropdown>
                     <BarDropdownToggle>
                         <BarIcon IconName="IconName.ShoppingBag" />
@@ -95,7 +95,7 @@
 
                     </BarDropdownMenu>
                 </BarDropdown>
-            </BarItem>
+            </BarItem>*@
 
             <BarItem>
                 <BarDropdown>
@@ -104,8 +104,8 @@
                         Ventas
                     </BarDropdownToggle>
                     <BarDropdownMenu>
-                        <BarDropdownItem To="/Budgets">Ventas</BarDropdownItem>
-                        <BarDropdownItem To="/Discounts">Descuentos</BarDropdownItem>
+                        @*<BarDropdownItem To="/Budgets">Ventas</BarDropdownItem>
+                        <BarDropdownItem To="/Discounts">Descuentos</BarDropdownItem>*@
                         <BarDropdownItem To="/Fractions">Fracciones</BarDropdownItem>
                     </BarDropdownMenu>
                 </BarDropdown>
@@ -118,9 +118,13 @@
                         Cobranzas
                     </BarDropdownToggle>
                     <BarDropdownMenu>
-                        <BarDropdownItem To="/Quotas">Cuotas</BarDropdownItem>
-                        <BarDropdownItem To="/PaymentMethod">Medios de pago</BarDropdownItem>
-                        <BarDropdownItem To="/Collection">Cobranzas</BarDropdownItem>
+                        <BarDropdownItem To="/Messages">Mensajes</BarDropdownItem>
+                        <BarDropdownItem To="/Rules">Reglas</BarDropdownItem>
+                        <BarDropdownItem To="/MessageLogs">Notificaciones</BarDropdownItem>
+                        <BarDropdownItem To="/Quotes">Cuotas</BarDropdownItem>
+                        
+                        @*<BarDropdownItem To="/PaymentMethod">Medios de pago</BarDropdownItem>
+                        <BarDropdownItem To="/Collection">Cobranzas</BarDropdownItem>*@
                     </BarDropdownMenu>
                 </BarDropdown>
             </BarItem>

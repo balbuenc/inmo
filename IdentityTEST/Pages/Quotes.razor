@@ -1,0 +1,283 @@
+﻿@page "/Quotes"
+@using Model
+@using Interfaces
+
+@inject IQuoteService QuoteService
+
+
+@inject NavigationManager NavigationManager
+
+@attribute [Authorize]
+
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using System.Collections.ObjectModel
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Buttons
+
+
+
+
+<div class="container-fluid">
+    <p>@Message</p>
+    <span class="error">@ErrorDetails</span>
+
+    <div class="col-lg-12" style="padding:1px; height:50px">
+        <div class="content-wrapper">
+            <div class="alert alert-title" role="banner"><b>Cuotas</b></div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                @if (GridData == null)
+                {
+                    <div class="alert alert-title" role="alert"><p><em>Cargando datos...</em></p></div>
+                }
+                else
+                {
+            <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES"
+                    ShowColumnChooser="true" AllowTextWrap="true" AllowFiltering="true">
+                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
+
+                <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Quote"></GridEvents>
+                <GridPageSettings PageSize="20"></GridPageSettings>
+
+
+                <GridColumns>
+                    <GridColumn Field=@nameof(Quote.id_fraccion) HeaderText="Fraccion" Width="15"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.id_manzana) HeaderText="Manz." Width="15"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.documento) HeaderText="Documento" Width="25"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.id_lote) HeaderText="lote" Width="10" IsPrimaryKey="true"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.fecha_vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="15"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.numero_cuota) HeaderText="Cuota" Width="15"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.nombre_para_documento) HeaderText="Cliente" Width="25"></GridColumn>
+
+                    <GridColumn Field=@nameof(Quote.monto_cuota) HeaderText="Monto" Format="N0" Width="20"></GridColumn>
+
+                    <GridColumn Field=@nameof(Quote.mora_cuota) HeaderText="Mora" Format="N0" Width="20"></GridColumn>
+
+                    <GridColumn Field=@nameof(Quote.telefono_particular) HeaderText="Telefono" Width="25"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.regla) HeaderText="Regla" Width="20"></GridColumn>
+                    <GridColumn Field=@nameof(Quote.mensaje) HeaderText="Mensaje" Width="40"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+                }
+
+            </div>
+            <SfDialog Target="#target"
+                      Width="300px"
+                      Height="130px"
+                      IsModal="true"
+                      ShowCloseIcon="false"
+                      @bind-Visible="DeleteRecordConfirmVisibility">
+                <DialogTemplates>
+                    <Header> Eliminar el registro? </Header>
+                    <Content>
+                        <div class="button-container">
+                            <button type="submit"
+                                    class="e-btn e-normal e-primary"
+                                    @onclick="ConfirmDeleteYes">
+                                Yes
+                            </button>
+                            <button type="submit"
+                                    class="e-btn e-normal"
+                                    @onclick="ConfirmDeleteNo">
+                                No
+                            </button>
+                        </div>
+                    </Content>
+                </DialogTemplates>
+            </SfDialog>
+            <SfToast @ref="ToastObj" Title="@ToastTitle" Content="@ToastContent" CssClass="@ToastCssClass">
+                <ToastPosition X="Right" Y="Bottom"></ToastPosition>
+            </SfToast>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    #toast_default .e-meeting::before {
+        content: "\e705";
+        font-size: 17px;
+    }
+</style>
+
+@code {
+
+    public string Message { get; set; }
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
+    public string ErrorDetails = "";
+
+    public IEnumerable<Quote> GridData { get; set; }
+
+
+    public bool EditDialogVisibility { get; set; } = false;
+    public bool DeleteRecordConfirmVisibility { get; set; } = false;
+
+    public Int32 ID = 0;
+
+    public string UserName;
+
+    SfToast ToastObj;
+
+    private int ToastFlag = 0;
+    private string ToastTitle = "";
+    private string ToastContent = "";
+    private string ToastCssClass = "";
+
+
+    private class ToastOption
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string CssClass { get; set; }
+    }
+
+    private ToastOption[] Toasts = new ToastOption[] {
+        new ToastOption { Title = "Warning !", Content = "El registro se eliminó con éxito.", CssClass = "e-toast-warning" },
+        new ToastOption { Title = "Success !", Content = "El registro se modificó con éxito.", CssClass = "e-toast-success" },
+        new ToastOption { Title = "Error !", Content = "A problem has been occurred while submitting your data.", CssClass = "e-toast-danger" },
+        new ToastOption { Title = "Information !", Content = "Please read the comments carefully.", CssClass = "e-toast-info" }
+    };
+
+
+    SfGrid<Quote> Grid { get; set; }
+
+    private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            GridData = await QuoteService.GetAllQuotes();
+          
+
+        }
+        catch (Exception ex)
+        {
+            Message = "Error al obtener tipos de cuenta: " + ex.Message;
+        }
+    }
+
+
+
+    private async Task OnBeginHandler(ActionEventArgs<Quote> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await SaveQuote((Quote)Args.Data);
+
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            ID = Convert.ToInt32( ((Quote)Args.Data).id_fraccion);
+
+            // Open Delete confirmation dialog
+            this.DeleteRecordConfirmVisibility = true;
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    private async Task OnCompleteHandler(ActionEventArgs<Quote> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await ShowToast(1);
+            GridData = await QuoteService.GetAllQuotes();
+            Grid.Refresh();
+
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    protected async Task SaveQuote(Quote accountType)
+    {
+        await QuoteService.SaveQuote(accountType);
+        Grid.Refresh();
+
+    }
+
+    protected async Task DeleteQuote(int id)
+    {
+        await QuoteService.DeleteQuote(id);
+        await ShowToast(0);
+        Grid.Refresh();
+
+    }
+
+    protected void ReloadPage()
+    {
+        NavigationManager.NavigateTo("/Quotes", true);
+    }
+
+    public async void ConfirmDeleteYes()
+    {
+        // The user selected Yes to delete the
+        // seleted Help Desk Ticket
+        // Delete the record
+        await DeleteQuote(ID);
+
+        // Close the dialog
+        this.DeleteRecordConfirmVisibility = false;
+
+        // Refresh the SfGrid
+        // so the deleted record will not show
+        Grid.Refresh();
+    }
+
+    public void ConfirmDeleteNo()
+    {
+        // Open the dialog
+        // to give the user a chance
+        // to confim they want to delete the record
+        this.DeleteRecordConfirmVisibility = false;
+    }
+
+    private async Task ShowToast(int ix)
+    {
+        this.ToastTitle = this.Toasts[ix].Title;
+        this.ToastContent = this.Toasts[ix].Content;
+        this.ToastCssClass = this.Toasts[ix].CssClass;
+        await Task.Delay(200);
+
+        await this.ToastObj.Show();
+
+    }
+
+
+
+    private async Task HideToast()
+    {
+
+        await this.ToastObj.Hide("All");
+    }
+
+    private void Navigate(Quote acc)
+    {
+        NavigationManager.NavigateTo($"/AccDetails/{acc.id_manzana}");
+    }
+}
+
+

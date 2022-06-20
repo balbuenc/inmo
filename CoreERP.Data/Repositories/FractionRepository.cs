@@ -46,9 +46,10 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = @"SELECT id, fraccion, factor_descuento
-                            FROM public.fracciones_descuento;
-                             ";
+                var sql = @"SELECT f.id, f.fraccion, f.factor_descuento, bc.boca , f.limite_descuento, f.minimo_descuento, f.id_boca_cobranza
+                            FROM public.fracciones_descuento f
+                            left outer join public.bocas_cobranza bc on bc.id_boca_cobranza = f.id_boca_cobranza
+                            order by f.fraccion asc;";
 
                 var result = await db.QueryAsync<Fraction>(sql, new { });
 
@@ -83,15 +84,17 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"INSERT INTO public.fracciones_descuento
-(fraccion, factor_descuento)
-VALUES(@fraccion, @factor_descuento);
-";
+                            (fraccion, factor_descuento,  limite_descuento, minimo_descuento, id_boca_cobranza)
+                            VALUES(@fraccion, @factor_descuento , @limite_descuento, @minimo_descuento, @id_boca_cobranza);";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
-                
+
                     fraction.fraccion,
-                    fraction.factor_descuento
+                    fraction.factor_descuento,
+                    fraction.limite_descuento,
+                    fraction.minimo_descuento,
+                    fraction.id_boca_cobranza
                 }
                 );
 
@@ -110,15 +113,18 @@ VALUES(@fraccion, @factor_descuento);
                 var db = dbConnection();
 
                 var sql = @"UPDATE public.fracciones_descuento
-SET fraccion=@fraccion, factor_descuento=@factor_descuento
-WHERE id=@id;
-";
+                            SET fraccion=@fraccion, factor_descuento=@factor_descuento,  limite_descuento = @limite_descuento, minimo_descuento = @minimo_descuento, id_boca_cobranza = @id_boca_cobranza
+                            WHERE id=@id;
+                            ";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
                     fraction.id,
                     fraction.fraccion,
-                    fraction.factor_descuento
+                    fraction.factor_descuento,
+                    fraction.limite_descuento,
+                    fraction.minimo_descuento,
+                    fraction.id_boca_cobranza
                 }
                 );
 

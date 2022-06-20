@@ -64,6 +64,10 @@ namespace CoreERP.API
             services.AddScoped<IAccountDetailRepository, AccountDetailRepository>();
             services.AddScoped<IDiscountLimitRepository, DiscountLimitRepository>();
             services.AddScoped<IFractionRepository, FractionRepository>();
+            services.AddScoped<IRuleRepository, RuleRepository>();
+            services.AddScoped<IQuoteRepository, QuoteRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<ISendMessageLogRepository, SendMessageLogRepository>();
 
             services.AddControllers();
 

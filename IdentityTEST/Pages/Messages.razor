@@ -1,10 +1,9 @@
-﻿@page "/Fractions"
+﻿@page "/Messages"
 @using Model
 @using Interfaces
 
-@inject IFractionService FractionService
-@inject IBankService BankService
-@inject ICurrencyService CurrencyService
+@inject IMessageService MessageService
+
 
 @inject NavigationManager NavigationManager
 
@@ -25,12 +24,12 @@
 
 
 <div class="container-fluid">
-    <p>@Message</p>
+    <p>@Messg</p>
     <span class="error">@ErrorDetails</span>
 
     <div class="col-lg-12" style="padding:1px; height:50px">
         <div class="content-wrapper">
-            <div class="alert alert-title" role="banner"><b>Fracciones</b></div>
+            <div class="alert alert-title" role="banner"><b>Mensajes</b></div>
         </div>
     </div>
 
@@ -46,56 +45,40 @@
                 {
                     <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES">
 
-                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Fraction"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Message"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
 
                         <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
                             <HeaderTemplate>
                                 @{
-                                    var frac = (context as Fraction);
+                                    var mensaje = (context as Message);
                                 }
-                                <span>Detalle de la frac: @(frac.fraccion)</span>
+                                <span>Detalle del mensaje: @(mensaje.titulo)</span>
                             </HeaderTemplate>
                             <Template>
                                 @{
-                                    var frac = (context as Fraction);
+                                    var mensaje = (context as Message);
                                 }
                                 <div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
 
-                                            <SfNumericTextBox @bind-Value="@(frac.id)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                            <SfNumericTextBox @bind-Value="@(mensaje.id_mensaje)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
                                         </div>
 
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <SfNumericTextBox @bind-Value="@(frac.fraccion)" Enabled="true" Placeholder="Fraccion" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                            <SfTextBox @bind-Value="@(mensaje.titulo)" Enabled="true" Placeholder="Título" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <SfNumericTextBox @bind-Value="@(frac.factor_descuento)" Enabled="true" Placeholder="Comision" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                        </div>
+                                       
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                           @* <SfTextBox @bind-Value="@(frac.boca)" Enabled="true" Placeholder="Boca" FloatLabelType="FloatLabelType.Always"> </SfTextBox>*@
-                                            <SfDropDownList DataSource="@LocalBoca"
-                                                            TItem="Boca"
-                                                            TValue="int"
-                                                            @bind-Value="@(frac.id_boca_cobranza)"
-                                                            Placeholder="Boca"
-                                                            FloatLabelType="FloatLabelType.Always">
-                                                <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
-                                            </SfDropDownList>
+                                        <div class="form-group col-md-12"  >
+                                            <SfTextBox @bind-Value="@(mensaje.mensaje)" Enabled="true"  Multiline="true" Placeholder="Mensaje" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(frac.minimo_descuento)" Enabled="true" Placeholder="Limite Inferior" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(frac.limite_descuento)" Enabled="true" Placeholder="Limite Superior" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                        </div>
-
                                     </div>
+                                   
 
 
 
@@ -103,21 +86,12 @@
                             </Template>
                         </GridEditSettings>
                         <GridColumns>
-                            @*<GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
-                                <Template>
-                                    @{
-                                        var Acc = (context as Fraction);
-                                        <div><a href="#" @onclick="@(() => Navigate(Acc))">Ver</a></div>
-                                    }
-                                </Template>
-                            </GridColumn>*@
-                            <GridColumn Field=@nameof(Fraction.id) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+                           
+                            <GridColumn Field=@nameof(Message.id_mensaje) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
 
-                            <GridColumn Field=@nameof(Fraction.fraccion) HeaderText="Fraccion" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Fraction.factor_descuento) HeaderText="Descuento" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Fraction.boca) HeaderText="Boca" Width="30"></GridColumn>
-                            <GridColumn Field=@nameof(Fraction.minimo_descuento) HeaderText="Mínimo" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Fraction.limite_descuento) HeaderText="Máximo" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Message.titulo) HeaderText="Título" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Message.mensaje) HeaderText="Mensaje" Width="60"></GridColumn>
+                           
                         </GridColumns>
                     </SfGrid>
                 }
@@ -167,13 +141,12 @@
 
 @code {
 
-    public string Message { get; set; }
+    public string Messg { get; set; }
     public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
     public string ErrorDetails = "";
 
-    public IEnumerable<Fraction> GridData { get; set; }
-    public IEnumerable<Bank> banks { get; set; }
-    public IEnumerable<Currency> currencies { get; set; }
+    public IEnumerable<Message> GridData { get; set; }
+  
 
     public bool EditDialogVisibility { get; set; } = false;
     public bool DeleteRecordConfirmVisibility { get; set; } = false;
@@ -205,18 +178,7 @@
     };
 
 
-    public class Boca
-    {
-        public int ID { get; set; }
-        public string Text { get; set; }
-    }
-
-    List<Boca> LocalBoca = new List<Boca> {
-    new Boca() { ID= 1, Text= "AQUI PAGO" },
-    new Boca() { ID= 2, Text= "PAGO EXPRESS" },
-  };
-
-    SfGrid<Fraction> Grid { get; set; }
+    SfGrid<Message> Grid { get; set; }
 
     private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
 
@@ -226,27 +188,28 @@
     {
         try
         {
-            GridData = await FractionService.GetAllFractions();
+            GridData = await MessageService.GetAllMessages();
+          
 
         }
         catch (Exception ex)
         {
-            Message = "Error al obtener tipos de frac: " + ex.Message;
+            Messg = "Error al obtener tipos de mensaje: " + ex.Message;
         }
     }
 
 
 
-    private async Task OnBeginHandler(ActionEventArgs<Fraction> Args)
+    private async Task OnBeginHandler(ActionEventArgs<Message> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
-            await SaveFraction((Fraction)Args.Data);
+            await SaveMessage((Message)Args.Data);
 
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            ID = ((Fraction)Args.Data).id;
+            ID = ((Message)Args.Data).id_mensaje;
 
             // Open Delete confirmation dialog
             this.DeleteRecordConfirmVisibility = true;
@@ -256,12 +219,12 @@
         return;
     }
 
-    private async Task OnCompleteHandler(ActionEventArgs<Fraction> Args)
+    private async Task OnCompleteHandler(ActionEventArgs<Message> Args)
     {
         if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
         {
             await ShowToast(1);
-            GridData = await FractionService.GetAllFractions();
+            GridData = await MessageService.GetAllMessages();
             Grid.Refresh();
 
         }
@@ -274,16 +237,16 @@
         return;
     }
 
-    protected async Task SaveFraction(Fraction accountType)
+    protected async Task SaveMessage(Message accountType)
     {
-        await FractionService.SaveFraction(accountType);
+        await MessageService.SaveMessage(accountType);
         Grid.Refresh();
 
     }
 
-    protected async Task DeleteFraction(int id)
+    protected async Task DeleteMessage(int id)
     {
-        await FractionService.DeleteFraction(id);
+        await MessageService.DeleteMessage(id);
         await ShowToast(0);
         Grid.Refresh();
 
@@ -291,7 +254,7 @@
 
     protected void ReloadPage()
     {
-        NavigationManager.NavigateTo("/Fractions", true);
+        NavigationManager.NavigateTo("/Messages", true);
     }
 
     public async void ConfirmDeleteYes()
@@ -299,7 +262,7 @@
         // The user selected Yes to delete the
         // seleted Help Desk Ticket
         // Delete the record
-        await DeleteFraction(ID);
+        await DeleteMessage(ID);
 
         // Close the dialog
         this.DeleteRecordConfirmVisibility = false;
@@ -336,9 +299,9 @@
         await this.ToastObj.Hide("All");
     }
 
-    private void Navigate(Fraction acc)
+    private void Navigate(Message acc)
     {
-        NavigationManager.NavigateTo($"/AccDetails/{acc.id}");
+        NavigationManager.NavigateTo($"/AccDetails/{acc.id_mensaje}");
     }
 }
 

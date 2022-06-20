@@ -187,6 +187,22 @@ namespace CoreERP.UI
             );
 
 
+            services.AddHttpClient<IRuleService, RuleService>(
+                ruleService => { ruleService.BaseAddress = new Uri(apiurl); }
+            );
+
+            services.AddHttpClient<IQuoteService, QuoteService>(
+                quoteService => { quoteService.BaseAddress = new Uri(apiurl); }
+            );
+
+            services.AddHttpClient<ISendMessageLogService, SendMessageLogService>(
+               messageLogService => { messageLogService.BaseAddress = new Uri(apiurl); }
+           );
+
+            services.AddHttpClient<IMessageService, MessageService>(
+              messageService => { messageService.BaseAddress = new Uri(apiurl); }
+          );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -203,10 +219,10 @@ namespace CoreERP.UI
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
