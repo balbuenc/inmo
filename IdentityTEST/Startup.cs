@@ -37,6 +37,7 @@ namespace CoreERP.UI
         public IConfiguration Configuration { get; }
         private string apiurl;
         private string printAPIurl;
+   
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -44,6 +45,7 @@ namespace CoreERP.UI
         {
             apiurl = Configuration["api"];
             printAPIurl = Configuration["print"];
+            
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(

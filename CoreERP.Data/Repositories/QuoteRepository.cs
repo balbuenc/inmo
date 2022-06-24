@@ -46,12 +46,23 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = @"select vc.*, r.regla , m.mensaje 
-                    from imports.vconsulta_cliente vc
-                    inner join public.reglas r on  vc.id_fraccion between r.fraccion_desde and r.fraccion_hasta 
-                    and vc.fecha_vencimiento + r.dias_vencidos = current_date 
-                    inner join mensajes m on m.id_mensaje = r.id_mensaje 
-                    order by vc.fecha_vencimiento asc;";
+                var sql = @"select vc.*, r.regla , m.mensaje,
+                            (select valor from configuraciones c where parametro = 'TigoSMSService' ) || '?key=' || (select valor from configuraciones c where parametro = 'SMSKey' ) || '&message=' ||
+                            (select valor from configuraciones c where parametro = 'SMSEncabezado' ) ||
+                            replace(
+                                replace(
+                                replace (m.mensaje, '@cliente', vc.nombre_para_documento)
+                                ,'@nro_cuota',vc.numero_cuota::varchar(10) 
+                                ) 
+                            ,'@nro_lote',vc.id_lote::varchar(10)
+                            )
+                            || '&msisdn=0986949223' 
+                            as comando
+                            from imports.vconsulta_cliente vc
+                            inner join public.reglas r on  vc.id_fraccion between r.fraccion_desde and r.fraccion_hasta 
+                            and vc.fecha_vencimiento + r.dias_vencidos = current_date 
+                            inner join mensajes m on m.id_mensaje = r.id_mensaje 
+                            order by vc.fecha_vencimiento asc;";
 
                 var result = await db.QueryAsync<Quote>(sql, new { });
 

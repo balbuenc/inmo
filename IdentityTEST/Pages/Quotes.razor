@@ -3,6 +3,7 @@
 @using Interfaces
 
 @inject IQuoteService QuoteService
+@inject ISendMessageLogService SendMessageLogService 
 
 
 @inject NavigationManager NavigationManager
@@ -19,8 +20,9 @@
 @using Syncfusion.Blazor.Popups;
 @using Syncfusion.Blazor.Notifications
 @using Syncfusion.Blazor.Buttons
-
-
+@using System.Data;
+@using System.Net.Http.Headers 
+@using Newtonsoft.Json
 
 
 <div class="container-fluid">
@@ -29,7 +31,14 @@
 
     <div class="col-lg-12" style="padding:1px; height:50px">
         <div class="content-wrapper">
-            <div class="alert alert-title" role="banner"><b>Cuotas</b></div>
+            <div class="alert alert-title" role="banner">
+                <b> Cuotas </b>
+                <SfButton IsPrimary="true" IconCss="e-btn-sb-icons e-open-icon" IconPosition=@IconPosition.Right OnClick=SendSMS>Enviar notificaciones</SfButton>
+            </div>
+            
+                
+                
+           
         </div>
     </div>
 
@@ -43,32 +52,33 @@
                 }
                 else
                 {
-            <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES"
-                    ShowColumnChooser="true" AllowTextWrap="true" AllowFiltering="true">
-                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES"
+                            ShowColumnChooser="true" AllowTextWrap="true" AllowFiltering="true">
+                        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
 
-                <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Quote"></GridEvents>
-                <GridPageSettings PageSize="20"></GridPageSettings>
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Quote"></GridEvents>
+                        <GridPageSettings PageSize="20"></GridPageSettings>
 
 
-                <GridColumns>
-                    <GridColumn Field=@nameof(Quote.id_fraccion) HeaderText="Fraccion" Width="15"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.id_manzana) HeaderText="Manz." Width="15"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.documento) HeaderText="Documento" Width="25"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.id_lote) HeaderText="lote" Width="10" IsPrimaryKey="true"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.fecha_vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="15"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.numero_cuota) HeaderText="Cuota" Width="15"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.nombre_para_documento) HeaderText="Cliente" Width="25"></GridColumn>
+                        <GridColumns>
+                            <GridColumn Field=@nameof(Quote.id_fraccion) HeaderText="Fraccion" Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.id_manzana) HeaderText="Manz." Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.documento) HeaderText="Documento" Width="25"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.id_lote) HeaderText="lote" Width="10" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.fecha_vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.numero_cuota) HeaderText="Cuota" Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.nombre_para_documento) HeaderText="Cliente" Width="25"></GridColumn>
 
-                    <GridColumn Field=@nameof(Quote.monto_cuota) HeaderText="Monto" Format="N0" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.monto_cuota) HeaderText="Monto" Format="N0" Width="20"></GridColumn>
 
-                    <GridColumn Field=@nameof(Quote.mora_cuota) HeaderText="Mora" Format="N0" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.mora_cuota) HeaderText="Mora" Format="N0" Width="20"></GridColumn>
 
-                    <GridColumn Field=@nameof(Quote.telefono_particular) HeaderText="Telefono" Width="25"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.regla) HeaderText="Regla" Width="20"></GridColumn>
-                    <GridColumn Field=@nameof(Quote.mensaje) HeaderText="Mensaje" Width="40"></GridColumn>
-                </GridColumns>
-            </SfGrid>
+                            <GridColumn Field=@nameof(Quote.telefono_particular) HeaderText="Telefono" Width="25"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.regla) HeaderText="Regla" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.mensaje) HeaderText="Mensaje" Width="40"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.comando) HeaderText="Comando"  Width="40"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
                 }
 
             </div>
@@ -117,7 +127,7 @@
 @code {
 
     public string Message { get; set; }
-    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search" };
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search", "ColumnChooser" };
     public string ErrorDetails = "";
 
     public IEnumerable<Quote> GridData { get; set; }
@@ -164,7 +174,7 @@
         try
         {
             GridData = await QuoteService.GetAllQuotes();
-          
+
 
         }
         catch (Exception ex)
@@ -184,7 +194,7 @@
         }
         else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
         {
-            ID = Convert.ToInt32( ((Quote)Args.Data).id_fraccion);
+            ID = Convert.ToInt32(((Quote)Args.Data).id_fraccion);
 
             // Open Delete confirmation dialog
             this.DeleteRecordConfirmVisibility = true;
@@ -277,6 +287,66 @@
     private void Navigate(Quote acc)
     {
         NavigationManager.NavigateTo($"/AccDetails/{acc.id_manzana}");
+    }
+
+
+    protected async Task SendSMS()
+    {
+      
+        try
+        {
+
+            foreach (Quote q in GridData)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://tigob.beekun.com/pushapi");
+                    client.DefaultRequestHeaders.Clear();
+                    //Define request data format
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient
+                    HttpResponseMessage Res = await client.GetAsync(q.comando);
+
+
+                    //Storing the response details recieved from web api
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+
+                    SendMessageLog log = new SendMessageLog();
+
+                    log.comando = q.comando;
+                    log.fecha = DateTime.Now;
+                    log.documento = q.documento;
+                    log.id_fraccion = q.id_fraccion;
+                    log.id_cliente = q.id_cliente;
+                    log.fecha_vencimiento = q.fecha_vencimiento;
+                    log.id_lote = q.id_lote;
+                    log.id_manzana = q.id_manzana;
+                    log.monto_cuota = q.monto_cuota;
+                    log.mora_cuota = q.mora_cuota;
+                    log.nombre_para_documento = q.nombre_para_documento;
+                    log.numero_contrato = q.numero_contrato;
+                    log.numero_cuota = q.numero_cuota;
+                    log.telefono_particular = q.telefono_particular;
+                    log.texto = q.mensaje;
+
+                    log.respuesta = EmpResponse;
+
+                    await SendMessageLogService.SaveSendMessageLog(log);
+
+
+
+                }
+
+            }
+
+
+
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 }
 

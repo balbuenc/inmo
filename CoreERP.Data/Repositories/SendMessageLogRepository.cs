@@ -48,7 +48,7 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
                 var sql = @"SELECT id_envio_mensaje, fecha, id_mensaje, texto, id_fraccion, id_manzana, id_lote, numero_contrato, nombre_para_documento, id_cliente, documento, numero_cuota, monto_cuota, mora_cuota, fecha_vencimiento, telefono_particular, comando, respuesta
                             FROM public.envio_mensajes
-                            order by c.id_envio_mensaje desc";
+                            order by id_envio_mensaje desc";
 
                 var result = await db.QueryAsync<SendMessageLog>(sql, new { });
 
@@ -84,13 +84,30 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"INSERT INTO public.envio_mensajes
-                            (fecha, id_mensaje, texto, id_fraccion, id_manzana, id_lote, numero_contrato, nombre_para_documento, id_cliente, documento, numero_cuota, monto_cuota, mora_cuota, fecha_vencimiento, telefono_particular, comando, respuesta)
-                            VALUES(CURRENT_DATE, @id_mensaje, @texto, @id_fraccion, @id_manzana, @id_lote, @numero_contrato, @nombre_para_documento, @id_cliente, @documento, @numero_cuota, @monto_cuota, @mora_cuota, @fecha_vencimiento, @telefono_particular, @comando, @respuesta);
+                            (fecha,  texto, id_fraccion, id_manzana, id_lote, numero_contrato, nombre_para_documento, id_cliente, documento, numero_cuota, monto_cuota, mora_cuota, fecha_vencimiento, telefono_particular, comando, respuesta,id_mensaje)
+                            VALUES(CURRENT_DATE,  @texto, @id_fraccion, @id_manzana, @id_lote, @numero_contrato, @nombre_para_documento, @id_cliente, @documento, @numero_cuota, @monto_cuota, @mora_cuota, @fecha_vencimiento, @telefono_particular, @comando, @respuesta,@id_mensaje);
                             ";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
-                    message_log.texto
+                    message_log.fecha,
+                    message_log.texto,
+                    message_log.id_fraccion,
+                    message_log.id_manzana,
+                    message_log.id_lote,
+                    message_log.numero_contrato,
+                    message_log.nombre_para_documento,
+                    message_log.id_cliente,
+                    message_log.documento,
+                    message_log.numero_cuota,
+                    message_log.monto_cuota,
+                    message_log.mora_cuota,
+                    message_log.fecha_vencimiento,
+                    message_log.telefono_particular,
+                    message_log.comando,
+                    message_log.respuesta,
+                    message_log.id_mensaje
+
                 }
                 );
 

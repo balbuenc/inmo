@@ -45,7 +45,7 @@ namespace CoreERP.UI.Services
             var clientJson = new StringContent(JsonSerializer.Serialize(quote),
               Encoding.UTF8, "application/json");
 
-            if (quote.numero_contrato == 0)
+            if (quote.id_cliente == 0)
                 await _httpClient.PostAsync("api/quote", clientJson);
             else
                 await _httpClient.PutAsync("api/quote", clientJson);

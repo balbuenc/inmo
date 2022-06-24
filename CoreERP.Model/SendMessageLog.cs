@@ -11,7 +11,7 @@ namespace CoreERP.Model
         public int id_mensaje { get; set; }
         public string texto { get; set; }
         public int id_fraccion { get; set; }
-        public int id_manzana { get; set; }
+        public string id_manzana { get; set; }
         public int id_lote { get; set; }
 
         public string numero_contrato { get; set; }
