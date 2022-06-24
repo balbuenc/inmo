@@ -3,7 +3,7 @@
 @using Interfaces
 
 @inject IQuoteService QuoteService
-@inject ISendMessageLogService SendMessageLogService 
+@inject ISendMessageLogService SendMessageLogService
 
 
 @inject NavigationManager NavigationManager
@@ -21,7 +21,7 @@
 @using Syncfusion.Blazor.Notifications
 @using Syncfusion.Blazor.Buttons
 @using System.Data;
-@using System.Net.Http.Headers 
+@using System.Net.Http.Headers
 @using Newtonsoft.Json
 
 
@@ -33,12 +33,12 @@
         <div class="content-wrapper">
             <div class="alert alert-title" role="banner">
                 <b> Cuotas </b>
-                <SfButton IsPrimary="true" IconCss="e-btn-sb-icons e-open-icon" IconPosition=@IconPosition.Right OnClick=SendSMS>Enviar notificaciones</SfButton>
+                <SfButton IsPrimary="true"  OnClick=SendSMS>Enviar notificaciones</SfButton>
             </div>
-            
-                
-                
-           
+
+
+
+
         </div>
     </div>
 
@@ -56,7 +56,7 @@
                             ShowColumnChooser="true" AllowTextWrap="true" AllowFiltering="true">
                         <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
 
-                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Quote"></GridEvents>
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Quote" OnRecordDoubleClick="RecordDoubleClickHandler"></GridEvents>
                         <GridPageSettings PageSize="20"></GridPageSettings>
 
 
@@ -76,7 +76,7 @@
                             <GridColumn Field=@nameof(Quote.telefono_particular) HeaderText="Telefono" Width="25"></GridColumn>
                             <GridColumn Field=@nameof(Quote.regla) HeaderText="Regla" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Quote.mensaje) HeaderText="Mensaje" Width="40"></GridColumn>
-                            <GridColumn Field=@nameof(Quote.comando) HeaderText="Comando"  Width="40"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.comando) HeaderText="Comando" Width="40"></GridColumn>
                         </GridColumns>
                     </SfGrid>
                 }
@@ -115,6 +115,28 @@
 
     </div>
 
+    <SfDialog Width="650px" Height="300px" IsModal="true" @bind-Visible="@IsSendSMSTestVisible">
+        <DialogEvents OnOverlayClick="@OnOverlayclick">
+        </DialogEvents>
+        <DialogTemplates>
+            <Content>
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Envío de mensaje individual</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <SfTextBox Placeholder="Comando" FloatLabelType="@FloatLabelType.Auto" @bind-Value="@Command"  Multiline="true" HtmlAttributes="@htmlAttribute"></SfTextBox>
+                    </div>
+                </div>
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton Content="Send SMS" IsPrimary="true" OnClick="@OnConfirmation" />
+            <DialogButton Content="Cancel" IsPrimary="true" OnClick="@OnOverlayclick" />
+        </DialogButtons>
+    </SfDialog>
 </div>
 
 <style>
@@ -131,10 +153,14 @@
     public string ErrorDetails = "";
 
     public IEnumerable<Quote> GridData { get; set; }
+    Quote QTemp { get; set; }
+    public string Command = "";
 
 
     public bool EditDialogVisibility { get; set; } = false;
     public bool DeleteRecordConfirmVisibility { get; set; } = false;
+
+    public bool IsSendSMSTestVisible  { get; set; } = false;
 
     public Int32 ID = 0;
 
@@ -174,15 +200,24 @@
         try
         {
             GridData = await QuoteService.GetAllQuotes();
-
-
         }
         catch (Exception ex)
         {
-            Message = "Error al obtener tipos de cuenta: " + ex.Message;
+            Message = "Error al obtener cuotas: " + ex.Message;
         }
     }
 
+    private Dictionary<string, object> htmlAttribute = new Dictionary<string, object>()
+    {
+        {"rows", "5" }
+    };
+
+
+    private void OnOverlayclick(MouseEventArgs arg)
+    {
+        this.IsSendSMSTestVisible = false;
+
+    }
 
 
     private async Task OnBeginHandler(ActionEventArgs<Quote> Args)
@@ -284,64 +319,84 @@
         await this.ToastObj.Hide("All");
     }
 
-    private void Navigate(Quote acc)
+    private void Navigate()
     {
-        NavigationManager.NavigateTo($"/AccDetails/{acc.id_manzana}");
+        NavigationManager.NavigateTo($"/MessageLogs");
+    }
+
+    public void RecordDoubleClickHandler(RecordDoubleClickEventArgs<Quote> args)
+    {
+        QTemp= (Quote)args.RowData;
+        Command = QTemp.comando;
+        IsSendSMSTestVisible = true;
+    }
+
+    private async void OnConfirmation()
+    {
+        QTemp.comando = Command;
+        await SendNotification(QTemp);
+        IsSendSMSTestVisible = false;
+        Navigate();
+    }
+
+    protected async Task SendNotification(Quote q)
+    {
+        try
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://tigob.beekun.com/pushapi");
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //Sending request to find web api REST service resource GetAllEmployees using HttpClient
+                HttpResponseMessage Res = await client.GetAsync(q.comando);
+
+
+                //Storing the response details recieved from web api
+                var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+
+                SendMessageLog log = new SendMessageLog();
+
+                log.comando = q.comando;
+                log.fecha = DateTime.Now;
+                log.documento = q.documento;
+                log.id_fraccion = q.id_fraccion;
+                log.id_cliente = q.id_cliente;
+                log.fecha_vencimiento = q.fecha_vencimiento;
+                log.id_lote = q.id_lote;
+                log.id_manzana = q.id_manzana;
+                log.monto_cuota = q.monto_cuota;
+                log.mora_cuota = q.mora_cuota;
+                log.nombre_para_documento = q.nombre_para_documento;
+                log.numero_contrato = q.numero_contrato;
+                log.numero_cuota = q.numero_cuota;
+                log.telefono_particular = q.telefono_particular;
+                log.texto = q.mensaje;
+
+                log.respuesta = EmpResponse;
+
+                await SendMessageLogService.SaveSendMessageLog(log);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
 
     protected async Task SendSMS()
     {
-      
         try
         {
-
             foreach (Quote q in GridData)
             {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("https://tigob.beekun.com/pushapi");
-                    client.DefaultRequestHeaders.Clear();
-                    //Define request data format
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient
-                    HttpResponseMessage Res = await client.GetAsync(q.comando);
-
-
-                    //Storing the response details recieved from web api
-                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-
-                    SendMessageLog log = new SendMessageLog();
-
-                    log.comando = q.comando;
-                    log.fecha = DateTime.Now;
-                    log.documento = q.documento;
-                    log.id_fraccion = q.id_fraccion;
-                    log.id_cliente = q.id_cliente;
-                    log.fecha_vencimiento = q.fecha_vencimiento;
-                    log.id_lote = q.id_lote;
-                    log.id_manzana = q.id_manzana;
-                    log.monto_cuota = q.monto_cuota;
-                    log.mora_cuota = q.mora_cuota;
-                    log.nombre_para_documento = q.nombre_para_documento;
-                    log.numero_contrato = q.numero_contrato;
-                    log.numero_cuota = q.numero_cuota;
-                    log.telefono_particular = q.telefono_particular;
-                    log.texto = q.mensaje;
-
-                    log.respuesta = EmpResponse;
-
-                    await SendMessageLogService.SaveSendMessageLog(log);
-
-
-
-                }
-
+                await SendNotification(q);
             }
 
-
-
+            Navigate();
         }
         catch (Exception ex)
         {

@@ -92,7 +92,7 @@
                                             <SfNumericTextBox @bind-Value="@(regla.fraccion_hasta)" Enabled="true" Placeholder="Hasta frac." FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(regla.dias_vencidos)" Enabled="true" Placeholder="Dias vencidos" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                            <SfNumericTextBox @bind-Value="@(regla.dias_vencidos)" Enabled="true" Placeholder="Días vencidos" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
                                     </div>
 
@@ -104,11 +104,11 @@
                             <GridColumn Field=@nameof(Rule.id_regla) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
 
                             <GridColumn Field=@nameof(Rule.regla) HeaderText="Regla" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Rule.fraccion_desde) HeaderText="Fraccion" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Rule.fraccion_hasta) HeaderText="Fraccion" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Rule.titulo) HeaderText="mensaje" Width="30"></GridColumn>
+                            <GridColumn Field=@nameof(Rule.fraccion_desde) HeaderText="Desde Frac." Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Rule.fraccion_hasta) HeaderText="Hasta Frac." Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Rule.titulo) HeaderText="Mensaje" Width="30"></GridColumn>
 
-                            <GridColumn Field=@nameof(Rule.dias_vencidos) HeaderText="Dias vencidos" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Rule.dias_vencidos) HeaderText="Días vencidos" Width="20"></GridColumn>
 
 
                         </GridColumns>

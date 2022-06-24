@@ -49,14 +49,17 @@ namespace CoreERP.Data.Repositories
                 var sql = @"select vc.*, r.regla , m.mensaje,
                             (select valor from configuraciones c where parametro = 'TigoSMSService' ) || '?key=' || (select valor from configuraciones c where parametro = 'SMSKey' ) || '&message=' ||
                             (select valor from configuraciones c where parametro = 'SMSEncabezado' ) ||
-                            replace(
+                            regexp_replace( 
                                 replace(
-                                replace (m.mensaje, '@cliente', vc.nombre_para_documento)
-                                ,'@nro_cuota',vc.numero_cuota::varchar(10) 
-                                ) 
-                            ,'@nro_lote',vc.id_lote::varchar(10)
+                                    replace(
+                                    replace (m.mensaje, '@cliente', vc.nombre_para_documento)
+                                    ,'@nro_cuota',vc.numero_cuota::varchar(10) 
+                                    ) 
+                                ,'@nro_lote',vc.id_lote::varchar(10)
+                                )
+                            ,'@vencimiento',to_char(vc.fecha_vencimiento,'dd/MM/yyyy')
                             )
-                            || '&msisdn=0986949223' 
+                            || '&msisdn=' ||  replace (vc.telefono_particular,'+5959','09') 
                             as comando
                             from imports.vconsulta_cliente vc
                             inner join public.reglas r on  vc.id_fraccion between r.fraccion_desde and r.fraccion_hasta 
