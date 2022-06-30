@@ -49,16 +49,26 @@ namespace CoreERP.Data.Repositories
                 var sql = @"select vc.*, r.regla , m.mensaje,
                             (select valor from configuraciones c where parametro = 'TigoSMSService' ) || '?key=' || (select valor from configuraciones c where parametro = 'SMSKey' ) || '&message=' ||
                             (select valor from configuraciones c where parametro = 'SMSEncabezado' ) ||
-                            regexp_replace( 
-                                replace(
-                                    replace(
-                                    replace (m.mensaje, '@cliente', vc.nombre_para_documento)
-                                    ,'@nro_cuota',vc.numero_cuota::varchar(10) 
-                                    ) 
-                                ,'@nro_lote',vc.id_lote::varchar(10)
-                                )
-                            ,'@vencimiento',to_char(vc.fecha_vencimiento,'dd/MM/yyyy')
-                            )
+	                        replace(
+                            replace(
+                            replace(
+                            replace(
+                            	replace(
+		                            replace( 
+		                                replace(
+		                                    replace(
+		                                    replace (m.mensaje, '@cliente', vc.nombre_para_documento)
+		                                    ,'@nro_cuota',vc.numero_cuota::varchar(10) 
+		                                    ) 
+		                                ,'@nro_lote',vc.id_lote::varchar(10)
+		                                )
+		                            ,'@vencimiento',to_char(vc.fecha_vencimiento,'dd/MM/yyyy')
+		                            )
+		                        ,'@manzana',vc.id_manzana )
+		                    ,'@contrato',vc.numero_contrato )
+		                    ,'@documento',vc.documento )
+		                    ,'@monto_cuota',vc.monto_cuota::varchar(20))
+		                    ,'@fraccion',vc.id_fraccion::varchar(20))
                             || '&msisdn=' ||  replace (vc.telefono_particular,'+5959','09') 
                             as comando
                             from imports.vconsulta_cliente vc
