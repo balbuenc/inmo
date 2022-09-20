@@ -84,8 +84,8 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"INSERT INTO public.reglas
-                            (regla, dias_vencidos, fraccion_desde, fraccion_hasta,  id_mensaje)
-                            VALUES(@regla, @dias_vencidos, @fraccion_desde, @fraccion_hasta,  @id_mensaje);
+                            (regla, dias_vencidos, fraccion_desde, fraccion_hasta,  id_mensaje, mes_atraso, tipo)
+                            VALUES(@regla, @dias_vencidos, @fraccion_desde, @fraccion_hasta,  @id_mensaje, @mes_atraso, @tipo);
                             ;";
 
                 var result = await db.ExecuteAsync(sql, new
@@ -95,7 +95,9 @@ namespace CoreERP.Data.Repositories
                     rule.dias_vencidos,
                     rule.fraccion_desde,
                     rule.fraccion_hasta,
-                    rule.id_mensaje
+                    rule.id_mensaje,
+                    rule.mes_atraso,
+                    rule.tipo
                 }
                 );
 
@@ -114,7 +116,7 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"UPDATE public.reglas
-                            SET regla=@regla, dias_vencidos=@dias_vencidos, fraccion_desde=@fraccion_desde, fraccion_hasta=@fraccion_hasta, id_mensaje=@id_mensaje
+                            SET regla=@regla, dias_vencidos=@dias_vencidos, fraccion_desde=@fraccion_desde, fraccion_hasta=@fraccion_hasta, id_mensaje=@id_mensaje, mes_atraso=@mes_atraso, tipo=@tipo
                             WHERE id_regla=@id_regla;";
 
                 var result = await db.ExecuteAsync(sql, new
@@ -124,7 +126,9 @@ namespace CoreERP.Data.Repositories
                     rule.dias_vencidos,
                     rule.fraccion_desde,
                     rule.fraccion_hasta,
-                    rule.id_mensaje
+                    rule.id_mensaje,
+                    rule.mes_atraso,
+                    rule.tipo
                 }
                 );
 

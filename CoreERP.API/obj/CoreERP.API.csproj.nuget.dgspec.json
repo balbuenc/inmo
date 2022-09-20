@@ -1,18 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.API\\CoreERP.API.csproj": {}
+    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.API\\CoreERP.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.API\\CoreERP.API.csproj": {
+    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.API\\CoreERP.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.API\\CoreERP.API.csproj",
+        "projectUniqueName": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.API\\CoreERP.API.csproj",
         "projectName": "CoreERP.API",
-        "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.API\\CoreERP.API.csproj",
+        "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.API\\CoreERP.API.csproj",
         "packagesPath": "C:\\Users\\cbalbuena\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.API\\obj\\",
+        "outputPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\cbalbuena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -26,13 +29,12 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Data\\CoreERP.Data.csproj": {
-                "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Data\\CoreERP.Data.csproj"
+              "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Data\\CoreERP.Data.csproj": {
+                "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Data\\CoreERP.Data.csproj"
               },
-              "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\CoreERP.Model.csproj": {
-                "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\CoreERP.Model.csproj"
+              "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\CoreERP.Model.csproj": {
+                "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\CoreERP.Model.csproj"
               }
             }
           }
@@ -45,7 +47,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "AspNetCore.Reporting": {
               "target": "Package",
@@ -74,19 +75,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.409\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Data\\CoreERP.Data.csproj": {
+    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Data\\CoreERP.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Data\\CoreERP.Data.csproj",
+        "projectUniqueName": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Data\\CoreERP.Data.csproj",
         "projectName": "CoreERP.Data",
-        "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Data\\CoreERP.Data.csproj",
+        "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Data\\CoreERP.Data.csproj",
         "packagesPath": "C:\\Users\\cbalbuena\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Data\\obj\\",
+        "outputPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Data\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\cbalbuena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -100,10 +104,9 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\CoreERP.Model.csproj": {
-                "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\CoreERP.Model.csproj"
+              "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\CoreERP.Model.csproj": {
+                "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\CoreERP.Model.csproj"
               }
             }
           }
@@ -116,7 +119,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Dapper": {
               "target": "Package",
@@ -146,19 +148,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.409\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\CoreERP.Model.csproj": {
+    "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\CoreERP.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\CoreERP.Model.csproj",
+        "projectUniqueName": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\CoreERP.Model.csproj",
         "projectName": "CoreERP.Model",
-        "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\CoreERP.Model.csproj",
+        "projectPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\CoreERP.Model.csproj",
         "packagesPath": "C:\\Users\\cbalbuena\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\CoreERP.Model\\obj\\",
+        "outputPath": "C:\\Users\\cbalbuena\\source\\repos\\inmo\\inmo\\CoreERP.Model\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\cbalbuena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -172,7 +177,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -184,7 +188,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -200,7 +203,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.409\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

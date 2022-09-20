@@ -72,9 +72,11 @@ namespace CoreERP.Data.Repositories
                             || '&msisdn=' ||  replace (vc.telefono_particular,'+5959','09') 
                             as comando
                             from imports.vconsulta_cliente vc
-                            inner join public.reglas r on  vc.id_fraccion between r.fraccion_desde and r.fraccion_hasta 
-                            and vc.fecha_vencimiento + r.dias_vencidos = current_date 
+                            inner join public.reglas r on  vc.id_fraccion between r.fraccion_desde and r.fraccion_hasta                                                
                             inner join mensajes m on m.id_mensaje = r.id_mensaje 
+                            where 
+                            ((vc.fecha_vencimiento + r.dias_vencidos  = current_date and r.tipo = 'D')
+                            or (vc.mes_atraso = r.mes_atraso and r.tipo = 'M'))
                             order by vc.fecha_vencimiento asc;";
 
                 var result = await db.QueryAsync<Quote>(sql, new { });

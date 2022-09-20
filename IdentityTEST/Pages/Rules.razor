@@ -39,80 +39,102 @@
             <div class="row">
                 @if (GridData == null)
                 {
-                    <div class="alert alert-title" role="alert"><p><em>Cargando datos...</em></p></div>
+                <div class="alert alert-title" role="alert"><p><em>Cargando datos...</em></p></div>
                 }
                 else
                 {
-                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES"
-                            ShowColumnChooser="true" AllowTextWrap="true" AllowFiltering="true">
-                        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
+                <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES"
+                        ShowColumnChooser="true" AllowTextWrap="true" AllowFiltering="true">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
 
-                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Rule"></GridEvents>
-                        <GridPageSettings PageSize="30"></GridPageSettings>
+                    <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Rule"></GridEvents>
+                    <GridPageSettings PageSize="30"></GridPageSettings>
 
-                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
-                            <HeaderTemplate>
-                                @{
+                    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams">
+                        <HeaderTemplate>
+                            @{
                                     var regla = (context as Rule);
-                                }
-                                <span>Detalle de la regla: @(regla.regla)</span>
-                            </HeaderTemplate>
-                            <Template>
-                                @{
+                            }
+                            <span>Detalle de la regla: @(regla.regla)</span>
+                        </HeaderTemplate>
+                        <Template>
+                            @{
                                     var regla = (context as Rule);
-                                }
-                                <div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(regla.id_regla)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <SfTextBox @bind-Value="@(regla.regla)" Enabled="true" Placeholder="Regla" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            
-                                            <SfDropDownList DataSource="@messages"
-                                                            TItem="Message"
-                                                            TValue="Int32"
-                                                            @bind-Value="@(regla.id_mensaje)"
-                                                            Placeholder="Mensaje"
-                                                            FloatLabelType="FloatLabelType.Always">
-                                                <DropDownListFieldSettings Value="id_mensaje" Text="titulo"></DropDownListFieldSettings>
-                                            </SfDropDownList>
-                                        </div>
-                                    </div>
+                                   
 
-                                    <div class="form-row">
-                                        <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(regla.fraccion_desde)" Enabled="true" Placeholder="Desde frac." FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(regla.fraccion_hasta)" Enabled="true" Placeholder="Hasta frac." FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <SfNumericTextBox @bind-Value="@(regla.dias_vencidos)" Enabled="true" Placeholder="Días vencidos" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
-                                        </div>
+                            }
+                            <div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <SfNumericTextBox @bind-Value="@(regla.id_regla)" Enabled="false" Placeholder="ID" FloatLabelType="FloatLabelType.Always"></SfNumericTextBox>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <SfTextBox @bind-Value="@(regla.regla)" Enabled="true" Placeholder="Regla" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                    </div>
+                                    <div class="form-group col-md-6">
+
+                                        <SfDropDownList DataSource="@messages"
+                                                        TItem="Message"
+                                                        TValue="Int32"
+                                                        @bind-Value="@(regla.id_mensaje)"
+                                                        Placeholder="Mensaje"
+                                                        FloatLabelType="FloatLabelType.Always">
+                                            <DropDownListFieldSettings Value="id_mensaje" Text="titulo"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <SfNumericTextBox @bind-Value="@(regla.fraccion_desde)" Enabled="true" Placeholder="Desde frac." FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <SfNumericTextBox @bind-Value="@(regla.fraccion_hasta)" Enabled="true" Placeholder="Hasta frac." FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                     </div>
 
                                 </div>
-                            </Template>
-                        </GridEditSettings>
-                        <GridColumns>
 
-                            <GridColumn Field=@nameof(Rule.id_regla) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <SfNumericTextBox @bind-Value="@(regla.mes_atraso)" Enabled="true" Placeholder="Meses atraso" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <SfNumericTextBox @bind-Value="@(regla.dias_vencidos)" Enabled="true" Placeholder="Días vencidos" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <SfDropDownList DataSource="@LocalTipo"
+                                                        TItem="Tipo"
+                                                        TValue="String"
+                                                        @bind-Value="@(regla.tipo)"
+                                                        Placeholder="Tipo"
+                                                        FloatLabelType="FloatLabelType.Always">
+                                            <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
+                                        </SfDropDownList>
+                                    </div>
+                                </div>
 
-                            <GridColumn Field=@nameof(Rule.regla) HeaderText="Regla" Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Rule.fraccion_desde) HeaderText="Desde Frac." Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Rule.fraccion_hasta) HeaderText="Hasta Frac." Width="20"></GridColumn>
-                            <GridColumn Field=@nameof(Rule.titulo) HeaderText="Mensaje" Width="30"></GridColumn>
+                            </div>
+                        </Template>
+                    </GridEditSettings>
+                    <GridColumns>
 
-                            <GridColumn Field=@nameof(Rule.dias_vencidos) HeaderText="Días vencidos" Width="20"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.id_regla) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
+
+                        <GridColumn Field=@nameof(Rule.regla) HeaderText="Regla" Width="20"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.fraccion_desde) HeaderText="Desde Frac." Width="20"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.fraccion_hasta) HeaderText="Hasta Frac." Width="20"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.titulo) HeaderText="Mensaje" Width="30"></GridColumn>
+
+                        <GridColumn Field=@nameof(Rule.mes_atraso) HeaderText="Meses de atraso" Width="15"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.dias_vencidos) HeaderText="Días vencidos" Width="15"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.tipo) HeaderText="Tipo" Width="15"></GridColumn>
 
 
-                        </GridColumns>
-                    </SfGrid>
+
+                    </GridColumns>
+                </SfGrid>
                 }
 
             </div>
@@ -171,6 +193,10 @@
     public bool EditDialogVisibility { get; set; } = false;
     public bool DeleteRecordConfirmVisibility { get; set; } = false;
 
+    public DateTime hoy = DateTime.Today;
+    public DateTime t;
+
+
     public Int32 ID = 0;
 
     public string UserName;
@@ -196,6 +222,17 @@
         new ToastOption { Title = "Error !", Content = "A problem has been occurred while submitting your data.", CssClass = "e-toast-danger" },
         new ToastOption { Title = "Information !", Content = "Please read the comments carefully.", CssClass = "e-toast-info" }
     };
+
+    public class Tipo
+    {
+        public string ID { get; set; }
+        public string Text { get; set; }
+    }
+
+    List<Tipo> LocalTipo = new List<Tipo> {
+    new Tipo() { ID= "M", Text= "Mes" },
+    new Tipo() { ID= "D", Text= "Día" },
+  };
 
 
     SfGrid<Rule> Grid { get; set; }

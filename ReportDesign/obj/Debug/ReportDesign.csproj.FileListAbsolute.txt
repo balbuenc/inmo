@@ -1,0 +1,11 @@
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\bin\Debug\ReportDesign.exe.config
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\bin\Debug\ReportDesign.exe
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\bin\Debug\ReportDesign.pdb
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\ReportDesign.csprojAssemblyReference.cache
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\ReportDesign.Properties.Resources.resources
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\ReportDesign.csproj.GenerateResource.cache
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\RdlCompile.cache
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\RdlCompile.compiled
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\ReportDesign.csproj.CoreCompileInputs.cache
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\ReportDesign.exe
+C:\Users\cbalbuena\source\repos\inmo\inmo\ReportDesign\obj\Debug\ReportDesign.pdb
