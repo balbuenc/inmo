@@ -61,19 +61,19 @@
 
 
                         <GridColumns>
-                            <GridColumn Field=@nameof(Quote.id_fraccion) HeaderText="Fraccion" Width="15"></GridColumn>
-                            <GridColumn Field=@nameof(Quote.id_manzana) HeaderText="Manz." Width="15"></GridColumn>
-                            <GridColumn Field=@nameof(Quote.documento) HeaderText="Documento" Width="25"></GridColumn>
-                            <GridColumn Field=@nameof(Quote.id_lote) HeaderText="lote" Width="10" IsPrimaryKey="true"></GridColumn>
-                            <GridColumn Field=@nameof(Quote.fecha_vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="15"></GridColumn>
-                            <GridColumn Field=@nameof(Quote.numero_cuota) HeaderText="Cuota" Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.id_fraccion) HeaderText="FR" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.id_manzana) HeaderText="MZ" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.documento) HeaderText="CI" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.id_lote) HeaderText="LT" Width="20" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.fecha_vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.numero_cuota) HeaderText="CTA" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Quote.nombre_para_documento) HeaderText="Cliente" Width="25"></GridColumn>
 
-                            <GridColumn Field=@nameof(Quote.monto_cuota) HeaderText="Monto" Format="N0" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.monto_cuota) HeaderText="Monto" Format="N0" Width="23" ></GridColumn>
 
-                            <GridColumn Field=@nameof(Quote.mora_cuota) HeaderText="Mora" Format="N0" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.mora_cuota) HeaderText="Mora" Format="N0" Width="20" Visible="false"></GridColumn>
 
-                            <GridColumn Field=@nameof(Quote.telefono_particular) HeaderText="Telefono" Width="25"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.telefono_particular) HeaderText="TEL" Width="25"></GridColumn>
                             <GridColumn Field=@nameof(Quote.regla) HeaderText="Regla" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Quote.mensaje) HeaderText="Mensaje" Width="40"></GridColumn>
                             <GridColumn Field=@nameof(Quote.comando) HeaderText="Comando" Width="40"></GridColumn>
@@ -393,7 +393,7 @@
         {
             foreach (Quote q in GridData)
             {
-                await SendNotification(q);
+                await SendNotification(q);               
             }
 
             Navigate();

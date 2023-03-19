@@ -11,8 +11,9 @@ namespace CoreERP.Model
      
 
         public int dias_vencidos { get; set; }
+        public int dias_vencidos_desde { get; set; }
 
-     
+
 
         public int fraccion_desde { get; set; }
         public int fraccion_hasta { get; set; }

@@ -46,7 +46,7 @@ namespace CoreERP.Data.Repositories
             try
             {
                 var db = dbConnection();
-                var sql = @"SELECT f.id, f.fraccion, f.factor_descuento, bc.boca , f.limite_descuento, f.minimo_descuento, f.id_boca_cobranza
+                var sql = @"SELECT f.id, f.fraccion, f.factor_descuento, bc.boca , f.limite_descuento, f.minimo_descuento, f.id_boca_cobranza, f.positivo
                             FROM public.fracciones_descuento f
                             left outer join public.bocas_cobranza bc on bc.id_boca_cobranza = f.id_boca_cobranza
                             order by f.fraccion asc;";
@@ -84,8 +84,8 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"INSERT INTO public.fracciones_descuento
-                            (fraccion, factor_descuento,  limite_descuento, minimo_descuento, id_boca_cobranza)
-                            VALUES(@fraccion, @factor_descuento , @limite_descuento, @minimo_descuento, @id_boca_cobranza);";
+                            (fraccion, factor_descuento,  limite_descuento, minimo_descuento, id_boca_cobranza, positivo)
+                            VALUES(@fraccion, @factor_descuento , @limite_descuento, @minimo_descuento, @id_boca_cobranza, @positivo);";
 
                 var result = await db.ExecuteAsync(sql, new
                 {
@@ -94,7 +94,8 @@ namespace CoreERP.Data.Repositories
                     fraction.factor_descuento,
                     fraction.limite_descuento,
                     fraction.minimo_descuento,
-                    fraction.id_boca_cobranza
+                    fraction.id_boca_cobranza,
+                    fraction.positivo
                 }
                 );
 
@@ -113,7 +114,7 @@ namespace CoreERP.Data.Repositories
                 var db = dbConnection();
 
                 var sql = @"UPDATE public.fracciones_descuento
-                            SET fraccion=@fraccion, factor_descuento=@factor_descuento,  limite_descuento = @limite_descuento, minimo_descuento = @minimo_descuento, id_boca_cobranza = @id_boca_cobranza
+                            SET fraccion=@fraccion, factor_descuento=@factor_descuento,  limite_descuento = @limite_descuento, minimo_descuento = @minimo_descuento, id_boca_cobranza = @id_boca_cobranza, positivo = @positivo
                             WHERE id=@id;
                             ";
 
@@ -124,7 +125,8 @@ namespace CoreERP.Data.Repositories
                     fraction.factor_descuento,
                     fraction.limite_descuento,
                     fraction.minimo_descuento,
-                    fraction.id_boca_cobranza
+                    fraction.id_boca_cobranza,
+                    fraction.positivo
                 }
                 );
 

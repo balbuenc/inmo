@@ -101,7 +101,10 @@
                                         <SfNumericTextBox @bind-Value="@(regla.mes_atraso)" Enabled="true" Placeholder="Meses atraso" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <SfNumericTextBox @bind-Value="@(regla.dias_vencidos)" Enabled="true" Placeholder="Días vencidos" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                        <SfNumericTextBox @bind-Value="@(regla.dias_vencidos)" Enabled="true" Placeholder="Días vencidos hasta" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <SfNumericTextBox @bind-Value="@(regla.dias_vencidos_desde)" Enabled="true" Placeholder="Días vencidos desde" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <SfDropDownList DataSource="@LocalTipo"
@@ -128,7 +131,8 @@
                         <GridColumn Field=@nameof(Rule.titulo) HeaderText="Mensaje" Width="30"></GridColumn>
 
                         <GridColumn Field=@nameof(Rule.mes_atraso) HeaderText="Meses de atraso" Width="15"></GridColumn>
-                        <GridColumn Field=@nameof(Rule.dias_vencidos) HeaderText="Días vencidos" Width="15"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.dias_vencidos) HeaderText="Días vencidos hasta" Width="30"></GridColumn>
+                        <GridColumn Field=@nameof(Rule.dias_vencidos_desde) HeaderText="Días vencidos desde" Width="30"></GridColumn>
                         <GridColumn Field=@nameof(Rule.tipo) HeaderText="Tipo" Width="15"></GridColumn>
 
 

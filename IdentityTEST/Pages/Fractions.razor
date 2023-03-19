@@ -77,8 +77,8 @@
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                           @* <SfTextBox @bind-Value="@(frac.boca)" Enabled="true" Placeholder="Boca" FloatLabelType="FloatLabelType.Always"> </SfTextBox>*@
+                                        <div class="form-group col-md-4">
+                                            @* <SfTextBox @bind-Value="@(frac.boca)" Enabled="true" Placeholder="Boca" FloatLabelType="FloatLabelType.Always"> </SfTextBox>*@
                                             <SfDropDownList DataSource="@LocalBoca"
                                                             TItem="Boca"
                                                             TValue="int"
@@ -94,7 +94,9 @@
                                         <div class="form-group col-md-3">
                                             <SfNumericTextBox @bind-Value="@(frac.limite_descuento)" Enabled="true" Placeholder="Límite Superior" FloatLabelType="FloatLabelType.Always"> </SfNumericTextBox>
                                         </div>
-
+                                        <div class="form-group col-md-2">
+                                            <SfTextBox @bind-Value="@(frac.positivo)" Enabled="true" Placeholder="Positivo" FloatLabelType="FloatLabelType.Always"> </SfTextBox>
+                                        </div>
                                     </div>
 
 
@@ -104,13 +106,13 @@
                         </GridEditSettings>
                         <GridColumns>
                             @*<GridColumn HeaderText="Det." TextAlign="TextAlign.Center" Width="10">
-                                <Template>
-                                    @{
-                                        var Acc = (context as Fraction);
-                                        <div><a href="#" @onclick="@(() => Navigate(Acc))">Ver</a></div>
-                                    }
-                                </Template>
-                            </GridColumn>*@
+                                    <Template>
+                                        @{
+                                            var Acc = (context as Fraction);
+                                            <div><a href="#" @onclick="@(() => Navigate(Acc))">Ver</a></div>
+                                        }
+                                    </Template>
+                                </GridColumn>*@
                             <GridColumn Field=@nameof(Fraction.id) HeaderText="ID" TextAlign="TextAlign.Center" Width="5" IsPrimaryKey="true"></GridColumn>
 
                             <GridColumn Field=@nameof(Fraction.fraccion) HeaderText="Fracción" Width="30"></GridColumn>
@@ -118,6 +120,7 @@
                             <GridColumn Field=@nameof(Fraction.boca) HeaderText="Boca" Width="30"></GridColumn>
                             <GridColumn Field=@nameof(Fraction.minimo_descuento) HeaderText="Mínimo" Width="20"></GridColumn>
                             <GridColumn Field=@nameof(Fraction.limite_descuento) HeaderText="Máximo" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Fraction.positivo) HeaderText="Positivo" Width="20"></GridColumn>
                         </GridColumns>
                     </SfGrid>
                 }

@@ -34,3 +34,12 @@ C:\Users\cbalbuena\source\repos\inmo\inmo\CoreERP.Model\obj\Release\netcoreapp3.
 C:\Users\cbalbuena\source\repos\inmo\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.csproj.CoreCompileInputs.cache
 C:\Users\cbalbuena\source\repos\inmo\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.dll
 C:\Users\cbalbuena\source\repos\inmo\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.pdb
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\bin\Release\netcoreapp3.1\CoreERP.Model.deps.json
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\bin\Release\netcoreapp3.1\CoreERP.Model.dll
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\bin\Release\netcoreapp3.1\CoreERP.Model.pdb
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.csprojAssemblyReference.cache
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.AssemblyInfoInputs.cache
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.AssemblyInfo.cs
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.csproj.CoreCompileInputs.cache
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.dll
+C:\Users\cbalbuena\source\repos\inmo\CoreERP.Model\obj\Release\netcoreapp3.1\CoreERP.Model.pdb

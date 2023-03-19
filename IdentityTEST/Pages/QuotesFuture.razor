@@ -1,0 +1,408 @@
+﻿@page "/QuotesFuture"
+@using Model
+@using Interfaces
+
+@inject IQuoteFutureService QuoteService
+@inject ISendMessageLogService SendMessageLogService
+
+
+@inject NavigationManager NavigationManager
+
+@attribute [Authorize]
+
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Grids
+@using System.Collections.ObjectModel
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs;
+@using Syncfusion.Blazor.Calendars;
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Buttons
+@using System.Data;
+@using System.Net.Http.Headers
+@using Newtonsoft.Json
+
+
+<div class="container-fluid">
+    <p>@Message</p>
+    <span class="error">@ErrorDetails</span>
+
+    <div class="col-lg-12" style="padding:1px; height:50px">
+        <div class="content-wrapper">
+            <div class="alert alert-title" role="banner">
+                <b> Cuotas </b>
+                <SfButton IsPrimary="true"  OnClick=SendSMS>Enviar notificaciones</SfButton>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    <div class="col-lg-12 control-section">
+        <div class="content-wrapper">
+            <div class="row">
+                @if (GridData == null)
+                {
+                    <div class="alert alert-title" role="alert"><p><em>Cargando datos...</em></p></div>
+                }
+                else
+                {
+                    <SfGrid ID="Grid" @ref="Grid" AllowPaging="true" AllowSorting="true" Toolbar="@ToolbarItems" DataSource="@GridData" Locale="es-ES"
+                            ShowColumnChooser="true" AllowTextWrap="true" AllowFiltering="true">
+                        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Excel"></GridFilterSettings>
+
+                        <GridEvents OnActionBegin="OnBeginHandler" OnActionComplete="OnCompleteHandler" TValue="Quote" OnRecordDoubleClick="RecordDoubleClickHandler"></GridEvents>
+                        <GridPageSettings PageSize="20"></GridPageSettings>
+
+
+                        <GridColumns>
+                            <GridColumn Field=@nameof(Quote.id_fraccion) HeaderText="Fraccion" Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.id_manzana) HeaderText="Manz." Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.documento) HeaderText="Documento" Width="25"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.id_lote) HeaderText="lote" Width="10" IsPrimaryKey="true"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.fecha_vencimiento) HeaderText="Venc." Format="dd/MM/yyyy" Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.numero_cuota) HeaderText="Cuota" Width="15"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.nombre_para_documento) HeaderText="Cliente" Width="25"></GridColumn>
+
+                            <GridColumn Field=@nameof(Quote.monto_cuota) HeaderText="Monto" Format="N0" Width="20"></GridColumn>
+
+                            <GridColumn Field=@nameof(Quote.mora_cuota) HeaderText="Mora" Format="N0" Width="20"></GridColumn>
+
+                            <GridColumn Field=@nameof(Quote.telefono_particular) HeaderText="Telefono" Width="25"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.regla) HeaderText="Regla" Width="20"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.mensaje) HeaderText="Mensaje" Width="40"></GridColumn>
+                            <GridColumn Field=@nameof(Quote.comando) HeaderText="Comando" Width="40"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                }
+
+            </div>
+            <SfDialog Target="#target"
+                      Width="300px"
+                      Height="130px"
+                      IsModal="true"
+                      ShowCloseIcon="false"
+                      @bind-Visible="DeleteRecordConfirmVisibility">
+                <DialogTemplates>
+                    <Header> Eliminar el registro? </Header>
+                    <Content>
+                        <div class="button-container">
+                            <button type="submit"
+                                    class="e-btn e-normal e-primary"
+                                    @onclick="ConfirmDeleteYes">
+                                Yes
+                            </button>
+                            <button type="submit"
+                                    class="e-btn e-normal"
+                                    @onclick="ConfirmDeleteNo">
+                                No
+                            </button>
+                        </div>
+                    </Content>
+                </DialogTemplates>
+            </SfDialog>
+            <SfToast @ref="ToastObj" Title="@ToastTitle" Content="@ToastContent" CssClass="@ToastCssClass">
+                <ToastPosition X="Right" Y="Bottom"></ToastPosition>
+            </SfToast>
+
+
+        </div>
+
+    </div>
+
+    <SfDialog Width="650px" Height="300px" IsModal="true" @bind-Visible="@IsSendSMSTestVisible">
+        <DialogEvents OnOverlayClick="@OnOverlayclick">
+        </DialogEvents>
+        <DialogTemplates>
+            <Content>
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Envío de mensaje individual</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <SfTextBox Placeholder="Comando" FloatLabelType="@FloatLabelType.Auto" @bind-Value="@Command"  Multiline="true" HtmlAttributes="@htmlAttribute"></SfTextBox>
+                    </div>
+                </div>
+            </Content>
+        </DialogTemplates>
+        <DialogButtons>
+            <DialogButton Content="Send SMS" IsPrimary="true" OnClick="@OnConfirmation" />
+            <DialogButton Content="Cancel" IsPrimary="true" OnClick="@OnOverlayclick" />
+        </DialogButtons>
+    </SfDialog>
+</div>
+
+<style>
+    #toast_default .e-meeting::before {
+        content: "\e705";
+        font-size: 17px;
+    }
+</style>
+
+@code {
+
+    public string Message { get; set; }
+    public string[] ToolbarItems = new string[] { "Add", "Edit", "Delete", "Update", "Cancel", "Search", "ColumnChooser" };
+    public string ErrorDetails = "";
+
+    public IEnumerable<Quote> GridData { get; set; }
+    Quote QTemp { get; set; }
+    public string Command = "";
+
+
+    public bool EditDialogVisibility { get; set; } = false;
+    public bool DeleteRecordConfirmVisibility { get; set; } = false;
+
+    public bool IsSendSMSTestVisible  { get; set; } = false;
+
+    public Int32 ID = 0;
+
+    public string UserName;
+
+    SfToast ToastObj;
+
+    private int ToastFlag = 0;
+    private string ToastTitle = "";
+    private string ToastContent = "";
+    private string ToastCssClass = "";
+
+
+    private class ToastOption
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string CssClass { get; set; }
+    }
+
+    private ToastOption[] Toasts = new ToastOption[] {
+        new ToastOption { Title = "Warning !", Content = "El registro se eliminó con éxito.", CssClass = "e-toast-warning" },
+        new ToastOption { Title = "Success !", Content = "El registro se modificó con éxito.", CssClass = "e-toast-success" },
+        new ToastOption { Title = "Error !", Content = "A problem has been occurred while submitting your data.", CssClass = "e-toast-danger" },
+        new ToastOption { Title = "Information !", Content = "Please read the comments carefully.", CssClass = "e-toast-info" }
+    };
+
+
+    SfGrid<Quote> Grid { get; set; }
+
+    private DialogSettings DialogParams = new DialogSettings { Width = "850px", EnableResize = true, AllowDragging = true };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            GridData = await QuoteService.GetAllQuotes();
+        }
+        catch (Exception ex)
+        {
+            Message = "Error al obtener cuotas: " + ex.Message;
+        }
+    }
+
+    private Dictionary<string, object> htmlAttribute = new Dictionary<string, object>()
+    {
+        {"rows", "5" }
+    };
+
+
+    private void OnOverlayclick(MouseEventArgs arg)
+    {
+        this.IsSendSMSTestVisible = false;
+
+    }
+
+
+    private async Task OnBeginHandler(ActionEventArgs<Quote> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await SaveQuote((Quote)Args.Data);
+
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+            ID = Convert.ToInt32(((Quote)Args.Data).id_fraccion);
+
+            // Open Delete confirmation dialog
+            this.DeleteRecordConfirmVisibility = true;
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    private async Task OnCompleteHandler(ActionEventArgs<Quote> Args)
+    {
+        if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Save)
+        {
+            await ShowToast(1);
+            GridData = await QuoteService.GetAllQuotes();
+            Grid.Refresh();
+
+        }
+        else if (Args.RequestType == Syncfusion.Blazor.Grids.Action.Delete)
+        {
+
+            StateHasChanged();
+        }
+
+        return;
+    }
+
+    protected async Task SaveQuote(Quote accountType)
+    {
+        await QuoteService.SaveQuote(accountType);
+        Grid.Refresh();
+
+    }
+
+    protected async Task DeleteQuote(int id)
+    {
+        await QuoteService.DeleteQuote(id);
+        await ShowToast(0);
+        Grid.Refresh();
+
+    }
+
+    protected void ReloadPage()
+    {
+        NavigationManager.NavigateTo("/Quotes", true);
+    }
+
+    public async void ConfirmDeleteYes()
+    {
+        // The user selected Yes to delete the
+        // seleted Help Desk Ticket
+        // Delete the record
+        await DeleteQuote(ID);
+
+        // Close the dialog
+        this.DeleteRecordConfirmVisibility = false;
+
+        // Refresh the SfGrid
+        // so the deleted record will not show
+        Grid.Refresh();
+    }
+
+    public void ConfirmDeleteNo()
+    {
+        // Open the dialog
+        // to give the user a chance
+        // to confim they want to delete the record
+        this.DeleteRecordConfirmVisibility = false;
+    }
+
+    private async Task ShowToast(int ix)
+    {
+        this.ToastTitle = this.Toasts[ix].Title;
+        this.ToastContent = this.Toasts[ix].Content;
+        this.ToastCssClass = this.Toasts[ix].CssClass;
+        await Task.Delay(200);
+
+        await this.ToastObj.Show();
+
+    }
+
+
+
+    private async Task HideToast()
+    {
+
+        await this.ToastObj.Hide("All");
+    }
+
+    private void Navigate()
+    {
+        NavigationManager.NavigateTo($"/MessageLogs");
+    }
+
+    public void RecordDoubleClickHandler(RecordDoubleClickEventArgs<Quote> args)
+    {
+        QTemp= (Quote)args.RowData;
+        Command = QTemp.comando;
+        IsSendSMSTestVisible = true;
+    }
+
+    private async void OnConfirmation()
+    {
+        QTemp.comando = Command;
+        await SendNotification(QTemp);
+        IsSendSMSTestVisible = false;
+        Navigate();
+    }
+
+    protected async Task SendNotification(Quote q)
+    {
+        try
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://tigob.beekun.com/pushapi");
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //Sending request to find web api REST service resource GetAllEmployees using HttpClient
+                HttpResponseMessage Res = await client.GetAsync(q.comando);
+
+
+                //Storing the response details recieved from web api
+                var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+
+                SendMessageLog log = new SendMessageLog();
+
+                log.comando = q.comando;
+                log.fecha = DateTime.Now;
+                log.documento = q.documento;
+                log.id_fraccion = q.id_fraccion;
+                log.id_cliente = q.id_cliente;
+                log.fecha_vencimiento = q.fecha_vencimiento;
+                log.id_lote = q.id_lote;
+                log.id_manzana = q.id_manzana;
+                log.monto_cuota = q.monto_cuota;
+                log.mora_cuota = q.mora_cuota;
+                log.nombre_para_documento = q.nombre_para_documento;
+                log.numero_contrato = q.numero_contrato;
+                log.numero_cuota = q.numero_cuota;
+                log.telefono_particular = q.telefono_particular;
+                log.texto = q.mensaje;
+
+                log.respuesta = EmpResponse;
+
+                await SendMessageLogService.SaveSendMessageLog(log);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+
+    protected async Task SendSMS()
+    {
+        try
+        {
+            foreach (Quote q in GridData)
+            {
+                await SendNotification(q);               
+            }
+
+            Navigate();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+}
+
+

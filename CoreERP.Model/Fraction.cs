@@ -18,5 +18,7 @@ namespace CoreERP.Model
 
         public int id_boca_cobranza { get; set; }
 
+        public string positivo { get; set; }
+
     }
 }

@@ -74,9 +74,10 @@ namespace CoreERP.Data.Repositories
                             from imports.vconsulta_cliente vc
                             inner join public.reglas r on  vc.id_fraccion between r.fraccion_desde and r.fraccion_hasta                                                
                             inner join mensajes m on m.id_mensaje = r.id_mensaje 
-                            where 
-                            ((vc.fecha_vencimiento + r.dias_vencidos  = current_date and r.tipo = 'D')
-                            or (vc.mes_atraso = r.mes_atraso and r.tipo = 'M'))
+                            where
+                                date_part('DAY', now() - vc.fecha_vencimiento)  <= r.dias_vencidos
+                                and date_part('DAY', now() - vc.fecha_vencimiento)  >= r.dias_vencidos_desde
+                                and date_part('DAY', now() - vc.fecha_vencimiento) >=  public.dias_vencidos_maximo(vc.numero_contrato)
                             order by vc.fecha_vencimiento asc;";
 
                 var result = await db.QueryAsync<Quote>(sql, new { });
